@@ -8,6 +8,7 @@
 
 
             Console.WriteLine("hej");
+            Console.WriteLine("Hej! Mattias här");
         }
     }
 }
