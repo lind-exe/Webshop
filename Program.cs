@@ -1,4 +1,6 @@
-﻿namespace Webshop
+﻿using System.Net.Http.Headers;
+
+namespace Webshop
 {
     internal class Program
     {
@@ -11,6 +13,7 @@
             Console.WriteLine("Hej! Mattias här");
             Console.WriteLine("Hej HEj från andreas");
             Console.WriteLine("Hej");
+            Console.WriteLine("Lagt till nuggies");
         }
     }
 }
