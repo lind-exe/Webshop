@@ -9,11 +9,11 @@ using Webshop.Models;
 
 #nullable disable
 
-namespace Webshop.OurMigrUpdates
+namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
-    [Migration("20221222130741_firstInitTwo")]
-    partial class firstInitTwo
+    [Migration("20221222142926_FirstCommit")]
+    partial class FirstCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,21 +37,6 @@ namespace Webshop.OurMigrUpdates
                     b.HasIndex("ProductsId");
 
                     b.ToTable("GenreProduct");
-                });
-
-            modelBuilder.Entity("OrderDetailProduct", b =>
-                {
-                    b.Property<int>("OrderDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderDetailsId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("OrderDetailProduct");
                 });
 
             modelBuilder.Entity("Webshop.Models.Category", b =>
@@ -165,9 +150,6 @@ namespace Webshop.OurMigrUpdates
                     b.Property<int>("ShipChoiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShipViaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -205,8 +187,9 @@ namespace Webshop.OurMigrUpdates
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -242,6 +225,9 @@ namespace Webshop.OurMigrUpdates
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GenreId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -250,9 +236,6 @@ namespace Webshop.OurMigrUpdates
                         .HasColumnType("real");
 
                     b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("UnitsInStock")
@@ -281,7 +264,7 @@ namespace Webshop.OurMigrUpdates
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShipChoises");
+                    b.ToTable("ShipChoices");
                 });
 
             modelBuilder.Entity("Webshop.Models.Supplier", b =>
@@ -306,21 +289,6 @@ namespace Webshop.OurMigrUpdates
                     b.HasOne("Webshop.Models.Genre", null)
                         .WithMany()
                         .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Webshop.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OrderDetailProduct", b =>
-                {
-                    b.HasOne("Webshop.Models.OrderDetail", null)
-                        .WithMany()
-                        .HasForeignKey("OrderDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -361,12 +329,20 @@ namespace Webshop.OurMigrUpdates
             modelBuilder.Entity("Webshop.Models.OrderDetail", b =>
                 {
                     b.HasOne("Webshop.Models.Order", "Order")
-                        .WithOne("OrderDetail")
-                        .HasForeignKey("Webshop.Models.OrderDetail", "OrderId")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Webshop.Models.Product", "Products")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Webshop.Models.Product", b =>
@@ -396,16 +372,15 @@ namespace Webshop.OurMigrUpdates
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("Webshop.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetail")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Webshop.Models.PaymentMethod", b =>
                 {
                     b.Navigation("Order")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Webshop.Models.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Webshop.Models.ShipChoice", b =>

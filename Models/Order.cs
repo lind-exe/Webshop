@@ -12,12 +12,12 @@ namespace Webshop.Models
         public int CustomerId { get; set; }
         public bool Purchased { get; set; }
         public DateTime OrderDate { get; set; }
-        public int ShipViaId { get; set; }
+        public int ShipChoiceId { get; set; }
         public int PaymentMethodId { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual PaymentMethod PaymentMethod { get; set; }
         public virtual ShipChoice ShipChoice { get; set; }
-        public int OrderDetailId { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        //public int OrderDetailId { get; set; }
+        //public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

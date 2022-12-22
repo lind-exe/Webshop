@@ -16,7 +16,7 @@ namespace Webshop.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
-        public DbSet<ShipChoice> ShipChoises { get; set; }
+        public DbSet<ShipChoice> ShipChoices { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

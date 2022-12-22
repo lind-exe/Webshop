@@ -8,7 +8,7 @@ using Webshop.Models;
 
 #nullable disable
 
-namespace Webshop.OurMigrUpdates
+namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
     partial class WebShopContextModelSnapshot : ModelSnapshot
@@ -35,21 +35,6 @@ namespace Webshop.OurMigrUpdates
                     b.HasIndex("ProductsId");
 
                     b.ToTable("GenreProduct");
-                });
-
-            modelBuilder.Entity("OrderDetailProduct", b =>
-                {
-                    b.Property<int>("OrderDetailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderDetailsId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("OrderDetailProduct");
                 });
 
             modelBuilder.Entity("Webshop.Models.Category", b =>
@@ -154,9 +139,6 @@ namespace Webshop.OurMigrUpdates
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderDetailId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
@@ -164,9 +146,6 @@ namespace Webshop.OurMigrUpdates
                         .HasColumnType("bit");
 
                     b.Property<int>("ShipChoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShipViaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -207,6 +186,8 @@ namespace Webshop.OurMigrUpdates
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -281,7 +262,7 @@ namespace Webshop.OurMigrUpdates
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShipChoises");
+                    b.ToTable("ShipChoices");
                 });
 
             modelBuilder.Entity("Webshop.Models.Supplier", b =>
@@ -306,21 +287,6 @@ namespace Webshop.OurMigrUpdates
                     b.HasOne("Webshop.Models.Genre", null)
                         .WithMany()
                         .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Webshop.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OrderDetailProduct", b =>
-                {
-                    b.HasOne("Webshop.Models.OrderDetail", null)
-                        .WithMany()
-                        .HasForeignKey("OrderDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -361,12 +327,20 @@ namespace Webshop.OurMigrUpdates
             modelBuilder.Entity("Webshop.Models.OrderDetail", b =>
                 {
                     b.HasOne("Webshop.Models.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Webshop.Models.Product", "Products")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Order");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Webshop.Models.Product", b =>
@@ -396,15 +370,15 @@ namespace Webshop.OurMigrUpdates
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("Webshop.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
             modelBuilder.Entity("Webshop.Models.PaymentMethod", b =>
                 {
                     b.Navigation("Order")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Webshop.Models.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("Webshop.Models.ShipChoice", b =>
