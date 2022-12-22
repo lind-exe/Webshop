@@ -10,6 +10,6 @@ namespace Webshop.Models
     {
         public int Id { get; set; }
         public string ShipVia { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }
