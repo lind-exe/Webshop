@@ -10,5 +10,7 @@ namespace Webshop.Models
     {
         public int Id { get; set; }
         public string PayVia { get; set; }
+
+        public virtual Order Order { get; set; }
     }
 }

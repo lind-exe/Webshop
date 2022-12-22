@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Webshop.Models
 {
-    public class Type
+    public class Genre
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }
