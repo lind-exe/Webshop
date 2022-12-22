@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace Webshop.Models
 {
-    internal class Producst
+    public class Product
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int CategoryId { get; set; }
+        public float Price { get; set; }
+        public int UnitsInStock { get; set; }
+        public string? Description { get; set; }
+        public int? TypeId { get; set; }
+        public int SupplierId { get; set; }
     }
 }

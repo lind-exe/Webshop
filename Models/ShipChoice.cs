@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Webshop.Models
 {
-    internal class ShipChoice
+    public class ShipChoice
     {
+        public int Id { get; set; }
+        public string ShipVia { get; set; }
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Webshop.Models
 {
-    internal class Category
+    public class Category
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
