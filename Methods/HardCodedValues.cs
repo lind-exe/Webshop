@@ -39,10 +39,23 @@ namespace Webshop.Methods
 
                 );
                 db.SaveChanges();
-            }
-            
+            }            
         }
+        public static void InsertSuppliers()
+        {
 
+        }
+        public static void InsertShipChoices()
+        {
 
+        }
+        public static void InsertPaymentMethods()
+        {
+
+        }
+        public static void InsertCategories()
+        {
+
+        }
     }
 }
