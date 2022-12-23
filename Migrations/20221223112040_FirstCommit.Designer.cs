@@ -12,7 +12,7 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
-    [Migration("20221222142926_FirstCommit")]
+    [Migration("20221223112040_FirstCommit")]
     partial class FirstCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,9 +103,12 @@ namespace Webshop.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });

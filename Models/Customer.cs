@@ -5,9 +5,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Webshop.Models
 {
+
+    [Index(nameof(UserName), IsUnique = true)]
+
     public class Customer
     {
         public int Id { get; set; }

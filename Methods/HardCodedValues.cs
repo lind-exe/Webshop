@@ -9,7 +9,15 @@ namespace Webshop.Methods
 {
     public class HardCodedValues
     {
-        public static void InsertGenres()
+        public static void AllInserts()
+        {
+            InsertGenres();
+            InsertSuppliers();
+            InsertShipChoices();
+            InsertCategories();
+            InsertPaymentMethods();
+        }
+        private static void InsertGenres()
         {
             using (var db = new WebShopContext())
             {
@@ -41,21 +49,78 @@ namespace Webshop.Methods
                 db.SaveChanges();
             }            
         }
-        public static void InsertSuppliers()
+        private static void InsertSuppliers()
         {
+            using (var db = new WebShopContext())
+            {
+                string[] values = (
+                    "Blizzard Entertainment, Capcom, CD Projekt Red, Certain Affinity," +
+                    " Chunsoft, Core Design, Electronic Arts," +
+                    " Game Freak, Ganbarion, Grezzo, Guerrilla Games," +
+                    " Harmonix Music Systems, HeroCraft, Infinity Ward, Activision," +
+                    " LucasArts, Maxis, MicroProse Software, Mojang AB, NetEase, Neversoft," +
+                    " Nintendo, Microsoft Studios, Project Soul," +
+                    " PlatinumGames, Respawn Entertainment," +
+                    " Square Enix, Ubisoft "
+                    ).Split(", ");
+                var resultList = new List<Supplier>();
 
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    resultList.Add(new Supplier() { Name = values[i] });
+                }
+                db.AddRange(resultList);
+                db.SaveChanges();
+            }
         }
-        public static void InsertShipChoices()
+        private static void InsertShipChoices()
         {
+            using (var db = new WebShopContext())
+            {
+                string[] values = "Postmord, DHL, Budbee, MickeFreightSolutions".Split(", ");
+                var resultList = new List<ShipChoice>();
 
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    resultList.Add(new ShipChoice() { ShipVia = values[i] });
+                }
+                db.AddRange(resultList);
+                db.SaveChanges();
+            }
         }
-        public static void InsertPaymentMethods()
+        private static void InsertPaymentMethods()
         {
+            using (var db = new WebShopContext())
+            {
+                string[] values = "Swish, Klarna, Bank transfer, Bananas".Split(", ");
+                var resultList = new List<PaymentMethod>();
 
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    resultList.Add(new PaymentMethod() { PayVia = values[i] });
+                }
+                db.AddRange(resultList);
+                db.SaveChanges();
+            }
         }
-        public static void InsertCategories()
+        private static void InsertCategories()
         {
+            using (var db = new WebShopContext())
+            {
+                string[] values = "Playstation 5, Playstation 4, Xbox Series X, Nintendo Switch, PC, TI-84 Plus Calculator".Split(", ");
+                var resultList = new List<Category>();
 
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    resultList.Add(new Category() { Name = values[i] });
+                }
+                db.AddRange(resultList);
+                db.SaveChanges();
+            }
         }
     }
 }
