@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using Webshop.Methods;
 
 namespace Webshop
 {
@@ -6,7 +7,7 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
-            
+            HardCodedValues.InsertGenres();
         }
     }
 }

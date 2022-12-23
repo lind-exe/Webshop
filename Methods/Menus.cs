@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Webshop
+namespace Webshop.Methods
 {
     internal class Menus
     {
@@ -22,10 +22,10 @@ namespace Webshop
         public static void Show()
         {
             bool go = true;
-            while(go)
+            while (go)
             {
 
-                foreach(int i in Enum.GetValues(typeof(MenuList)))
+                foreach (int i in Enum.GetValues(typeof(MenuList)))
                 {
                     Console.WriteLine($"{i}. {Enum.GetName(typeof(MenuList), i).Replace("_", " ")}");
                 }
@@ -33,7 +33,7 @@ namespace Webshop
 
             int nr;
             MenuList menu = (MenuList)99; //Default
-            if(int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
             {
                 menu = (MenuList)nr;
                 Console.Clear();
@@ -43,7 +43,7 @@ namespace Webshop
                 Console.WriteLine("Wrong Input");
             }
 
-            switch(menu)
+            switch (menu)
             {
                 case MenuList.Log_in:
                     break;
@@ -57,6 +57,8 @@ namespace Webshop
                     break;
             }
         }
+
+
 
     }
 }
