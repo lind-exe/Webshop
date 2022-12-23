@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Headers;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net.Http.Headers;
+using System.Reflection.Metadata;
 using Webshop.Methods;
 //HardCodedValues.AllInserts();
 namespace Webshop
@@ -8,7 +10,7 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
-            HardCodedValues.AllInserts();
+
         }
     }
 }
