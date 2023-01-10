@@ -52,7 +52,6 @@ namespace Webshop.Methods
                 var newProduct = new Product
                 {
                     Name = productName,
-                    GenreId = genre,
                     Price = price,
                     UnitsInStock = stock,
                     Description = description,

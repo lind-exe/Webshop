@@ -61,7 +61,7 @@ namespace Webshop.Methods
                     " LucasArts, Maxis, MicroProse Software, Mojang AB, NetEase, Neversoft," +
                     " Nintendo, Microsoft Studios, Project Soul," +
                     " PlatinumGames, Respawn Entertainment," +
-                    " Square Enix, Ubisoft "
+                    " Square Enix, Ubisoft, Sony "
                     ).Split(", ");
                 var resultList = new List<Supplier>();
 

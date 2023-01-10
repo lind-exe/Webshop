@@ -11,9 +11,9 @@ namespace Webshop
             //Helpers.Welcome();
             //Methods.Menus.Show("Main");
             // Helpers.ShowGenres();
-            Helpers.CreateProduct();
+            //Helpers.CreateProduct();
             //Helpers.InsertGenre();
-            
+            HardCodedValues.AllInserts();
         }
 
 

@@ -12,8 +12,8 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
-    [Migration("20221223112040_FirstCommit")]
-    partial class FirstCommit
+    [Migration("20230110133919_FirstC")]
+    partial class FirstC
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -227,9 +227,6 @@ namespace Webshop.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("GenreId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
