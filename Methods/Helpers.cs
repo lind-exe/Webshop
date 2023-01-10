@@ -131,5 +131,17 @@ namespace Webshop.Methods
             //var sql = "INSERT INTO dbo.Customers(UserName, PassWord, FirstName, LastName, Age, Country, City, Street, PostalCode, Phone, Email)" +
             //     " VALUES ()";
         }
+        public static void ShowGenres()
+        {
+            using (var database = new WebShopContext())
+            {
+                var genreList = database.Genres;
+                foreach(var genre in genreList)
+                {
+                    Console.WriteLine(genre.Id + " " + genre.Name);
+                }
+                
+            }
+        }
     }
 }
