@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Webshop.Models;
 using Webshop.Methods;
+using System.Data;
+using Microsoft.Data.SqlClient;
 
 namespace Webshop.Methods
 {
@@ -23,15 +25,11 @@ namespace Webshop.Methods
         {
             using (var database = new WebShopContext())
             {
-                var genreList = database.Genres.ToList(); //workaround for hardcoded values
+                //workaround for hardcoded values
                 var categoryList = database.Categories.ToList();
                 var supplierList = database.Suppliers.ToList();
                 Console.WriteLine("Input name of the product");
-                string productName = Console.ReadLine();
-                Helpers.ShowGenres();
-                Console.WriteLine("Enter the genre id.");
-                int genre = 0;
-                genre = Helpers.TryNumber(genre, genreList.Count(), 1);
+                string productName = Console.ReadLine();                
                 Console.WriteLine("Enter the price of the product.");
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
@@ -61,6 +59,32 @@ namespace Webshop.Methods
 
                 database.Add(newProduct);
                 database.SaveChanges();
+                AddGenresToProduct(productName);
+            }
+
+        }
+        public static void AddGenresToProduct(string name)
+        {
+            string connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
+            using (var connection = new SqlConnection(connString))
+            {
+                connection.Open();
+                var getProductId = $"SELECT Id FROM [dbo].[Products] WHERE Name LIKE '{name}' ";
+                //var getName = $"SELECT NAME FROM [dbo].[Products] WHERE Id = {getProductId} ";
+
+                Console.WriteLine("Enter the genre id.");               
+                bool enterGenre = true;
+               
+                while(enterGenre)
+                {                    
+                    Helpers.ShowGenres();
+                    Console.WriteLine("What genre do you like to add to " + name);
+                    int genre = 0;
+                    genre = Helpers.TryNumber(genre, int.Parse(getProductId), 1);
+                    string sqlCode = $"INSERT INTO [dbo].[GenreProduct] (GenreId, ProductId) VALUES ({genre}, {getProductId}) ";
+
+
+                }
             }
 
         }
