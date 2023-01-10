@@ -9,8 +9,9 @@ namespace Webshop
         static void Main(string[] args)
         {
             //Helpers.Welcome();
-            Methods.Menus.Show("Main");
-
+            //Methods.Menus.Show("Main");
+            Helpers.ShowGenres();
+            
         }
 
 
