@@ -10,7 +10,8 @@ namespace Webshop
         {
             //Helpers.Welcome();
             //Methods.Menus.Show("Main");
-            Helpers.ShowGenres();
+            // Helpers.ShowGenres();
+            Helpers.CreateProduct();
             
         }
 

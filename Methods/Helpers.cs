@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Webshop.Models;
@@ -142,6 +145,73 @@ namespace Webshop.Methods
                 }
                 
             }
+        }
+        public static void ShowCategoryId()
+        {
+            using (var database = new WebShopContext())
+            {
+                var categorylist = database.Categories;
+                foreach (var c in categorylist)
+                {
+                    Console.WriteLine(c.Id + " " + c.Name);
+                }
+
+            }
+        }
+        public static void ShowSupplier()
+        {
+            using (var database = new WebShopContext())
+            {
+                var supplierlist = database.Suppliers;
+                foreach (var c in supplierlist)
+                {
+                    Console.WriteLine(c.Id + " " + c.Name);
+                }
+
+            }
+        }
+        //Se över hård kodade värden tills senare
+        public static void CreateProduct()
+        {
+            Console.WriteLine("Input name of the product");
+            string productName= Console.ReadLine();
+            ShowGenres();
+            Console.WriteLine("Enter the genre id.");
+            int genre = 0;
+            genre = TryNumber(genre, 22, 1);
+            Console.WriteLine("Enter the price of the product.");
+            int price = 0;
+            price = TryNumber(price, 999999999, 1);
+            Console.WriteLine("Enter the amount you have in stock.");
+            int stock = 0;
+            stock = TryNumber(stock, 999999999, 0);
+            Console.WriteLine("Enter a description of the product.");
+            string description= Console.ReadLine();
+            ShowCategoryId();
+            Console.WriteLine("Enter the catergory the product belongs to.");
+            int category = 0;
+            category = TryNumber(category, 6, 1);
+            ShowSupplier();
+            Console.WriteLine("Enter the id of the supplier.");
+            int supplier = 0;
+            supplier = TryNumber(supplier, 28, 1);
+            using (var database = new WebShopContext())            //detta lägger till varje sak
+            {
+                var newProduct = new Product
+                {
+                    Name = productName,
+                    GenreId= genre,
+                    Price = price,
+                    UnitsInStock=stock,
+                    Description= description,
+                    CategoryId=category,
+                    SupplierId=supplier
+                };
+
+                database.Add(newProduct);
+                database.SaveChanges();
+            }
+
         }
     }
 }
