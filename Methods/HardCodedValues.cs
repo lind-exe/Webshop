@@ -110,7 +110,7 @@ namespace Webshop.Methods
         {
             using (var db = new WebShopContext())
             {
-                string[] values = "Playstation 5, Playstation 4, Xbox Series X, Nintendo Switch, PC, TI-84 Plus Calculator".Split(", ");
+                string[] values = "Playstation 5, Playstation 4, Xbox Series X, Nintendo Switch, PC, TI-84 Plus Calculator, Merchandise, Accessories".Split(", ");
                 var resultList = new List<Category>();
 
 

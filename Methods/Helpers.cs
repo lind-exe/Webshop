@@ -94,7 +94,7 @@ namespace Webshop.Methods
             string lastName = Console.ReadLine();
             Console.WriteLine("Input age: ");
             int age = 0;
-            age = TryNumber(age, 100,0);
+            age = TryNumber(age, 100, 0);
             Console.WriteLine("Input country: ");
             string country = Console.ReadLine();
             Console.WriteLine("Input city: ");
@@ -118,7 +118,7 @@ namespace Webshop.Methods
                     Password = passWord,
                     FirstName = firstName,
                     LastName = lastName,
-                    Age= age,
+                    Age = age,
                     Country = country,
                     City = city,
                     Street = street,
@@ -139,11 +139,11 @@ namespace Webshop.Methods
             using (var database = new WebShopContext())
             {
                 var genreList = database.Genres;
-                foreach(var genre in genreList)
+                foreach (var genre in genreList)
                 {
                     Console.WriteLine(genre.Id + " " + genre.Name);
                 }
-                
+
             }
         }
         public static void ShowCategoryId()
@@ -169,49 +169,65 @@ namespace Webshop.Methods
                 }
 
             }
-        }
-        //Se över hård kodade värden tills senare
+        }        
         public static void CreateProduct()
         {
-            Console.WriteLine("Input name of the product");
-            string productName= Console.ReadLine();
-            ShowGenres();
-            Console.WriteLine("Enter the genre id.");
-            int genre = 0;
-            genre = TryNumber(genre, 22, 1);
-            Console.WriteLine("Enter the price of the product.");
-            int price = 0;
-            price = TryNumber(price, 999999999, 1);
-            Console.WriteLine("Enter the amount you have in stock.");
-            int stock = 0;
-            stock = TryNumber(stock, 999999999, 0);
-            Console.WriteLine("Enter a description of the product.");
-            string description= Console.ReadLine();
-            ShowCategoryId();
-            Console.WriteLine("Enter the catergory the product belongs to.");
-            int category = 0;
-            category = TryNumber(category, 6, 1);
-            ShowSupplier();
-            Console.WriteLine("Enter the id of the supplier.");
-            int supplier = 0;
-            supplier = TryNumber(supplier, 28, 1);
-            using (var database = new WebShopContext())            //detta lägger till varje sak
+            using (var database = new WebShopContext())            
             {
+                var genreList = database.Genres.ToList(); //workaround for hardcoded values
+                var categoryList = database.Categories.ToList();
+                var supplierList = database.Suppliers.ToList();
+                Console.WriteLine("Input name of the product");
+                string productName = Console.ReadLine();
+                ShowGenres();
+                Console.WriteLine("Enter the genre id.");
+                int genre = 0;
+                genre = TryNumber(genre, genreList.Count(), 1);
+                Console.WriteLine("Enter the price of the product.");
+                int price = 0;
+                price = TryNumber(price, 999999999, 1);
+                Console.WriteLine("Enter the amount you have in stock.");
+                int stock = 0;
+                stock = TryNumber(stock, 999999999, 0);
+                Console.WriteLine("Enter a description of the product.");
+                string description = Console.ReadLine();
+                ShowCategoryId();
+                Console.WriteLine("Enter the catergory the product belongs to.");
+                int category = 0;
+                category = TryNumber(category, categoryList.Count(), 1);
+                ShowSupplier();
+                Console.WriteLine("Enter the id of the supplier.");
+                int supplier = 0;
+                supplier = TryNumber(supplier, supplierList.Count(), 1);
+
                 var newProduct = new Product
                 {
                     Name = productName,
-                    GenreId= genre,
+                    GenreId = genre,
                     Price = price,
-                    UnitsInStock=stock,
-                    Description= description,
-                    CategoryId=category,
-                    SupplierId=supplier
+                    UnitsInStock = stock,
+                    Description = description,
+                    CategoryId = category,
+                    SupplierId = supplier
                 };
 
                 database.Add(newProduct);
                 database.SaveChanges();
             }
 
+        }
+        public static void InsertGenre()
+        {
+            Console.Write("Enter name of new genre: ");
+            using (var database = new WebShopContext())
+            {
+                var newGenre = new Genre()
+                {
+                    Name = Console.ReadLine()
+                };
+                database.Add(newGenre);
+                database.SaveChanges();
+            }
         }
     }
 }

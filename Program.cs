@@ -12,6 +12,7 @@ namespace Webshop
             //Methods.Menus.Show("Main");
             // Helpers.ShowGenres();
             Helpers.CreateProduct();
+            //Helpers.InsertGenre();
             
         }
 
