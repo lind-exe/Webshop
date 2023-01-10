@@ -21,7 +21,7 @@ namespace Webshop.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=tcp:azurenyk.database.windows.net,1433;Initial Catalog=GamersParadise;Persist Security Info=False;User ID=JLind;Password=Hejsan123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=MyWebShop;Trusted_Connection=True;");
         }
     }
 

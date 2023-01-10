@@ -10,7 +10,7 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
-
+            HardCodedValues.AllInserts();
         }
     }
 }
