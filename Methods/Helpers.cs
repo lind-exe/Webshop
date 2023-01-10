@@ -170,7 +170,77 @@ namespace Webshop.Methods
                 }
 
             }
-        }        
-        
+        }
+
+        internal static void ShowOneHighlightedProduct()
+        {
+            using (var db = new WebShopContext())
+            {
+                var products = db.Products;
+                var productsList = db.Products.ToList();
+                var orderDetailsList = db.OrderDetails;
+                Random rnd = new Random();
+                int randomNr = rnd.Next(1, productsList.Count);
+
+                if (productsList.Count > 0)
+                {
+                    var discountPriceList = orderDetailsList.Where(x => x.Discount > 0).ToList();
+                    var randomProduct = productsList.Where(x => x.Id == randomNr).SingleOrDefault();
+                    var discount = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct.Id);
+                    if (randomProduct!= null)
+                    {
+
+                        // Print Name
+                        Console.WriteLine("    " + randomProduct.Name.ToUpper() + "\t\t\n");
+                        // print picture
+                        BuildPicture();
+                        // Print Price
+                        Console.WriteLine((discount != null ? "Sale Price: " + discount.Discount + " SEK" : "Price: " + randomProduct.Price) + " SEK");
+                        Console.WriteLine("---------------");
+                        // Print Description
+                        Console.WriteLine("Description: " + randomProduct.Description);
+                        // Print Stock
+                        Console.WriteLine("Avaiable: " + randomProduct.UnitsInStock);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Fel");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("For now we have no products to show you. Be back soon for the latest updates");
+                }
+
+            }
+        }
+
+        internal static void BuildPicture()
+        {
+            Console.WriteLine("┌" + "".PadRight(13, '─') + "┐");
+
+            for (int rows = 0; rows < 10; rows++)
+            {
+                Console.Write("│");
+                for (int cols = 0; cols < 13; cols++)
+                {
+                    if (rows == 5 && cols == 0)
+                    {
+                        Console.Write("[Image here] ");
+                        cols = 14;
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.Write("│");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("└" + "".PadRight(13, '─') + "┘");
+        }
+
+
     }
 }
