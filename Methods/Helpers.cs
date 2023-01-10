@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Webshop.Models;
 
 namespace Webshop.Methods
 {
@@ -58,7 +60,6 @@ namespace Webshop.Methods
             Thread.Sleep(3000);
             Console.Clear();
             Console.ResetColor();
-            Console.ReadKey();
         }
         internal static int TryNumber(int number, int maxValue, int minValue)               //input security
         {
@@ -66,20 +67,69 @@ namespace Webshop.Methods
 
             while (!correctInput)
             {
-                if (!int.TryParse(Console.ReadLine(), out number) || number <= maxValue || number >= minValue)
+                if (int.TryParse(Console.ReadLine(), out number) && (number <= maxValue && number >= minValue))
                 {
-                    Console.WriteLine("Wrong input, try again.");
+                    correctInput = true;
                 }
                 else
                 {
-                    correctInput = true;
+                    Console.WriteLine("Wrong input, try again.");
                 }
             }
             return number;
         }
         public static void CreateUser()
         {
-            Console.WriteLine("Hej Skriv ditt namn eller tryck x för backa");
+
+            Console.WriteLine("Input username: ");
+            string userName = Console.ReadLine();
+            Console.WriteLine("Input password: ");
+            string passWord = Console.ReadLine();
+            Console.WriteLine("Input first name: ");
+            string firstName = Console.ReadLine();
+            Console.WriteLine("Input last name: ");
+            string lastName = Console.ReadLine();
+            Console.WriteLine("Input age: ");
+            int age = 0;
+            age = TryNumber(age, 100,0);
+            Console.WriteLine("Input country: ");
+            string country = Console.ReadLine();
+            Console.WriteLine("Input city: ");
+            string city = Console.ReadLine();
+            Console.WriteLine("Input street name: ");
+            string street = Console.ReadLine();
+            Console.WriteLine("Input postal code: ");
+            int postal = 0;
+            postal = TryNumber(postal, 99999, 10000);
+            Console.WriteLine("Input phone number: ");
+            int phone = 0;
+            phone = TryNumber(phone, 999999999, 0);
+            Console.WriteLine("Input email address: ");
+            string email = Console.ReadLine();
+
+            using (var database = new WebShopContext())            //detta lägger till varje sak
+            {
+                var newCustomer = new Customer
+                {
+                    UserName = userName,
+                    Password = passWord,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Age= age,
+                    Country = country,
+                    City = city,
+                    Street = street,
+                    PostalCode = postal,
+                    Phone = phone,
+                    Email = email
+                };
+
+                database.Add(newCustomer);
+                database.SaveChanges();
+            }
+
+            //var sql = "INSERT INTO dbo.Customers(UserName, PassWord, FirstName, LastName, Age, Country, City, Street, PostalCode, Phone, Email)" +
+            //     " VALUES ()";
         }
     }
 }
