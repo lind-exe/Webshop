@@ -14,7 +14,7 @@ namespace Webshop.Methods
 
             while (!correctInput)
             {
-                if (!int.TryParse(Console.ReadLine(), out number) || number >= maxValue || number <= minValue)
+                if (!int.TryParse(Console.ReadLine(), out number) || number <= maxValue || number >= minValue)
                 {
                     Console.WriteLine("Wrong input, try again.");
                 }
@@ -24,6 +24,10 @@ namespace Webshop.Methods
                 }
             }
             return number;
+        }
+        public static void CreateUser()
+        {
+            Console.WriteLine("Hej Skriv ditt namn eller tryck x för backa");
         }
     }
 }
