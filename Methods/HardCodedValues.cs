@@ -43,7 +43,8 @@ namespace Webshop.Methods
                     new Genre() { Name = "Wargame" },
                     new Genre() { Name = "Monster Tamer" },
                     new Genre() { Name = "Sandbox" },
-                    new Genre() { Name = "Coding Game" }
+                    new Genre() { Name = "Coding Game" },
+                    new Genre() { Name = "None"}
 
                 );
                 db.SaveChanges();

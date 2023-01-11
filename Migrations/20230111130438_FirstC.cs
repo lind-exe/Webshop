@@ -38,7 +38,7 @@ namespace Webshop.Migrations
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<int>(type: "int", nullable: false),
                     Phone = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,6 +214,12 @@ namespace Webshop.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_Email",
+                table: "Customers",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_UserName",

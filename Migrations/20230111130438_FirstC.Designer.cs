@@ -12,7 +12,7 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
-    [Migration("20230110133919_FirstC")]
+    [Migration("20230111130438_FirstC")]
     partial class FirstC
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace Webshop.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -106,6 +106,9 @@ namespace Webshop.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.HasIndex("UserName")
                         .IsUnique();
