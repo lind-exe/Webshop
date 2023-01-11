@@ -203,11 +203,15 @@ namespace Webshop.Methods
         {
             using (var database = new WebShopContext())
             {
+                int padValue1 = 12;
+                int padValue2 = 30;
+                int padValue3 = 20;
                 var productlist = database.Products;
-                //Console.WriteLine("ID\tName\t\t\t\tPrice\t\t\t         Unitsinstock");
+                Console.WriteLine("ID".PadRight(padValue1) + "Name".PadRight(padValue2) + "Price, SEK".PadRight(padValue3) + "Unitsinstock");
+                Console.WriteLine("--------------------------------------------------------------------------");
                 foreach (var c in productlist)
                 {
-                    Console.WriteLine("Id: "+c.Id + " Name: " + c.Name+" Price:"+c.Price+" SEK"+" Units in stock "+ c.UnitsInStock);
+                    Console.WriteLine(c.Id + "".PadRight(padValue1) + c.Name.PadRight(padValue2) + c.Price.ToString().PadRight(padValue3) + c.UnitsInStock);
                 }
 
             }

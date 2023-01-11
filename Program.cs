@@ -48,7 +48,8 @@ namespace Webshop
             //    }
             //}
             //Methods.Admin.ChangePrice();
-            Methods.Admin.ChangeUnitsInStock();
+            //Methods.Admin.ChangeUnitsInStock();
+            Helpers.ShowProducts();
         }
     }
 }
