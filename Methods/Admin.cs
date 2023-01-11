@@ -42,11 +42,11 @@ namespace Webshop.Methods
                 stock = Helpers.TryNumber(stock, 999999999, 0);
                 Console.WriteLine("Enter a description of the product.");
                 string description = Console.ReadLine();
-                Helpers.ShowCategoryId();
+                View.ShowCategoryId();
                 Console.WriteLine("Enter the catergory the product belongs to.");
                 int category = 0;
                 category = Helpers.TryNumber(category, categoryList.Count(), 1);
-                Helpers.ShowSupplier();
+                View.ShowSupplier();
                 Console.WriteLine("Enter the id of the supplier.");
                 int supplier = 0;
                 supplier = Helpers.TryNumber(supplier, supplierList.Count(), 1);
@@ -82,8 +82,8 @@ namespace Webshop.Methods
                 bool enterGenre = true;
                
                 while(enterGenre)
-                {                    
-                    Helpers.ShowGenres();
+                {
+                    View.ShowGenres();
                     Console.WriteLine("What genre do you like to add to " + name);
                     int genre = 0;
                     genre = Helpers.TryNumber(genre, int.Parse(getProductId), 1);
@@ -105,7 +105,7 @@ namespace Webshop.Methods
                 var id = lastproduct.Id;
                 while (run)
                 {
-                    Helpers.ShowGenres();
+                    View.ShowGenres();
                     Console.WriteLine("Add genre to the product.");
                     int genre = 0;
                     genre= Helpers.TryNumber(genre, genrelist.Count(), 1);
@@ -188,7 +188,7 @@ namespace Webshop.Methods
             using (var database = new WebShopContext())
             {
                 var productlist = database.Products.ToList();
-                Helpers.ShowProducts();
+                View.ShowProducts();
                 Console.Write("Enter the id of the product you want to change price on:");
                 int id = 0;
                 id = Helpers.TryNumber(id, productlist.Count(), 1);
@@ -209,7 +209,7 @@ namespace Webshop.Methods
             using (var database = new WebShopContext())
             {
                 var productlist = database.Products.ToList();
-                Helpers.ShowProducts();
+                View.ShowProducts();
                 Console.Write("Enter the id of the product you want to change the inventory balance on:");
                 int id = 0;
                 id = Helpers.TryNumber(id, productlist.Count(), 1);

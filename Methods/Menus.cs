@@ -12,9 +12,7 @@ namespace Webshop.Methods
     {
         enum MainMenu
         {
-            Log_in = 1,
-            New_Customer,
-            Browse_Shop,
+            Browse_Shop = 1,
             Search_Product,
             Exit_Shop
 
@@ -61,7 +59,9 @@ namespace Webshop.Methods
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("Wrong Input");
+                        
                     }
                     switch (menu)
                     {
@@ -98,6 +98,7 @@ namespace Webshop.Methods
                     }
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("Wrong Input");
                     }
                     switch (login)
@@ -129,27 +130,32 @@ namespace Webshop.Methods
 
                     int nr;
                     BrowseShop shop = (BrowseShop)99; //Default
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
                     {
-                        shop = (BrowseShop)nr;
                         Console.Clear();
+                        Console.WriteLine("Wrong Input");
                     }
                     else
                     {
-                        Console.WriteLine("Wrong Input");
+                        shop = (BrowseShop)nr;
+                        Console.Clear();
+                        
                     }
                     switch (shop)
                     {
                         case BrowseShop.Games:
-                            Helpers.ShowProducts();
+                            View.DisplayCustomer(c);
+                            View.ShowProducts();
+                            //User.SelectProduct
+                            Console.ReadKey();
                             browseShop = false;
                             break;
                         case BrowseShop.Consoles:
-                            Helpers.ShowCategoryId();
+                            View.ShowCategoryId();
                             browseShop = false;
                             break;
                         case BrowseShop.Accessories:
-                            Helpers.ShowAccessories();
+                            View.ShowAccessories();
                             break;
                         case BrowseShop.Return:
                             Show("Main", c);
