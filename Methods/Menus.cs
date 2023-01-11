@@ -44,7 +44,7 @@ namespace Webshop.Methods
             {
                 while (goMain)
                 {
-
+                    View.DisplayCustomer(c);
                     foreach (int i in Enum.GetValues(typeof(MainMenu)))
                     {
                         Console.WriteLine($"{i}. {Enum.GetName(typeof(MainMenu), i).Replace("_", " ")}");
@@ -59,9 +59,7 @@ namespace Webshop.Methods
                     }
                     else
                     {
-                        Console.Clear();
-                        Console.WriteLine("Wrong Input");
-                        
+                        Helpers.WrongInput();
                     }
                     switch (menu)
                     {
@@ -98,8 +96,7 @@ namespace Webshop.Methods
                     }
                     else
                     {
-                        Console.Clear();
-                        Console.WriteLine("Wrong Input");
+                        Helpers.WrongInput();
                     }
                     switch (login)
                     {
@@ -123,6 +120,7 @@ namespace Webshop.Methods
             {
                 while (browseShop)
                 {
+                    View.DisplayCustomer(c);
                     foreach (int i in Enum.GetValues(typeof(BrowseShop)))
                     {
                         Console.WriteLine($"{i}. {Enum.GetName(typeof(BrowseShop), i).Replace("_", " ")}");
@@ -132,8 +130,7 @@ namespace Webshop.Methods
                     BrowseShop shop = (BrowseShop)99; //Default
                     if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
                     {
-                        Console.Clear();
-                        Console.WriteLine("Wrong Input");
+                        Helpers.WrongInput();
                     }
                     else
                     {

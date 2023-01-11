@@ -190,6 +190,16 @@ namespace Webshop.Methods
             Console.WriteLine("└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘");
         }
 
-        
+        internal static void WrongInput()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(2, 2);
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("WRONGINPUT");
+            Thread.Sleep(500);
+            Console.ResetColor();
+            Console.Clear();
+        }
     }
 }
