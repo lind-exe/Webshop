@@ -13,6 +13,12 @@ namespace Webshop.Methods
 {
     internal class Helpers
     {
+        internal static void DisplayCustomer(Customer user)
+        {
+            Console.Clear();
+            Console.SetCursorPosition(0, 35);
+            Console.WriteLine("User: " + user + "\n");
+        }
         internal static void Welcome()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -70,13 +76,13 @@ namespace Webshop.Methods
 
             while (!correctInput)
             {
-                if (int.TryParse(Console.ReadLine(), out number) && (number <= maxValue && number >= minValue))
+                if (!int.TryParse(Console.ReadLine(), out number) && (number > maxValue && number < minValue))
                 {
-                    correctInput = true;
+                    Console.WriteLine("Wrong input, try again.");
                 }
                 else
                 {
-                    Console.WriteLine("Wrong input, try again.");
+                    correctInput = true;
                 }
             }
             return number;
