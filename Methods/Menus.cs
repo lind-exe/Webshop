@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Webshop.Models;
 
 namespace Webshop.Methods
 {
@@ -35,7 +36,7 @@ namespace Webshop.Methods
             Return = 0
         }
 
-        public static void Show(string value)
+        public static Customer Show(string value, Customer user)
         {
             bool logIn = true;
             bool goMain = true;            
@@ -63,19 +64,19 @@ namespace Webshop.Methods
                     switch (menu)
                     {
                         case MainMenu.Log_in:
-                            Show("LogIn");
+                            Show("LogIn", user);
                             goMain = false;
                             break;
                         case MainMenu.New_Customer:
-                            Show("LogIn");
+                            Show("LogIn", user);
                             goMain = false;
                             break;
                         case MainMenu.Browse_Shop:
-                            Show("LogIn");
+                            Show("LogIn", user);
                             goMain = false;
                             break;
                         case MainMenu.Search_Product:
-                            Show("LogIn");
+                            Show("LogIn", user);
                             goMain = false;
                             break;
                         case MainMenu.Exit_Shop:
@@ -108,7 +109,7 @@ namespace Webshop.Methods
                     switch (login)
                     {
                         case LogIn.Sign_In:
-                            Show("LogIn");
+                            Show("LogIn", user);
                             logIn = false;
                             break;
                         case LogIn.Create_New_User:
@@ -116,14 +117,14 @@ namespace Webshop.Methods
                             logIn = false;
                             break;
                         case LogIn.Return:
-                            Show("Main");
+                            Show("Main", user);
                             logIn = false;
                             break;
 
                     }
                 }
             }
-         
+            return user;
         }
     }
 }

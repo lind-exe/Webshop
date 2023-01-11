@@ -178,7 +178,7 @@ namespace Webshop.Methods
             }
         }
 
-        internal static void ShowOneHighlightedProduct()
+        internal static void Show3HighlightedProducts()
         {
             using (var db = new WebShopContext())
             {
@@ -186,27 +186,35 @@ namespace Webshop.Methods
                 var productsList = db.Products.ToList();
                 var orderDetailsList = db.OrderDetails;
                 Random rnd = new Random();
-                int randomNr = rnd.Next(1, productsList.Count);
+                int randomNr1 = rnd.Next(1, productsList.Count+1);
+                int randomNr2 = rnd.Next(1, productsList.Count+1);
+                int randomNr3 = rnd.Next(1, productsList.Count+1);
 
                 if (productsList.Count > 0)
                 {
                     var discountPriceList = orderDetailsList.Where(x => x.Discount > 0).ToList();
-                    var randomProduct = productsList.Where(x => x.Id == randomNr).SingleOrDefault();
-                    var discount = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct.Id);
-                    if (randomProduct!= null)
+                    var randomProduct1 = productsList.Where(x => x.Id == randomNr1).SingleOrDefault();
+                    var randomProduct2 = productsList.Where(x => x.Id == randomNr2).SingleOrDefault();
+                    var randomProduct3 = productsList.Where(x => x.Id == randomNr3).SingleOrDefault();
+                    var discount1 = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct1.Id);
+                    var discount2 = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct2.Id);
+                    var discount3 = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct3.Id);
+                    if (randomProduct1 != null && randomProduct2 != null && randomProduct3 != null)
                     {
 
                         // Print Name
-                        Console.WriteLine("    " + randomProduct.Name.ToUpper() + "\t\t\n");
+                        Console.Write("    " + randomProduct1.Name.ToUpper() + "\t\t" + "    " + randomProduct2.Name.ToUpper() + "\t\t" + "    " + randomProduct3.Name.ToUpper() + "\n");
                         // print picture
                         BuildPicture();
                         // Print Price
-                        Console.WriteLine((discount != null ? "Sale Price: " + discount.Discount + " SEK" : "Price: " + randomProduct.Price) + " SEK");
-                        Console.WriteLine("---------------");
-                        // Print Description
-                        Console.WriteLine("Description: " + randomProduct.Description);
+                        Console.Write((discount1 != null ? "Sale Price: " + discount1.Discount + " SEK" : "Price: " + randomProduct1.Price) + " SEK\t\t");
+                        Console.Write((discount2 != null ? "Sale Price: " + discount2.Discount + " SEK" : "Price: " + randomProduct2.Price) + " SEK\t\t");
+                        Console.Write((discount3 != null ? "Sale Price: " + discount3.Discount + " SEK" : "Price: " + randomProduct3.Price) + " SEK");
+                        Console.WriteLine("\n---------------\t\t---------------\t\t---------------");
                         // Print Stock
-                        Console.WriteLine("Avaiable: " + randomProduct.UnitsInStock);
+                        Console.Write("Avaiable: " + randomProduct1.UnitsInStock + "\t\tAvaiable: " + randomProduct2.UnitsInStock + "\t\tAvaiable: " + randomProduct3.UnitsInStock + "\n");
+                        // Print Description
+                        Console.Write(randomProduct1.Description + "\t" + randomProduct2.Description + "\t" + randomProduct3.Description);
                     }
                     else
                     {
@@ -223,30 +231,34 @@ namespace Webshop.Methods
 
         internal static void BuildPicture()
         {
-            Console.WriteLine("┌" + "".PadRight(13, '─') + "┐");
+            Console.WriteLine("┌" + "".PadRight(13, '─') + "┐" + "\t\t┌" + "".PadRight(13, '─') + "┐" + "\t\t┌" + "".PadRight(13, '─') + "┐");
 
             for (int rows = 0; rows < 10; rows++)
             {
-                Console.Write("│");
-                for (int cols = 0; cols < 13; cols++)
+                for (int cols = 0; cols <= 62; cols++)
                 {
-                    if (rows == 5 && cols == 0)
+                    if ((rows == 5 && cols == 0) || (rows == 5 && cols == 10) || (rows == 5 && cols == 21))
                     {
-                        Console.Write("[Image here] ");
-                        cols = 14;
+                        Console.Write("│[Image here] │");
+                    }
+
+                    else if (cols == 0 || cols == 14 || cols == 24 || cols == 38 || cols == 48 || cols == 62)
+                    {
+                        if (rows != 5)
+                        {
+                            Console.Write("│");
+                        }
+
                     }
                     else
                     {
                         Console.Write(" ");
                     }
                 }
-                Console.Write("│");
                 Console.WriteLine();
             }
 
-            Console.WriteLine("└" + "".PadRight(13, '─') + "┘");
+            Console.WriteLine("└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘");
         }
-
-
     }
 }
