@@ -149,6 +149,7 @@ namespace Webshop.Methods
                             break;
                         case BrowseShop.Consoles:
                             View.ShowCategoryId();
+                            Console.ReadKey();
                             browseShop = false;
                             break;
                         case BrowseShop.Accessories:
