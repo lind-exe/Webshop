@@ -7,11 +7,15 @@ using Webshop.Models;
 using Webshop.Methods;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Collections;
+using System.Diagnostics;
+using Dapper;
 
 namespace Webshop.Methods
 {
     internal class Admin
     {
+        static string connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
         public static void AddProduct()
         {
 
@@ -59,10 +63,12 @@ namespace Webshop.Methods
 
                 database.Add(newProduct);
                 database.SaveChanges();
-                AddGenresToProduct(productName);
+                
+                GetIdofLastProduct();
             }
 
         }
+        //Remove later?
         public static void AddGenresToProduct(string name)
         {
             string connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
@@ -87,6 +93,43 @@ namespace Webshop.Methods
                 }
             }
 
+        }
+        public static void GetIdofLastProduct()
+        {
+            bool run = true;
+            using (var database = new WebShopContext())
+            {
+            var genrelist = database.Genres.ToList();
+                var productlist= database.Products;
+                var lastproduct = productlist.ToList().LastOrDefault();
+                var id = lastproduct.Id;
+                while (run)
+                {
+                    Helpers.ShowGenres();
+                    Console.WriteLine("Add genre to the product.");
+                    int genre = 0;
+                    genre= Helpers.TryNumber(genre, genrelist.Count(), 1);
+
+                    var sql = $"INSERT INTO GenreProduct Values({genre},{id})";
+                    using (var connection = new SqlConnection(connString))
+                    {
+                        connection.Open();
+                        connection.Execute(sql);
+                        connection.Close();
+                    }
+                    Console.WriteLine("Would you like to enter another genre press 1 for yes");
+                    int answear = 0;
+                    answear = Helpers.TryNumber(answear, 1, 1);
+                    if (answear==1)
+                    {
+                        run = true;
+                    }
+                    else
+                    {
+                        run= false;
+                    }
+                } 
+            }
         }
         public static void InsertGenre()
         {

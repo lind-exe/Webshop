@@ -50,7 +50,9 @@ namespace Webshop
 
             //    }
             //}
-            Helpers.Show3HighlightedProducts();
+            //Helpers.Show3HighlightedProducts();
+            //Methods.Admin.GetIdofLastProduct();
+            Methods.Admin.CreateProduct();
         }
     }
 }
