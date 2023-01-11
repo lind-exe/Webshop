@@ -199,6 +199,19 @@ namespace Webshop.Methods
 
             }
         }
+        public static void ShowProducts()
+        {
+            using (var database = new WebShopContext())
+            {
+                var productlist = database.Products;
+                //Console.WriteLine("ID\tName\t\t\t\tPrice\t\t\t         Unitsinstock");
+                foreach (var c in productlist)
+                {
+                    Console.WriteLine("Id: "+c.Id + " Name: " + c.Name+" Price:"+c.Price+" SEK"+" Units in stock "+ c.UnitsInStock);
+                }
+
+            }
+        }
 
         internal static void Show3HighlightedProducts()
         {

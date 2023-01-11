@@ -183,5 +183,47 @@ namespace Webshop.Methods
                 database.SaveChanges();
             }
         }
+        public static void ChangePrice()
+        {
+            using (var database = new WebShopContext())
+            {
+                var productlist = database.Products.ToList();
+                Helpers.ShowProducts();
+                Console.Write("Enter the id of the product you want to change price on:");
+                int id = 0;
+                id = Helpers.TryNumber(id, productlist.Count(), 1);
+                Console.Write("Enter the new price of the product:");
+                int price = 0;
+                price = Helpers.TryNumber(price, 999999999, 1);
+                var sql = $"UPDATE dbo.Products\r\nSET Price={price}\r\nWHERE ID={id}";
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
+                }
+            }
+        }
+        public static void ChangeUnitsInStock()
+        {
+            using (var database = new WebShopContext())
+            {
+                var productlist = database.Products.ToList();
+                Helpers.ShowProducts();
+                Console.Write("Enter the id of the product you want to change the inventory balance on:");
+                int id = 0;
+                id = Helpers.TryNumber(id, productlist.Count(), 1);
+                Console.Write("Enter the new inventory balance of the product:");
+                int inventorybalance = 0;
+                inventorybalance = Helpers.TryNumber(inventorybalance, 999999999, 1);
+                var sql = $"UPDATE dbo.Products\r\nSET UnitsInStock={inventorybalance}\r\nWHERE ID={id}";
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
+                }
+            }
+        }
     }
 }
