@@ -299,5 +299,10 @@ namespace Webshop.Methods
 
             Console.WriteLine("└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘");
         }
+
+        internal static void ShowAccessories()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

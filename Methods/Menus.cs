@@ -26,7 +26,8 @@ namespace Webshop.Methods
             Accessories,
             Merchandise,
             Shoppingcart,
-            Profile
+            Profile,
+            Return = 0
 
         }
         enum LogIn
@@ -39,7 +40,8 @@ namespace Webshop.Methods
         public static Customer Show(string value, Customer c)
         {
             bool logIn = true;
-            bool goMain = true;            
+            bool goMain = true;  
+            bool browseShop = true;
             if(value == "Main")                
             {
                 while (goMain)
@@ -63,20 +65,12 @@ namespace Webshop.Methods
                     }
                     switch (menu)
                     {
-                        case MainMenu.Log_in:
-                            Show("LogIn", c);
-                            goMain = false;
-                            break;
-                        case MainMenu.New_Customer:
-                            Show("LogIn", c);
-                            goMain = false;
-                            break;
                         case MainMenu.Browse_Shop:
-                            Show("LogIn", c);
+                            Show("BrowseShop", c);
                             goMain = false;
                             break;
                         case MainMenu.Search_Product:
-                            Show("LogIn", c);
+                            Show("SearchProduct", c);
                             goMain = false;
                             break;
                         case MainMenu.Exit_Shop:
@@ -119,6 +113,47 @@ namespace Webshop.Methods
                         case LogIn.Return:
                             Show("Main", c);
                             logIn = false;
+                            break;
+
+                    }
+                }
+            }
+            if (value == "BrowseShop")
+            {
+                while (browseShop)
+                {
+                    foreach (int i in Enum.GetValues(typeof(BrowseShop)))
+                    {
+                        Console.WriteLine($"{i}. {Enum.GetName(typeof(BrowseShop), i).Replace("_", " ")}");
+                    }
+
+                    int nr;
+                    BrowseShop shop = (BrowseShop)99; //Default
+                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    {
+                        shop = (BrowseShop)nr;
+                        Console.Clear();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Wrong Input");
+                    }
+                    switch (shop)
+                    {
+                        case BrowseShop.Games:
+                            Helpers.ShowProducts();
+                            browseShop = false;
+                            break;
+                        case BrowseShop.Consoles:
+                            Helpers.ShowCategoryId();
+                            browseShop = false;
+                            break;
+                        case BrowseShop.Accessories:
+                            Helpers.ShowAccessories();
+                            break;
+                        case BrowseShop.Return:
+                            Show("Main", c);
+                            browseShop = false;
                             break;
 
                     }
