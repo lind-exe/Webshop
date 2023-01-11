@@ -10,23 +10,46 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
-            //Helpers.Welcome();
-            //Methods.Menus.Show("Main");
-            // Helpers.ShowGenres();
-            //Helpers.CreateProduct();
-            //Helpers.InsertGenre();
-            //HardCodedValues.AllInserts();
-            Helpers.ShowOneHighlightedProduct();
+            bool runProgram = true;
+            Customer c = null;
+            while (runProgram)
+            {
+                Console.Clear();
+                //Helpers.Welcome();
+                if (c == null)
+                {
+                    c = Menus.Show("Main", c);
+                }
+                else
+                {
+                    Helpers.DisplayCustomer(c);
+                    if (c.UserName == "admin")
+                    {
 
-            //using (var db = new WebShopContext())
-            //{
-            //    var products = db.Products;
+                    }
+                    else
+                    {
 
-            //    foreach (var product in products)
-            //    {
-            //        Console.WriteLine(product.Name);
-            //    }
-            //}
+                    }
+
+
+                    // Helpers.ShowGenres();
+                    //Helpers.CreateProduct();
+                    //Helpers.InsertGenre();
+                    //HardCodedValues.AllInserts();
+                    //Helpers.ShowOneHighlightedProduct();
+
+                    //using (var db = new WebShopContext())
+                    //{
+                    //    var products = db.Products;
+
+                    //    foreach (var product in products)
+                    //    {
+                    //        Console.WriteLine(product.Name);
+                    //    }
+                    //}
+                }
+            }
         }
 
 
