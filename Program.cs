@@ -10,8 +10,9 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
-            bool runProgram = true;
-            Customer c = null;
+            HardCodedValues.AllInserts();
+            //bool runProgram = true;
+            //Customer c = null;
             //while (runProgram)
             //{
             //    Console.Clear();
@@ -48,7 +49,7 @@ namespace Webshop
             //    }
             //}
             //Methods.Admin.ChangePrice();
-            Methods.Admin.ChangeUnitsInStock();
+            //Methods.Admin.ChangeUnitsInStock();
         }
     }
 }
