@@ -13,11 +13,33 @@ namespace Webshop.Methods
 {
     internal class Helpers
     {
-        internal static void DisplayCustomer(Customer user)
+        public static Customer TryLogIn(Customer c)
+        {
+            using (var db = new WebShopContext())
+            {
+                var customerList = db.Customers;
+                Console.Write("Username: ");
+                string user = Console.ReadLine();
+                Console.Write("Password: ");
+                string passWord = Console.ReadLine();
+                var correctUser = customerList.SingleOrDefault(x => x.UserName == user && x.Password == passWord);
+
+                if (correctUser != null)
+                {
+                    c = correctUser;
+                }
+                else
+                {
+                    Console.WriteLine("Try again");
+                }
+                return c;
+            }
+        }
+        internal static void DisplayCustomer(Customer c)
         {
             Console.Clear();
-            Console.SetCursorPosition(0, 35);
-            Console.WriteLine("User: " + user + "\n");
+            Console.SetCursorPosition(40, 0);
+            Console.WriteLine("User: " + c.FirstName + "\n");
         }
         internal static void Welcome()
         {
@@ -186,9 +208,9 @@ namespace Webshop.Methods
                 var productsList = db.Products.ToList();
                 var orderDetailsList = db.OrderDetails;
                 Random rnd = new Random();
-                int randomNr1 = rnd.Next(1, productsList.Count+1);
-                int randomNr2 = rnd.Next(1, productsList.Count+1);
-                int randomNr3 = rnd.Next(1, productsList.Count+1);
+                int randomNr1 = rnd.Next(1, productsList.Count + 1);
+                int randomNr2 = rnd.Next(1, productsList.Count + 1);
+                int randomNr3 = rnd.Next(1, productsList.Count + 1);
 
                 if (productsList.Count > 0)
                 {

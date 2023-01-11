@@ -36,7 +36,7 @@ namespace Webshop.Methods
             Return = 0
         }
 
-        public static Customer Show(string value, Customer user)
+        public static Customer Show(string value, Customer c)
         {
             bool logIn = true;
             bool goMain = true;            
@@ -64,19 +64,19 @@ namespace Webshop.Methods
                     switch (menu)
                     {
                         case MainMenu.Log_in:
-                            Show("LogIn", user);
+                            Show("LogIn", c);
                             goMain = false;
                             break;
                         case MainMenu.New_Customer:
-                            Show("LogIn", user);
+                            Show("LogIn", c);
                             goMain = false;
                             break;
                         case MainMenu.Browse_Shop:
-                            Show("LogIn", user);
+                            Show("LogIn", c);
                             goMain = false;
                             break;
                         case MainMenu.Search_Product:
-                            Show("LogIn", user);
+                            Show("LogIn", c);
                             goMain = false;
                             break;
                         case MainMenu.Exit_Shop:
@@ -109,7 +109,7 @@ namespace Webshop.Methods
                     switch (login)
                     {
                         case LogIn.Sign_In:
-                            Show("LogIn", user);
+                            c = Helpers.TryLogIn(c);
                             logIn = false;
                             break;
                         case LogIn.Create_New_User:
@@ -117,14 +117,14 @@ namespace Webshop.Methods
                             logIn = false;
                             break;
                         case LogIn.Return:
-                            Show("Main", user);
+                            Show("Main", c);
                             logIn = false;
                             break;
 
                     }
                 }
             }
-            return user;
+            return c;
         }
     }
 }
