@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,12 +97,13 @@ namespace Webshop.Methods
         public static int TryNumber(int number, int maxValue, int minValue)               //input security
         {
             bool correctInput = false;
-
             while (!correctInput)
             {
-                if (!int.TryParse(Console.ReadLine(), out number) && (number > maxValue && number < minValue))
+                if (!int.TryParse(Console.ReadLine(), out number) || number > maxValue || number < minValue)
                 {
-                    Console.WriteLine("Wrong input, try again.");
+                    //Console.Write("Wrong input, try again: ");
+                    TestClear();
+                    Thread.Sleep(800);
                 }
                 else
                 {
@@ -111,34 +113,34 @@ namespace Webshop.Methods
             return number;
         }
         // Trycatch >>>> unika email
-        public static void CreateUser()
+        public static Customer CreateUser(Customer c)
         {
 
             Console.WriteLine("Input username: ");
-            string userName = Console.ReadLine();
+            string userName = CheckStringInput();
             Console.WriteLine("Input password: ");
             string passWord = Console.ReadLine();
             Console.WriteLine("Input first name: ");
-            string firstName = Console.ReadLine();
+            string firstName = CheckStringInput();
             Console.WriteLine("Input last name: ");
-            string lastName = Console.ReadLine();
+            string lastName = CheckStringInput();
             Console.WriteLine("Input age: ");
-            int age = 0;
-            age = TryNumber(age, 100, 0);
+            int age = 15;
+            age = TryNumber(age, 100, 15);
             Console.WriteLine("Input country: ");
-            string country = Console.ReadLine();
+            string country = CheckStringInput();
             Console.WriteLine("Input city: ");
-            string city = Console.ReadLine();
+            string city = CheckStringInput();
             Console.WriteLine("Input street name: ");
-            string street = Console.ReadLine();
+            string street = CheckStringInput();
             Console.WriteLine("Input postal code: ");
-            int postal = 0;
+            int postal = 10000;
             postal = TryNumber(postal, 99999, 10000);
             Console.WriteLine("Input phone number: ");
-            int phone = 0;
-            phone = TryNumber(phone, 999999999, 0);
+            int phone = 99999999;
+            phone = TryNumber(phone, 999999999, 99999999);
             Console.WriteLine("Input email address: ");
-            string email = Console.ReadLine();
+            string email = CheckStringInput();
 
             using (var database = new WebShopContext())            //detta lägger till varje sak
             {
@@ -156,13 +158,11 @@ namespace Webshop.Methods
                     Phone = phone,
                     Email = email
                 };
-
                 database.Add(newCustomer);
                 database.SaveChanges();
+                return c = newCustomer;
             }
-
-            //var sql = "INSERT INTO dbo.Customers(UserName, PassWord, FirstName, LastName, Age, Country, City, Street, PostalCode, Phone, Email)" +
-            //     " VALUES ()";
+            
         }
         internal static void BuildPicture()
         {
@@ -206,6 +206,37 @@ namespace Webshop.Methods
             Thread.Sleep(500);
             Console.ResetColor();
             Console.Clear();
+        }
+        public static string CheckStringInput()
+        {
+            bool tryAgain = true;
+            string outPut = "";
+            while (tryAgain)
+            {
+                outPut = Console.ReadLine();
+                if (outPut.Count() > 0)
+                {
+                    tryAgain = false;
+                }
+                else
+                {
+                    Console.WriteLine("Your input must contain atleast one character");
+                }
+
+            }
+            return outPut;
+        }
+        public static void ClearLine()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - (Console.WindowWidth >= Console.BufferWidth ? 1 : 0));
+        }
+        public static void TestClear()
+        {
+            Console.CursorTop = 0;
+            Console.CursorLeft = 0;
+            Console.Write("Try again: ".PadRight(Console.BufferWidth));
         }
     }
 }

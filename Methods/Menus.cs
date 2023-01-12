@@ -134,7 +134,7 @@ namespace Webshop.Methods
                             logIn = false;
                             break;
                         case LogIn.Create_New_User:
-                            Helpers.CreateUser();
+                            c = Helpers.CreateUser(c);
                             logIn = false;
                             break;
 

@@ -70,7 +70,7 @@ namespace Webshop.Methods
         {
             Console.Clear();
             Console.SetCursorPosition(40, 0);
-            Console.WriteLine("User: " + c.FirstName + "\n");
+            Console.WriteLine("User: " + ((c.FirstName != "" ? c.FirstName :( c.UserName == "" ? "Unknown" : c.UserName))   + "\n"));
         }
         internal static void Show3HighlightedProducts()
         {
