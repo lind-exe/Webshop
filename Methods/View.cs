@@ -80,6 +80,7 @@ namespace Webshop.Methods
                 var productsList = db.Products.ToList();
                 var orderDetailsList = db.OrderDetails;
                 Random rnd = new Random();
+                int padRightNr = 24;
                 int randomNr1 = rnd.Next(1, productsList.Count + 1);
                 int randomNr2 = rnd.Next(1, productsList.Count + 1);
                 int randomNr3 = rnd.Next(1, productsList.Count + 1);
@@ -97,7 +98,7 @@ namespace Webshop.Methods
                     {
 
                         // Print Name
-                        Console.Write("    " + randomProduct1.Name.ToUpper() + "\t\t" + "    " + randomProduct2.Name.ToUpper() + "\t\t" + "    " + randomProduct3.Name.ToUpper() + "\n");
+                        Console.Write("  " + randomProduct1.Name.ToUpper().PadRight(padRightNr) + randomProduct2.Name.ToUpper().PadRight(padRightNr) + randomProduct3.Name.ToUpper() + "\n");
                         // print picture
                         Helpers.BuildPicture();
                         // Print Price
@@ -108,7 +109,7 @@ namespace Webshop.Methods
                         // Print Stock
                         Console.Write("Avaiable: " + randomProduct1.UnitsInStock + "\t\tAvaiable: " + randomProduct2.UnitsInStock + "\t\tAvaiable: " + randomProduct3.UnitsInStock + "\n");
                         // Print Description
-                        Console.Write(randomProduct1.Description + "\t" + randomProduct2.Description + "\t" + randomProduct3.Description);
+                        Console.Write(randomProduct1.Description.PadRight(padRightNr) + randomProduct2.Description.PadRight(padRightNr) + randomProduct3.Description);
                     }
                     else
                     {
