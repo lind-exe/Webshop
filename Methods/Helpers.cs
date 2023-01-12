@@ -162,7 +162,7 @@ namespace Webshop.Methods
         {
             Console.WriteLine("┌" + "".PadRight(13, '─') + "┐" + "\t\t┌" + "".PadRight(13, '─') + "┐" + "\t\t┌" + "".PadRight(13, '─') + "┐");
 
-            for (int rows = 0; rows < 10; rows++)
+            for (int rows = 0; rows < 6; rows++)
             {
                 for (int cols = 0; cols <= 62; cols++)
                 {
