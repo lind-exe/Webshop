@@ -249,6 +249,7 @@ namespace Webshop.Methods
                 switch (number)
                 {
                     case 1:
+                        UpdateName();
                         break;
                     case 2:
                         UpdatePrice(pId);
@@ -272,6 +273,12 @@ namespace Webshop.Methods
 
 
         }
+
+        private static void UpdateName()
+        {
+            throw new NotImplementedException();
+        }
+
         internal static void OneProduct(int pId)
         {
             using (var database = new WebShopContext())
