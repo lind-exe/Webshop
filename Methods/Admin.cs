@@ -10,6 +10,8 @@ using Microsoft.Data.SqlClient;
 using System.Collections;
 using System.Diagnostics;
 using Dapper;
+using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Webshop.Methods
 {
@@ -33,7 +35,7 @@ namespace Webshop.Methods
                 var categoryList = database.Categories.ToList();
                 var supplierList = database.Suppliers.ToList();
                 Console.WriteLine("Input name of the product");
-                string productName = Console.ReadLine();                
+                string productName = Console.ReadLine();
                 Console.WriteLine("Enter the price of the product.");
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
@@ -63,7 +65,7 @@ namespace Webshop.Methods
 
                 database.Add(newProduct);
                 database.SaveChanges();
-                
+
                 GetIdofLastProduct();
             }
 
@@ -78,10 +80,10 @@ namespace Webshop.Methods
                 var getProductId = $"SELECT Id FROM [dbo].[Products] WHERE Name LIKE '{name}' ";
                 //var getName = $"SELECT NAME FROM [dbo].[Products] WHERE Id = {getProductId} ";
 
-                Console.WriteLine("Enter the genre id.");               
+                Console.WriteLine("Enter the genre id.");
                 bool enterGenre = true;
-               
-                while(enterGenre)
+
+                while (enterGenre)
                 {
                     View.ShowGenres();
                     Console.WriteLine("What genre do you like to add to " + name);
@@ -99,8 +101,8 @@ namespace Webshop.Methods
             bool run = true;
             using (var database = new WebShopContext())
             {
-            var genrelist = database.Genres.ToList();
-                var productlist= database.Products;
+                var genrelist = database.Genres.ToList();
+                var productlist = database.Products;
                 var lastproduct = productlist.ToList().LastOrDefault();
                 var id = lastproduct.Id;
                 while (run)
@@ -108,7 +110,7 @@ namespace Webshop.Methods
                     View.ShowGenres();
                     Console.WriteLine("Add genre to the product.");
                     int genre = 0;
-                    genre= Helpers.TryNumber(genre, genrelist.Count(), 1);
+                    genre = Helpers.TryNumber(genre, genrelist.Count(), 1);
 
                     var sql = $"INSERT INTO GenreProduct Values({genre},{id})";
                     using (var connection = new SqlConnection(connString))
@@ -120,15 +122,15 @@ namespace Webshop.Methods
                     Console.WriteLine("Would you like to enter another genre press 1 for yes");
                     int answear = 0;
                     answear = Helpers.TryNumber(answear, 1, 1);
-                    if (answear==1)
+                    if (answear == 1)
                     {
                         run = true;
                     }
                     else
                     {
-                        run= false;
+                        run = false;
                     }
-                } 
+                }
             }
         }
         public static void InsertGenre()
@@ -183,15 +185,10 @@ namespace Webshop.Methods
                 database.SaveChanges();
             }
         }
-        public static void ChangePrice()
+        public static void UpdatePrice(int id)
         {
             using (var database = new WebShopContext())
             {
-                var productlist = database.Products.ToList();
-                View.ShowProducts();
-                Console.Write("Enter the id of the product you want to change price on:");
-                int id = 0;
-                id = Helpers.TryNumber(id, productlist.Count(), 1);
                 Console.Write("Enter the new price of the product:");
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
@@ -204,15 +201,11 @@ namespace Webshop.Methods
                 }
             }
         }
-        public static void ChangeUnitsInStock()
+        public static void UpdateUnitsInStock(int id)
         {
             using (var database = new WebShopContext())
             {
-                var productlist = database.Products.ToList();
-                View.ShowProducts();
-                Console.Write("Enter the id of the product you want to change the inventory balance on:");
-                int id = 0;
-                id = Helpers.TryNumber(id, productlist.Count(), 1);
+
                 Console.Write("Enter the new inventory balance of the product:");
                 int inventorybalance = 0;
                 inventorybalance = Helpers.TryNumber(inventorybalance, 999999999, 1);
@@ -226,17 +219,71 @@ namespace Webshop.Methods
             }
         }
 
-        internal static void ChosenCategory()
+        internal static void ChosenCategory(Customer c)
         {
             View.ShowCategoryId();
             using (var database = new WebShopContext())
             {
                 var catList = database.Categories.ToList();
-                Console.Write("Enter id of the category you wish to browse");
+                var prodList = database.Products.ToList();
                 int id = 0;
+                int chosenP = 0;
+                Console.WriteLine();
+                Console.Write("Enter id of the category you wish to browse: ");
                 id = Helpers.TryNumber(id, catList.Count(), 1);
-                View.ShowSpecificProduct(id);
+                View.ProductsInCategory(id);
+                chosenP = Helpers.TryNumber(chosenP, prodList.Count(), 1);
+                Console.WriteLine();
+                ChosenProduct(chosenP, c);
             }
-        } 
+        }
+        internal static void ChosenProduct(int pId, Customer c)
+        {
+            int number = 0;
+            OneProduct(pId);
+            if (c.UserName == "admin")
+            {
+                Console.WriteLine("Which property would you like to edit?");
+                Console.WriteLine("1. Name\n2. Price\n3. Units in stock\n4. Description\n5. Supplier\n6. Return");
+                number = Helpers.TryNumber(number, 6, 1);
+                switch (number)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        UpdatePrice(pId);
+                        Console.Clear();
+                        OneProduct(pId);
+                        Helpers.PressAnyKey();                       
+                        break;
+                    case 3:
+                        UpdateUnitsInStock(pId);
+                        Console.Clear();
+                        OneProduct(pId);
+                        Helpers.PressAnyKey();
+                        break;
+                }
+                Menus.Show("AdminProducts", c);
+            }
+            else
+            {
+                Console.WriteLine("hej customer");
+            }
+
+
+        }
+        internal static void OneProduct(int pId)
+        {
+            using (var database = new WebShopContext())
+            {
+                var productList = database.Products.Where(x => x.Id == pId).ToList();
+
+                Console.WriteLine("Id\tName\tPrice\tUnits in stock\tDescription\tSupplier Id");
+                foreach (var p in productList)
+                {
+                    Console.WriteLine($"{p.Id}\t{p.Name}\t{p.Price}\t{p.UnitsInStock}\t{p.Description}\t{p.SupplierId}");
+                }
+            }
+        }
     }
 }

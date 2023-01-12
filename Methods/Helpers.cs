@@ -101,9 +101,9 @@ namespace Webshop.Methods
             {
                 if (!int.TryParse(Console.ReadLine(), out number) || number > maxValue || number < minValue)
                 {
-                    //Console.Write("Wrong input, try again: ");
-                    TestClear();
+                    Console.Write("Wrong input, try again: ");
                     Thread.Sleep(800);
+                    //ClearLine();
                 }
                 else
                 {
@@ -226,17 +226,19 @@ namespace Webshop.Methods
             }
             return outPut;
         }
-        public static void ClearLine()
+        public static void ClearLine() // fixa så att input skrivs på samma ställe utan spam i konsollen
         {
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, Console.CursorTop - (Console.WindowWidth >= Console.BufferWidth ? 1 : 0));
         }
-        public static void TestClear()
+
+        internal static void PressAnyKey()
         {
-            Console.CursorTop = 0;
-            Console.CursorLeft = 0;
-            Console.Write("Try again: ".PadRight(Console.BufferWidth));
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Press any key to continue: ");
+            Console.ReadKey(true);
+            Console.ResetColor();
         }
     }
 }

@@ -123,15 +123,22 @@ namespace Webshop.Methods
 
             }
         }
-        public static void ShowSpecificProduct(int value)
+        public static void ProductsInCategory(int value)
         {
+            
             using (var database = new WebShopContext())
             {
-
-                var productlist = database.Products.Where(x => x.CategoryId == value);
-                foreach (var c in productlist)
+                Console.Clear();
+                var productList = database.Products.Where(x => x.CategoryId == value);
+                var chosenCategory = database.Categories.Where(x => x.Id == value);
+                foreach (var cat in chosenCategory)
                 {
-                    Console.WriteLine(c.Id + " " + c.Name);
+                    Console.WriteLine("Listing all " + cat.Name + " products");
+                }
+                Console.WriteLine("Id\tName");
+                foreach (var c in productList)
+                {
+                    Console.WriteLine(c.Id + "\t" + c.Name);
                 }
             }
         }

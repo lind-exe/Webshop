@@ -15,7 +15,8 @@ namespace Webshop.Methods
             Browse_Shop = 1,
             Search_Products,
             Exit_Shop,
-            Admin_Menu
+            Admin_Menu,
+            Log_Out = 9
 
         }
         enum BrowseShop
@@ -54,11 +55,11 @@ namespace Webshop.Methods
         public static Customer Show(string value, Customer c)
         {
             bool logIn = true;
-            bool goMain = true;  
+            bool goMain = true;
             bool browseShop = true;
             bool adminMenu = true;
             bool adminProducts = true;
-            if(value == "Main")                
+            if (value == "Main")
             {
                 while (goMain)
                 {
@@ -102,14 +103,19 @@ namespace Webshop.Methods
                             {
                                 Helpers.WrongInput();
                             }
-                                break;
-                             
+                            break;
+                        case MainMenu.Log_Out:
+                            c = null;
+                            goMain = false;
+                            Show("LogIn", c);
+                            break;
+
                     }
                 }
             }
-            if(value == "LogIn")
+            if (value == "LogIn")
             {
-                while(logIn)
+                while (logIn)
                 {
                     foreach (int i in Enum.GetValues(typeof(LogIn)))
                     {
@@ -142,7 +148,7 @@ namespace Webshop.Methods
                 }
                 Show("Main", c);
             }
-            if(value == "BrowseShop")
+            if (value == "BrowseShop")
             {
                 while (browseShop)
                 {
@@ -162,13 +168,14 @@ namespace Webshop.Methods
                     {
                         shop = (BrowseShop)nr;
                         Console.Clear();
-                        
+
                     }
                     switch (shop)
                     {
                         case BrowseShop.Games:
                             View.DisplayCustomer(c);
                             View.ShowProducts();
+                            Methods.Admin.ChosenProduct(4, c);
                             //User.SelectProduct
                             Console.ReadKey();
                             browseShop = false;
@@ -189,7 +196,7 @@ namespace Webshop.Methods
                     }
                 }
             }
-            if(value == "Admin")
+            if (value == "Admin")
             {
                 while (adminMenu)
                 {
@@ -214,9 +221,9 @@ namespace Webshop.Methods
                     switch (admin)
                     {
                         case Admin.Edit_Customers:
-                            
-                            
-                            
+
+
+
                             Console.ReadKey();
                             browseShop = false;
                             break;
@@ -235,7 +242,7 @@ namespace Webshop.Methods
                     }
                 }
             }
-            if(value == "AdminProducts")
+            if (value == "AdminProducts")
             {
                 while (adminProducts)
                 {
@@ -259,20 +266,22 @@ namespace Webshop.Methods
                     }
                     switch (admin)
                     {
-                        case AdminProducts.Edit_Products:                          
-                            Methods.Admin.ChosenCategory();
+                        case AdminProducts.Edit_Products:
+                            Methods.Admin.ChosenCategory(c);
 
                             Console.ReadKey();
-                            browseShop = false;
+                            adminProducts = false;
                             break;
                         case AdminProducts.Add_Product:
                             Methods.Admin.CreateProduct();
+                            adminProducts = false;
                             break;
                         case AdminProducts.Remove_Product:
+                            adminProducts = false;
                             break;
                         case AdminProducts.Return:
                             Show("Main", c);
-                            browseShop = false;
+                            adminProducts = false;
                             break;
 
                     }
