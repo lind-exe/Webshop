@@ -31,13 +31,7 @@ namespace Webshop.Methods
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("User does not exist, try again or register new user!");
-                    Console.WriteLine("Press any key to continue");
-                    Console.ReadKey(true);
-                    Console.ResetColor();
-                    Console.Clear();
-                    Menus.Show("LogIn", c);
+                    GiveTheMessageInRed("User does not exist, try again or register new user!", c);
                 }
                 return c;
             }
@@ -144,25 +138,35 @@ namespace Webshop.Methods
 
             using (var database = new WebShopContext())            //detta lägger till varje sak
             {
-                var newCustomer = new Customer
+                var customerList = database.Customers;
+                var userNameExists = customerList.SingleOrDefault(x => x.UserName == userName) != null;
+                if (userNameExists)
                 {
-                    UserName = userName,
-                    Password = passWord,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Age = age,
-                    Country = country,
-                    City = city,
-                    Street = street,
-                    PostalCode = postal,
-                    Phone = phone,
-                    Email = email
-                };
-                database.Add(newCustomer);
-                database.SaveChanges();
-                return c = newCustomer;
+                    GiveTheMessageInRed("User does already exist, try again or register new user!", c);
+                }
+                else
+                {
+                    var newCustomer = new Customer
+                    {
+                        UserName = userName,
+                        Password = passWord,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Age = age,
+                        Country = country,
+                        City = city,
+                        Street = street,
+                        PostalCode = postal,
+                        Phone = phone,
+                        Email = email
+                    };
+                    database.Add(newCustomer);
+                    database.SaveChanges();
+                    c = newCustomer;
+                }
+                return c;
             }
-            
+
         }
         internal static void BuildPicture()
         {
@@ -239,6 +243,17 @@ namespace Webshop.Methods
             Console.WriteLine("Press any key to continue: ");
             Console.ReadKey(true);
             Console.ResetColor();
+        }
+
+        internal static void GiveTheMessageInRed(string message, Customer c)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey(true);
+            Console.ResetColor();
+            Console.Clear();
+            Menus.Show("LogIn", c);
         }
     }
 }

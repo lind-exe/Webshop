@@ -64,13 +64,18 @@ namespace Webshop.Methods
         }
         internal static void ShowAccessories()
         {
-            
+
         }
         internal static void DisplayCustomer(Customer c)
         {
             Console.Clear();
             Console.SetCursorPosition(40, 0);
-            Console.WriteLine("User: " + ((c.FirstName != "" ? c.FirstName :( c.UserName == "" ? "Unknown" : c.UserName))   + "\n"));
+            string? displayUserName = ("User: " + ((c.FirstName != "" ? c.FirstName : (c.UserName == "" ? "Unknown" : c.UserName)) + "\n"));
+            try
+            {
+                Console.WriteLine(displayUserName);
+            }
+            catch(Exception ex) { Console.WriteLine(ex.Message); }
         }
         internal static void Show3HighlightedProducts()
         {
@@ -125,7 +130,7 @@ namespace Webshop.Methods
         }
         public static void ProductsInCategory(int value)
         {
-            
+
             using (var database = new WebShopContext())
             {
                 Console.Clear();
