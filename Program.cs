@@ -25,7 +25,7 @@ namespace Webshop
                     View.DisplayCustomer(c);
                     if (c.UserName == "admin")
                     {
-
+                        Menus.Show("Main", c);
                     }
                     else
                     {
