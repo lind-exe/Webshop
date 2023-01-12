@@ -123,5 +123,17 @@ namespace Webshop.Methods
 
             }
         }
+        public static void ShowSpecificProduct(int value)
+        {
+            using (var database = new WebShopContext())
+            {
+
+                var productlist = database.Products.Where(x => x.CategoryId == value);
+                foreach (var c in productlist)
+                {
+                    Console.WriteLine(c.Id + " " + c.Name);
+                }
+            }
+        }
     }
 }

@@ -235,20 +235,8 @@ namespace Webshop.Methods
                 Console.Write("Enter id of the category you wish to browse");
                 int id = 0;
                 id = Helpers.TryNumber(id, catList.Count(), 1);
-                ShowSpecificProduct(id);
+                View.ShowSpecificProduct(id);
             }
-        }
-        public static void ShowSpecificProduct(int value)
-        {
-            using (var database = new WebShopContext())
-            {
-
-                var productlist = database.Products.Where(x => x.CategoryId == value);
-                foreach (var c in productlist)
-                {
-                    Console.WriteLine(c.Id + " " + c.Name);
-                }
-            }
-        }
+        } 
     }
 }

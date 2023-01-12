@@ -30,12 +30,18 @@ namespace Webshop.Methods
                 }
                 else
                 {
-                    Console.WriteLine("Try again");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("User does not exist, try again or register new user!");
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey(true);
+                    Console.ResetColor();
+                    Console.Clear();
+                    Menus.Show("LogIn", c);
                 }
                 return c;
             }
         }
-        
+
         internal static void Welcome()
         {
             Console.ForegroundColor = ConsoleColor.Green;

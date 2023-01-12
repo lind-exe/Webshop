@@ -8,6 +8,7 @@ namespace Webshop
 
     internal class Program
     {
+
         static void Main(string[] args)
         {
             bool runProgram = true;
@@ -32,19 +33,6 @@ namespace Webshop
                         View.DisplayCustomer(c);
                         Menus.Show("Main", c);
                     }
-
-
-
-                    using (var db = new WebShopContext())
-                    {
-                        var products = db.Products;
-
-                        foreach (var product in products)
-                        {
-                            Console.WriteLine(product.Name);
-                        }
-                    }
-
                 }
             }
         }

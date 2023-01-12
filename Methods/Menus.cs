@@ -140,6 +140,7 @@ namespace Webshop.Methods
 
                     }
                 }
+                Show("Main", c);
             }
             if(value == "BrowseShop")
             {
@@ -234,7 +235,7 @@ namespace Webshop.Methods
                     }
                 }
             }
-            if (value == "AdminProducts")
+            if(value == "AdminProducts")
             {
                 while (adminProducts)
                 {
