@@ -18,16 +18,23 @@ namespace Webshop.Methods
     internal class Admin
     {
         static string connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
-        public static void AddProduct()
+
+        internal static void RemoveProduct(int pId)  // lägga till product.Name
         {
-
-
-
-
-
-
+            Console.WriteLine("Are you sure you want to delete? y/ n");
+            string answer = Console.ReadLine();
+            if (answer == "y")
+            {
+                var sql = $"DELETE FROM Products WHERE Id={pId}";
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
+                }
+            }
         }
-        public static void CreateProduct()
+        public static void AddProduct()
         {
             using (var database = new WebShopContext())
             {
@@ -119,10 +126,10 @@ namespace Webshop.Methods
                         connection.Execute(sql);
                         connection.Close();
                     }
-                    Console.WriteLine("Would you like to enter another genre press 1 for yes");
-                    int answear = 0;
-                    answear = Helpers.TryNumber(answear, 1, 1);
-                    if (answear == 1)
+                    Console.WriteLine("Would you like to enter another genre?\n1. Yes\n2. No");
+                    int answer = 0;
+                    answer = Helpers.TryNumber(answer, 2, 1);
+                    if (answer == 1)
                     {
                         run = true;
                     }
@@ -228,11 +235,25 @@ namespace Webshop.Methods
                 var prodList = database.Products.ToList();
                 int id = 0;
                 int chosenP = 0;
+                int nmb = prodList.Max(x => x.Id);
+                int sqlInfo;
+
+                var lastproduct = prodList.ToList().LastOrDefault();
+                var id2 = lastproduct.Id;
+
                 Console.WriteLine();
                 Console.Write("Enter id of the category you wish to browse: ");
                 id = Helpers.TryNumber(id, catList.Count(), 1);
                 View.ProductsInCategory(id);
-                chosenP = Helpers.TryNumber(chosenP, prodList.Count(), 1);
+                //var sql = "SELECT MAX(Id) from Products";
+                //using (var connection = new SqlConnection(connString))
+                //{
+                //    connection.Open();              
+                //    sqlInfo = connection.Execute(sql);
+                    
+                //}
+                    chosenP = Helpers.TryNumber(chosenP, id2, 1);
+                
                 Console.WriteLine();
                 ChosenProduct(chosenP, c);
             }
@@ -244,7 +265,7 @@ namespace Webshop.Methods
             if (c.UserName == "admin")
             {
                 Console.WriteLine("Which property would you like to edit?");
-                Console.WriteLine("1. Name\n2. Price\n3. Units in stock\n4. Description\n5. Supplier\n6. Return");
+                Console.WriteLine("1. Name\n2. Price\n3. Units in stock\n4. Description\n5. Supplier\n6. Remove\n7. Return");
                 number = Helpers.TryNumber(number, 6, 1);
                 switch (number)
                 {
@@ -259,6 +280,12 @@ namespace Webshop.Methods
                         break;
                     case 3:
                         UpdateUnitsInStock(pId);
+                        Console.Clear();
+                        OneProduct(pId);
+                        Helpers.PressAnyKey();
+                        break;
+                    case 6:
+                        RemoveProduct(pId);
                         Console.Clear();
                         OneProduct(pId);
                         Helpers.PressAnyKey();
@@ -283,12 +310,19 @@ namespace Webshop.Methods
         {
             using (var database = new WebShopContext())
             {
-                var productList = database.Products.Where(x => x.Id == pId).ToList();
-
-                Console.WriteLine("Id\tName\tPrice\tUnits in stock\tDescription\tSupplier Id");
-                foreach (var p in productList)
+                if (pId != null)
                 {
-                    Console.WriteLine($"{p.Id}\t{p.Name}\t{p.Price}\t{p.UnitsInStock}\t{p.Description}\t{p.SupplierId}");
+                    var productList = database.Products.Where(x => x.Id == pId).ToList();
+
+                    Console.WriteLine("Id\tName\tPrice\tUnits in stock\tDescription\tSupplier Id");
+                    foreach (var p in productList)
+                    {
+                        Console.WriteLine($"{p.Id}\t{p.Name}\t{p.Price}\t{p.UnitsInStock}\t{p.Description}\t{p.SupplierId}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No product with the corresponding ID");
                 }
             }
         }

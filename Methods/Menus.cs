@@ -45,8 +45,7 @@ namespace Webshop.Methods
         }
         enum AdminProducts
         {
-            Edit_Products = 1,
-            Show_Product_Info,
+            Edit_Products = 1,           
             Add_Product,
             Remove_Product,
             Return = 0
@@ -273,10 +272,7 @@ namespace Webshop.Methods
                             adminProducts = false;
                             break;
                         case AdminProducts.Add_Product:
-                            Methods.Admin.CreateProduct();
-                            adminProducts = false;
-                            break;
-                        case AdminProducts.Remove_Product:
+                            Methods.Admin.AddProduct();
                             adminProducts = false;
                             break;
                         case AdminProducts.Return:
