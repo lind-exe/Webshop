@@ -226,7 +226,7 @@ namespace Webshop.Methods
             }
         }
 
-        internal static void ChosenCategory(Customer c)
+        internal static void ChosenCategory(Customer c)   //lägga till return
         {
             View.ShowCategoryId();
             using (var database = new WebShopContext())
@@ -245,15 +245,8 @@ namespace Webshop.Methods
                 Console.Write("Enter id of the category you wish to browse: ");
                 id = Helpers.TryNumber(id, catList.Count(), 1);
                 View.ProductsInCategory(id);
-                //var sql = "SELECT MAX(Id) from Products";
-                //using (var connection = new SqlConnection(connString))
-                //{
-                //    connection.Open();              
-                //    sqlInfo = connection.Execute(sql);
-                    
-                //}
-                    chosenP = Helpers.TryNumber(chosenP, id2, 1);
-                
+                chosenP = Helpers.TryNumber(chosenP, id2, 1);
+
                 Console.WriteLine();
                 ChosenProduct(chosenP, c);
             }
@@ -276,7 +269,7 @@ namespace Webshop.Methods
                         UpdatePrice(pId);
                         Console.Clear();
                         OneProduct(pId);
-                        Helpers.PressAnyKey();                       
+                        Helpers.PressAnyKey();
                         break;
                     case 3:
                         UpdateUnitsInStock(pId);

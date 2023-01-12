@@ -241,7 +241,7 @@ namespace Webshop.Methods
                     }
                 }
             }
-            if (value == "AdminProducts")
+            if (value == "AdminProducts")               //Fixade lite admin menus
             {
                 while (adminProducts)
                 {
