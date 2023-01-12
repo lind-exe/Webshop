@@ -31,7 +31,7 @@ namespace Webshop.Methods
                 }
                 else
                 {
-                    GiveTheMessageInRed("User does not exist, try again or register new user!", c);
+                    Choose_Red_Message_Return_To_Login("User does not exist, try again or register new user!", c);
                 }
                 return c;
             }
@@ -142,7 +142,7 @@ namespace Webshop.Methods
                 var userNameExists = customerList.SingleOrDefault(x => x.UserName == userName) != null;
                 if (userNameExists)
                 {
-                    GiveTheMessageInRed("User does already exist, try again or register new user!", c);
+                    Choose_Red_Message_Return_To_Login("User does already exist, try again or register new user!", c);
                 }
                 else
                 {
@@ -245,7 +245,7 @@ namespace Webshop.Methods
             Console.ResetColor();
         }
 
-        internal static void GiveTheMessageInRed(string message, Customer c)
+        internal static void Choose_Red_Message_Return_To_Login(string message, Customer c)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(message);

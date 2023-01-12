@@ -236,7 +236,6 @@ namespace Webshop.Methods
                 int id = 0;
                 int chosenP = 0;
                 int nmb = prodList.Max(x => x.Id);
-                int sqlInfo;
 
                 var lastproduct = prodList.ToList().LastOrDefault();
                 var id2 = lastproduct.Id;
