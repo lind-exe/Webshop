@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Dapper;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Xml.Linq;
 
 namespace Webshop.Methods
 {
@@ -220,17 +221,6 @@ namespace Webshop.Methods
                 var catList = database.Categories.ToList();
                 var prodList = database.Products.ToList();
                 int categoryId = 0;
-                //var lastproduct = prodList.ToList().LastOrDefault();
-                //int maxValue = 0;
-                //if (lastproduct != null)
-                //{
-                //    maxValue = lastproduct.Id;
-                //}
-                //else
-                //{
-                //    Helpers.WrongInput();
-                //}
-
 
                 Console.WriteLine();
                 Console.Write("Enter id of the category you wish to browse: ");
@@ -309,15 +299,20 @@ namespace Webshop.Methods
         {
             using (var database = new WebShopContext())
             {
+                int padValue1 = 15;
+                int padValue2 = 20;
                 var pIdExist = database.Products.Where(x => x.Id == pId) != null;
                 if (pIdExist)
                 {
                     var productList = database.Products.Where(x => x.Id == pId && x.CategoryId == categoryId).ToList();
 
-                    Console.WriteLine("Id\tName\tPrice\tUnits in stock\tDescription\tSupplier Id");
+                    Console.WriteLine("Id".PadRight(padValue1) + "Name".PadRight(padValue1) + "Price".PadRight(padValue1) + 
+                        "Units in stock".PadRight(padValue2) + "Description".PadRight(padValue2) + "Supplier Id".PadRight(padValue1));
+                    Console.WriteLine("------------------------------------------------------------------------------------------------");
                     foreach (var p in productList)
                     {
-                        Console.WriteLine($"{p.Id}\t{p.Name}\t{p.Price}\t{p.UnitsInStock}\t{p.Description}\t{p.SupplierId}");
+                        Console.WriteLine(p.Id.ToString().PadRight(padValue1) + p.Name.PadRight(padValue1) + p.Price.ToString().PadRight(padValue1) +
+                            p.UnitsInStock.ToString().PadRight(padValue2) + p.Description.PadRight(padValue2) + p.SupplierId.ToString().PadRight(padValue1));
                     }
                 }
                 else

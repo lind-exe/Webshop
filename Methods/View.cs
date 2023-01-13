@@ -147,9 +147,10 @@ namespace Webshop.Methods
                 {
                     Console.WriteLine((i+1) + "\t" + productList[i].Name);
                 }
-                Console.Write("Choose product to edit: ");
+                Console.Write("\nChoose product to edit: ");
                 chosenP = Helpers.TryNumber(chosenP, i, 1);
                 chosenP = productList[chosenP-1].Id;
+                Console.Clear();
             }
             return chosenP;
         }
