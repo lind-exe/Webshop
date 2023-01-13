@@ -218,19 +218,20 @@ namespace Webshop.Methods
                     switch (admin)
                     {
                         case Admin.Edit_Customers:
+                            Show("AdminCustomers", c);
                             Console.ReadKey();
-                            browseShop = false;
+                            adminMenu = false;
                             break;
                         case Admin.Edit_Products:
                             Show("AdminProducts", c);
                             Console.ReadKey();
-                            browseShop = false;
+                            adminMenu = false;
                             break;
                         case Admin.Edit_Highlighted_Products:
                             break;
                         case Admin.Return:
                             Show("Main", c);
-                            browseShop = false;
+                            adminMenu = false;
                             break;
 
                     }
@@ -284,11 +285,11 @@ namespace Webshop.Methods
                 {
                     var customerList = db.Customers.ToList();
                     int i = 0;
-                    int padValue = 16;
+                    int padValue = 20;
                     Console.WriteLine("Id".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
                         "Last Name".PadRight(padValue) + "Email".PadRight(padValue) + "Street".PadRight(padValue) + "Postal Code".PadRight(padValue) +
                         "City".PadRight(padValue) + "Phone".PadRight(padValue) + "Country".PadRight(padValue));
-                    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------");
                     foreach (var customer in customerList)
                     {
                         Console.WriteLine(customer.Id.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) + 
@@ -297,7 +298,8 @@ namespace Webshop.Methods
                             customer.Phone.ToString().PadRight(padValue) + customer.Country.PadRight(padValue));
                     }
                 }
-                Console.ReadKey();
+
+
             }
             return c;
         }
