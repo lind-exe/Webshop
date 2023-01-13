@@ -21,14 +21,14 @@ namespace Webshop.Methods
 
             }
         }
-        public static void ShowCategoryId()
+        public static void ShowCategories()
         {
             using (var database = new WebShopContext())
             {
                 var categorylist = database.Categories;
                 foreach (var c in categorylist)
                 {
-                    Console.WriteLine(c.Id + " " + c.Name);
+                    Console.WriteLine(c.Id + "\t" + c.Name);
                 }
 
             }
@@ -75,7 +75,7 @@ namespace Webshop.Methods
             {
                 Console.WriteLine(displayUserName);
             }
-            catch(Exception ex) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
+            catch (Exception ex) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
         }
         internal static void Show3HighlightedProducts()
         {
@@ -128,24 +128,30 @@ namespace Webshop.Methods
 
             }
         }
-        public static void ProductsInCategory(int value)
+        public static int ProductsInCategory(int value)
         {
-
+            int i = 1;
+            int chosenP = 0;
             using (var database = new WebShopContext())
             {
                 Console.Clear();
-                var productList = database.Products.Where(x => x.CategoryId == value);
+                var productList = database.Products.Where(x => x.CategoryId == value).ToList();
                 var chosenCategory = database.Categories.Where(x => x.Id == value);
                 foreach (var cat in chosenCategory)
                 {
-                    Console.WriteLine("Listing all " + cat.Name + " products");
+                    Console.WriteLine("Listing all " + cat.Name + " products: \n");
                 }
                 Console.WriteLine("Id\tName");
-                foreach (var c in productList)
+                Console.WriteLine("---------------");
+                for (i = 0; i < productList.Count; i++)
                 {
-                    Console.WriteLine(c.Id + "\t" + c.Name);
+                    Console.WriteLine((i+1) + "\t" + productList[i].Name);
                 }
+                Console.Write("Choose product to edit: ");
+                chosenP = Helpers.TryNumber(chosenP, i, 1);
+                chosenP = productList[chosenP-1].Id;
             }
+            return chosenP;
         }
     }
 }

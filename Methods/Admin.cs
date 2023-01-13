@@ -51,7 +51,7 @@ namespace Webshop.Methods
                 stock = Helpers.TryNumber(stock, 999999999, 0);
                 Console.WriteLine("Enter a description of the product.");
                 string? description = Console.ReadLine();
-                View.ShowCategoryId();
+                View.ShowCategories();
                 Console.WriteLine("Enter the catergory the product belongs to.");
                 int category = 0;
                 category = Helpers.TryNumber(category, categoryList.Count(), 1);
@@ -59,7 +59,7 @@ namespace Webshop.Methods
                 Console.WriteLine("Enter the id of the supplier.");
                 int supplier = 0;
                 supplier = Helpers.TryNumber(supplier, supplierList.Count(), 1);
-
+                Console.Clear();
                 var newProduct = new Product
                 {
                     Name = productName,
@@ -69,41 +69,16 @@ namespace Webshop.Methods
                     CategoryId = category,
                     SupplierId = supplier
                 };
-          
+
                 database.Add(newProduct);
                 database.SaveChanges();
 
-                GetIdofLastProduct();
+                AddGenreToProduct();
             }
 
         }
-        //Remove later?
-        public static void AddGenresToProduct(string name)
-        {
-            string connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
-            using (var connection = new SqlConnection(connString))
-            {
-                connection.Open();
-                var getProductId = $"SELECT Id FROM [dbo].[Products] WHERE Name LIKE '{name}' ";
-                //var getName = $"SELECT NAME FROM [dbo].[Products] WHERE Id = {getProductId} ";
 
-                Console.WriteLine("Enter the genre id.");
-                bool enterGenre = true;
-
-                while (enterGenre)
-                {
-                    View.ShowGenres();
-                    Console.WriteLine("What genre do you like to add to " + name);
-                    int genre = 0;
-                    genre = Helpers.TryNumber(genre, int.Parse(getProductId), 1);
-                    string sqlCode = $"INSERT INTO [dbo].[GenreProduct] (GenreId, ProductId) VALUES ({genre}, {getProductId}) ";
-
-
-                }
-            }
-
-        }
-        public static void GetIdofLastProduct()
+        public static void AddGenreToProduct()
         {
             bool run = true;
             using (var database = new WebShopContext())
@@ -111,7 +86,16 @@ namespace Webshop.Methods
                 var genrelist = database.Genres.ToList();
                 var productlist = database.Products;
                 var lastproduct = productlist.ToList().LastOrDefault();
-                var id = lastproduct.Id;
+                int idOfLastProd = 0;
+                if (lastproduct != null)
+                {
+                    idOfLastProd = lastproduct.Id;
+                }
+                else
+                {
+                    Helpers.WrongInput();
+                }
+
                 while (run)
                 {
                     View.ShowGenres();
@@ -119,7 +103,7 @@ namespace Webshop.Methods
                     int genre = 0;
                     genre = Helpers.TryNumber(genre, genrelist.Count(), 1);
 
-                    var sql = $"INSERT INTO GenreProduct Values({genre},{id})";
+                    var sql = $"INSERT INTO GenreProduct Values({genre},{idOfLastProd})";
                     using (var connection = new SqlConnection(connString))
                     {
                         connection.Open();
@@ -132,10 +116,12 @@ namespace Webshop.Methods
                     if (answer == 1)
                     {
                         run = true;
+                        Console.Clear();
                     }
                     else
                     {
                         run = false;
+                        Helpers.PressAnyKey();
                     }
                 }
             }
@@ -228,58 +214,70 @@ namespace Webshop.Methods
 
         internal static void ChosenCategory(Customer c)   //lägga till return
         {
-            View.ShowCategoryId();
+            View.ShowCategories();
             using (var database = new WebShopContext())
             {
                 var catList = database.Categories.ToList();
                 var prodList = database.Products.ToList();
-                int id = 0;
-                int chosenP = 0;
-                int nmb = prodList.Max(x => x.Id);
+                int categoryId = 0;
+                //var lastproduct = prodList.ToList().LastOrDefault();
+                //int maxValue = 0;
+                //if (lastproduct != null)
+                //{
+                //    maxValue = lastproduct.Id;
+                //}
+                //else
+                //{
+                //    Helpers.WrongInput();
+                //}
 
-                var lastproduct = prodList.ToList().LastOrDefault();
-                var id2 = lastproduct.Id;
 
                 Console.WriteLine();
                 Console.Write("Enter id of the category you wish to browse: ");
-                id = Helpers.TryNumber(id, catList.Count(), 1);
-                View.ProductsInCategory(id);
-                chosenP = Helpers.TryNumber(chosenP, id2, 1);
+                categoryId = Helpers.TryNumber(categoryId, catList.Count(), 1);
+                Console.Clear();
+                int productId = View.ProductsInCategory(categoryId);
 
                 Console.WriteLine();
-                ChosenProduct(chosenP, c);
+                ChosenProduct(productId, categoryId, c);
             }
         }
-        internal static void ChosenProduct(int pId, Customer c)
+        internal static void ChosenProduct(int pId, int categoryId, Customer c)
         {
             int number = 0;
-            OneProduct(pId);
+            OneProduct(pId, categoryId);
             if (c.UserName == "admin")
             {
                 Console.WriteLine("Which property would you like to edit?");
                 Console.WriteLine("1. Name\n2. Price\n3. Units in stock\n4. Description\n5. Supplier\n6. Remove\n7. Return");
                 number = Helpers.TryNumber(number, 6, 1);
+                Console.Clear();
                 switch (number)
                 {
                     case 1:
-                        UpdateName();
+                        UpdateName(pId);
+                        Console.Clear();
+                        OneProduct(pId, categoryId);
+                        Helpers.PressAnyKey();
                         break;
                     case 2:
                         UpdatePrice(pId);
                         Console.Clear();
-                        OneProduct(pId);
+                        OneProduct(pId, categoryId);
                         Helpers.PressAnyKey();
                         break;
                     case 3:
                         UpdateUnitsInStock(pId);
                         Console.Clear();
-                        OneProduct(pId);
+                        OneProduct(pId, categoryId);
+                        Console.Clear();
                         Helpers.PressAnyKey();
                         break;
                     case 6:
                         RemoveProduct(pId);
                         Console.Clear();
-                        OneProduct(pId);
+                        OneProduct(pId, categoryId);
+                        Console.Clear();
                         Helpers.PressAnyKey();
                         break;
                 }
@@ -293,18 +291,28 @@ namespace Webshop.Methods
 
         }
 
-        private static void UpdateName()
+        private static void UpdateName(int pId)
         {
-            throw new NotImplementedException();
+            Console.Write("\nNew name: ");
+            string? newName = Helpers.CheckStringInput();
+
+            var sql = $"UPDATE Products SET Name = '{newName}' WHERE Id = '{pId}'";
+            using (var connection = new SqlConnection(connString))
+            {
+                connection.Open();
+                connection.Execute(sql);
+                connection.Close();
+            }
         }
 
-        internal static void OneProduct(int pId)
+        internal static void OneProduct(int pId, int categoryId)
         {
             using (var database = new WebShopContext())
             {
-                if (pId != null)
+                var pIdExist = database.Products.Where(x => x.Id == pId) != null;
+                if (pIdExist)
                 {
-                    var productList = database.Products.Where(x => x.Id == pId).ToList();
+                    var productList = database.Products.Where(x => x.Id == pId && x.CategoryId == categoryId).ToList();
 
                     Console.WriteLine("Id\tName\tPrice\tUnits in stock\tDescription\tSupplier Id");
                     foreach (var p in productList)

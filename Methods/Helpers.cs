@@ -254,7 +254,7 @@ namespace Webshop.Methods
         internal static void PressAnyKey()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Press any key to continue: ");
+            Console.WriteLine("\nPress any key to continue: ");
             Console.ReadKey(true);
             Console.ResetColor();
         }

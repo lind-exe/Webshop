@@ -174,13 +174,12 @@ namespace Webshop.Methods
                         case BrowseShop.Games:
                             View.DisplayCustomer(c);
                             View.ShowProducts();
-                            Methods.Admin.ChosenProduct(4, c);
                             //User.SelectProduct
                             Console.ReadKey();
                             browseShop = false;
                             break;
                         case BrowseShop.Consoles:
-                            View.ShowCategoryId();
+                            View.ShowCategories();
                             Console.ReadKey();
                             browseShop = false;
                             break;
