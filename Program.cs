@@ -16,6 +16,7 @@ namespace Webshop
             while (runProgram)
             {
                 Console.Clear();
+                Console.ResetColor();
                 //Helpers.Welcome();
                 if (c == null)
                 {

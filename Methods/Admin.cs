@@ -22,7 +22,7 @@ namespace Webshop.Methods
         internal static void RemoveProduct(int pId)  // lägga till product.Name
         {
             Console.WriteLine("Are you sure you want to delete? y/ n");
-            string answer = Console.ReadLine();
+            string? answer = Console.ReadLine();
             if (answer == "y")
             {
                 var sql = $"DELETE FROM Products WHERE Id={pId}";
@@ -42,7 +42,7 @@ namespace Webshop.Methods
                 var categoryList = database.Categories.ToList();
                 var supplierList = database.Suppliers.ToList();
                 Console.WriteLine("Input name of the product");
-                string productName = Console.ReadLine();
+                string? productName = Console.ReadLine();
                 Console.WriteLine("Enter the price of the product.");
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
@@ -50,7 +50,7 @@ namespace Webshop.Methods
                 int stock = 0;
                 stock = Helpers.TryNumber(stock, 999999999, 0);
                 Console.WriteLine("Enter a description of the product.");
-                string description = Console.ReadLine();
+                string? description = Console.ReadLine();
                 View.ShowCategoryId();
                 Console.WriteLine("Enter the catergory the product belongs to.");
                 int category = 0;
@@ -69,7 +69,7 @@ namespace Webshop.Methods
                     CategoryId = category,
                     SupplierId = supplier
                 };
-
+          
                 database.Add(newProduct);
                 database.SaveChanges();
 

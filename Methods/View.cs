@@ -75,7 +75,7 @@ namespace Webshop.Methods
             {
                 Console.WriteLine(displayUserName);
             }
-            catch(Exception ex) { Console.WriteLine(ex.Message); }
+            catch(Exception ex) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
         }
         internal static void Show3HighlightedProducts()
         {

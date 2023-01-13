@@ -23,15 +23,25 @@ namespace Webshop.Methods
                 string user = Console.ReadLine();
                 Console.Write("Password: ");
                 string passWord = Console.ReadLine();
-                var correctUser = customerList.SingleOrDefault(x => x.UserName == user && x.Password == passWord);
+                var correctUsername = customerList.SingleOrDefault(x => x.UserName == user);
+                var correctUser = customerList.SingleOrDefault(x => x.Password == passWord && x.UserName == user);
 
-                if (correctUser != null)
+
+                if (correctUsername != null && correctUser != null)
                 {
                     c = correctUser;
                 }
-                else
+                else if (correctUsername == null && correctUser == null)
                 {
                     Choose_Red_Message_Return_To_Login("User does not exist, try again or register new user!", c);
+                }
+                else if (correctUsername != null && correctUser == null)
+                {
+                    Helpers.Choose_Red_Message_Return_To_Login("Wrong password", c);
+                }
+                else
+                {
+                    Helpers.Choose_Red_Message_Return_To_Login("Try again", c);
                 }
                 return c;
             }
@@ -214,11 +224,15 @@ namespace Webshop.Methods
         public static string CheckStringInput()
         {
             bool tryAgain = true;
-            string outPut = "";
+            string? outPut = "";
             while (tryAgain)
             {
                 outPut = Console.ReadLine();
-                if (outPut.Count() > 0)
+                if (outPut == null)
+                {
+                    Console.WriteLine("Your input must contain atleast one character");
+                }
+                else if (outPut.Length > 0)
                 {
                     tryAgain = false;
                 }
