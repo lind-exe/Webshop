@@ -47,7 +47,6 @@ namespace Webshop.Methods
         {
             Edit_Products = 1,           
             Add_Product,
-            Remove_Product,
             Return = 0
         }
 
@@ -219,9 +218,6 @@ namespace Webshop.Methods
                     switch (admin)
                     {
                         case Admin.Edit_Customers:
-
-
-
                             Console.ReadKey();
                             browseShop = false;
                             break;

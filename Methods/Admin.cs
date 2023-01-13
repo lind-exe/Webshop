@@ -212,6 +212,39 @@ namespace Webshop.Methods
                 }
             }
         }
+        private static void UpdateSupplier(int pId)
+        {
+            using (var database = new WebShopContext())
+            {
+                var supplierList = database.Suppliers.ToList();
+                View.ShowSupplier();
+                Console.Write("Enter Id of new supplier?");
+                int newSupplierId = 0;
+                newSupplierId = Helpers.TryNumber(newSupplierId, supplierList.Count, 1);
+
+                var sql = $"UPDATE Products SET SupplierId = '{newSupplierId}' WHERE Id = '{pId}'";
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
+                }
+            }
+        }
+
+        private static void UpdateDescription(int pId)
+        {
+            Console.Write("\nNew Description: ");
+            string? newDescription = Helpers.CheckStringInput();
+
+            var sql = $"UPDATE Products SET Description = '{newDescription}' WHERE Id = '{pId}'";
+            using (var connection = new SqlConnection(connString))
+            {
+                connection.Open();
+                connection.Execute(sql);
+                connection.Close();
+            }
+        }
 
         internal static void ChosenCategory(Customer c)   //lägga till return
         {
@@ -223,7 +256,7 @@ namespace Webshop.Methods
                 int categoryId = 0;
 
                 Console.WriteLine();
-                Console.Write("Enter id of the category you wish to browse: ");
+                Console.WriteLine("Enter id of the category you wish to browse: ");
                 categoryId = Helpers.TryNumber(categoryId, catList.Count(), 1);
                 Console.Clear();
                 int productId = View.ProductsInCategory(categoryId);
@@ -238,9 +271,9 @@ namespace Webshop.Methods
             OneProduct(pId, categoryId);
             if (c.UserName == "admin")
             {
-                Console.WriteLine("Which property would you like to edit?");
+                Console.WriteLine("\n\n\nWhich property would you like to edit?");
                 Console.WriteLine("1. Name\n2. Price\n3. Units in stock\n4. Description\n5. Supplier\n6. Remove\n7. Return");
-                number = Helpers.TryNumber(number, 6, 1);
+                number = Helpers.TryNumber(number, 7, 1);
                 Console.Clear();
                 switch (number)
                 {
@@ -263,12 +296,27 @@ namespace Webshop.Methods
                         Console.Clear();
                         Helpers.PressAnyKey();
                         break;
+                    case 4:
+                        UpdateDescription(pId);
+                        Console.Clear();
+                        OneProduct(pId, categoryId);                        
+                        Helpers.PressAnyKey();
+                        break;
+                    case 5:
+                        UpdateSupplier(pId);
+                        Console.Clear();
+                        OneProduct(pId, categoryId);                        
+                        Helpers.PressAnyKey();
+                        break;
                     case 6:
                         RemoveProduct(pId);
                         Console.Clear();
-                        OneProduct(pId, categoryId);
-                        Console.Clear();
+                        OneProduct(pId, categoryId);                        
                         Helpers.PressAnyKey();
+                        break;
+                    case 7:
+                        Console.Clear();
+                        Menus.Show("AdminProducts", c);
                         break;
                 }
                 Menus.Show("AdminProducts", c);
@@ -306,7 +354,7 @@ namespace Webshop.Methods
                 {
                     var productList = database.Products.Where(x => x.Id == pId && x.CategoryId == categoryId).ToList();
 
-                    Console.WriteLine("Id".PadRight(padValue1) + "Name".PadRight(padValue1) + "Price".PadRight(padValue1) + 
+                    Console.WriteLine("Id".PadRight(padValue1) + "Name".PadRight(padValue1) + "Price".PadRight(padValue1) +
                         "Units in stock".PadRight(padValue2) + "Description".PadRight(padValue2) + "Supplier Id".PadRight(padValue1));
                     Console.WriteLine("------------------------------------------------------------------------------------------------");
                     foreach (var p in productList)

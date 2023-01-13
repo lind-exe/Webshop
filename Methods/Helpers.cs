@@ -105,9 +105,9 @@ namespace Webshop.Methods
             {
                 if (!int.TryParse(Console.ReadLine(), out number) || number > maxValue || number < minValue)
                 {
-                    Console.Write("Wrong input, try again: ");
-                    Thread.Sleep(800);
-                    //ClearLine();
+                    //Console.Write("Input: ");
+                    //Thread.Sleep(800);
+                    ClearLine();
                 }
                 else
                 {
@@ -209,7 +209,14 @@ namespace Webshop.Methods
 
             Console.WriteLine("└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘");
         }
-
+        internal static void WrongInputWithoutClear()
+        {            
+            Console.SetCursorPosition(2, 2);
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine("WRONGINPUT");            
+            Console.ResetColor();            
+        }
         internal static void WrongInput()
         {
             Console.Clear();
@@ -246,6 +253,7 @@ namespace Webshop.Methods
         }
         public static void ClearLine() // fixa så att input skrivs på samma ställe utan spam i konsollen
         {
+            Console.Write("                                      ");
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, Console.CursorTop - (Console.WindowWidth >= Console.BufferWidth ? 1 : 0));
