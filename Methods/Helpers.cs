@@ -105,9 +105,8 @@ namespace Webshop.Methods
             {
                 if (!int.TryParse(Console.ReadLine(), out number) || number > maxValue || number < minValue)
                 {
-                    //Console.Write("Input: ");
-                    //Thread.Sleep(800);
-                    ClearLine();
+                    Console.Write("Wrong input, try again: ");
+                    //ClearLine();
                 }
                 else
                 {
@@ -123,7 +122,7 @@ namespace Webshop.Methods
             Console.WriteLine("Input username: ");
             string userName = CheckStringInput();
             Console.WriteLine("Input password: ");
-            string passWord = Console.ReadLine();
+            string passWord = CheckStringInput();
             Console.WriteLine("Input first name: ");
             string firstName = CheckStringInput();
             Console.WriteLine("Input last name: ");

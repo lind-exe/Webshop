@@ -13,6 +13,7 @@ using Dapper;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Xml.Linq;
+using System.Numerics;
 
 namespace Webshop.Methods
 {
@@ -278,7 +279,7 @@ namespace Webshop.Methods
                 switch (number)
                 {
                     case 1:
-                        UpdateName(pId);
+                        UpdateProductName(pId);
                         Console.Clear();
                         OneProduct(pId, categoryId);
                         Helpers.PressAnyKey();
@@ -299,19 +300,19 @@ namespace Webshop.Methods
                     case 4:
                         UpdateDescription(pId);
                         Console.Clear();
-                        OneProduct(pId, categoryId);                        
+                        OneProduct(pId, categoryId);
                         Helpers.PressAnyKey();
                         break;
                     case 5:
                         UpdateSupplier(pId);
                         Console.Clear();
-                        OneProduct(pId, categoryId);                        
+                        OneProduct(pId, categoryId);
                         Helpers.PressAnyKey();
                         break;
                     case 6:
                         RemoveProduct(pId);
                         Console.Clear();
-                        OneProduct(pId, categoryId);                        
+                        OneProduct(pId, categoryId);
                         Helpers.PressAnyKey();
                         break;
                     case 7:
@@ -329,7 +330,7 @@ namespace Webshop.Methods
 
         }
 
-        private static void UpdateName(int pId)
+        private static void UpdateProductName(int pId)
         {
             Console.Write("\nNew name: ");
             string? newName = Helpers.CheckStringInput();
@@ -366,6 +367,156 @@ namespace Webshop.Methods
                 else
                 {
                     Console.WriteLine("No product with the corresponding ID");
+                }
+            }
+        }
+
+        internal static void OneCustomer(int cId)
+        {
+            using (var database = new WebShopContext())
+            {
+                var customerList = database.Customers.Where(x => x.Id == cId);
+
+                int padValue1 = 20;
+                int padValue2 = 25;
+
+                int padValue = 20;
+                Console.WriteLine("Id".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
+                    "Last Name".PadRight(padValue) + "Email".PadRight(padValue) + "Street".PadRight(padValue) + "Postal Code".PadRight(padValue) +
+                    "City".PadRight(padValue) + "Phone".PadRight(padValue) + "Country".PadRight(padValue));
+                Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                foreach (var customer in customerList)
+                {
+                    Console.WriteLine(customer.Id.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) +
+                        customer.FirstName.PadRight(padValue) + customer.LastName.PadRight(padValue) + customer.Email.PadRight(padValue) +
+                        customer.Street.PadRight(padValue) + customer.PostalCode.ToString().PadRight(padValue) + customer.City.PadRight(padValue) +
+                        customer.Phone.ToString().PadRight(padValue) + customer.Country.PadRight(padValue));
+                }
+            }
+        }
+
+        internal static void UpdateCustomer(int cId)
+        {
+            foreach (int i in Enum.GetValues(typeof(Menus.CustomerEdit)))
+            {
+                Console.WriteLine($"{i}. {Enum.GetName(typeof(Menus.CustomerEdit), i).Replace("_", " ")}");
+            }
+
+            int nr;
+            Menus.CustomerEdit customer = (Menus.CustomerEdit)99; //Default
+            if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(Menus.CustomerEdit)).Length - 1)
+            {
+                customer = (Menus.CustomerEdit)nr;
+                Console.Clear();
+            }
+            else
+            {
+                Helpers.WrongInput();
+            }
+            switch (customer)
+            {
+                case Menus.CustomerEdit.User_Name:
+                    UpdateUserString("UserName", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.First_Name:
+                    UpdateUserString("FirstName", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Last_Name:
+                    UpdateUserString("LastName", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Country:
+                    UpdateUserString("Country", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.City:
+                    UpdateUserString("City", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Street:
+                    UpdateUserString("Street", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Postal:
+                    UpdateUserInt("PostalCode", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Phone:
+                    UpdateUserInt("Phone", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Email:
+                    UpdateUserString("Email", cId);
+                    OneCustomer(cId);
+                    Helpers.PressAnyKey();
+                    Console.Clear();
+                    break;
+                case Menus.CustomerEdit.Return:
+                    Console.WriteLine("Press any key to return");
+                    break;
+
+
+            }
+        }
+        public static void UpdateUserString(string property, int cId)
+        {
+            Console.WriteLine("Enter new value for " + property + ": ");
+            string value = Helpers.CheckStringInput();
+
+            using (var database = new WebShopContext())
+            {
+                var sql = $"UPDATE Customers\r\nSET {property}='{value}'\r\nWHERE ID={cId}";
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
+                }
+            }
+        }
+        public static void UpdateUserInt(string property, int cId)
+        {
+
+            Console.WriteLine("Enter new value for " + property + ": ");
+            int value = 0;
+            switch (property)
+            {
+                case "Phone":
+                    value = Helpers.TryNumber(value, 999999999, 99999999);
+                    break;
+                case "PostalCode":
+                    value = Helpers.TryNumber(value, 99999, 10000);
+                    break;
+                case "Age":
+                    value = Helpers.TryNumber(value, 100, 15);
+                    break;
+            }
+            using (var database = new WebShopContext())
+            {
+                var sql = $"UPDATE Customers\r\nSET {property}={value}\r\nWHERE ID={cId}";
+                using (var connection = new SqlConnection(connString))
+                {
+                    connection.Open();
+                    connection.Execute(sql);
+                    connection.Close();
                 }
             }
         }

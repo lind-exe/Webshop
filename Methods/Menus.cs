@@ -49,8 +49,21 @@ namespace Webshop.Methods
             Add_Product,
             Return = 0
         }
+        public enum CustomerEdit
+        {
+            User_Name = 1,
+            First_Name,
+            Last_Name,
+            Country,
+            City,
+            Street,
+            Postal,
+            Phone,
+            Email,
+            Return = 0
+        }
 
-        public static Customer Show(string value, Customer c)
+        public static Customer Show(string value, Customer c)                   //fixa wrong input till meny val - funkar nästan
         {
             bool logIn = true;
             bool goMain = true;
@@ -69,7 +82,7 @@ namespace Webshop.Methods
 
                     int nr;
                     MainMenu menu = (MainMenu)99; //Default
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(MainMenu)).Length - 1)
                     {
                         menu = (MainMenu)nr;
                         Console.Clear();
@@ -122,14 +135,14 @@ namespace Webshop.Methods
 
                     int nr;
                     LogIn login = (LogIn)99; //Default
-                    if (int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(LogIn)).Length)
                     {
-                        login = (LogIn)nr;
-                        Console.Clear();
+                        Helpers.WrongInput();
                     }
                     else
                     {
-                        Helpers.WrongInput();
+                        login = (LogIn)nr;
+                        Console.Clear();
                     }
                     switch (login)
                     {
@@ -158,7 +171,7 @@ namespace Webshop.Methods
 
                     int nr;
                     BrowseShop shop = (BrowseShop)99; //Default
-                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(AdminProducts)).Length - 1)
                     {
                         Helpers.WrongInput();
                     }
@@ -205,7 +218,7 @@ namespace Webshop.Methods
 
                     int nr;
                     Admin admin = (Admin)99; //Default
-                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(Admin)).Length - 1)
                     {
                         Helpers.WrongInput();
                     }
@@ -249,7 +262,7 @@ namespace Webshop.Methods
 
                     int nr;
                     AdminProducts admin = (AdminProducts)99; //Default
-                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr))
+                    if (!int.TryParse(Console.ReadKey().KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(AdminProducts)).Length - 1)
                     {
                         Helpers.WrongInput();
                     }
@@ -281,23 +294,49 @@ namespace Webshop.Methods
             }
             if (value == "AdminCustomers")
             {
+                int input = 0;
                 using (var db = new WebShopContext())
                 {
+                    int counter = 0;
+                    bool checkUser = true;
                     var customerList = db.Customers.ToList();
-                    int i = 0;
-                    int padValue = 20;
-                    Console.WriteLine("Id".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
+                    int padValue = 25;
+                    Console.WriteLine("Customer#".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
                         "Last Name".PadRight(padValue) + "Email".PadRight(padValue) + "Street".PadRight(padValue) + "Postal Code".PadRight(padValue) +
                         "City".PadRight(padValue) + "Phone".PadRight(padValue) + "Country".PadRight(padValue));
-                    Console.WriteLine("-------------------------------------------------------------------------------------------------------------------------------------------------");
+                    Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                     foreach (var customer in customerList)
                     {
-                        Console.WriteLine(customer.Id.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) + 
-                            customer.FirstName.PadRight(padValue) + customer.LastName.PadRight(padValue) + customer.Email.PadRight(padValue) + 
-                            customer.Street.PadRight(padValue) + customer.PostalCode.ToString().PadRight(padValue) + customer.City.PadRight(padValue) + 
+                        counter++;
+                        Console.WriteLine(counter.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) +
+                            customer.FirstName.PadRight(padValue) + customer.LastName.PadRight(padValue) + customer.Email.PadRight(padValue) +
+                            customer.Street.PadRight(padValue) + customer.PostalCode.ToString().PadRight(padValue) + customer.City.PadRight(padValue) +
                             customer.Phone.ToString().PadRight(padValue) + customer.Country.PadRight(padValue));
                     }
+                    Console.WriteLine();
+                    Console.WriteLine("Enter the ID of the customer you wish you edit: ");
+                    while (checkUser)
+                    {
+
+                        input = Helpers.TryNumber(input, counter, 1);
+
+                        var pIdExist = db.Customers.Where(x => x.UserName == customerList[input].UserName) != null;
+                        if (pIdExist)
+                        {
+                            checkUser = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("User does not exist, try again");
+                        }
+
+
+                    }
+                    input = customerList[input - 1].Id;
+                    Console.Clear();
+                    Methods.Admin.OneCustomer(input);
                 }
+                Methods.Admin.UpdateCustomer(input);
 
 
             }
