@@ -10,8 +10,9 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
+
             bool runProgram = true;
-            Customer c = null;
+            Customer? c = null;
             while (runProgram)
             {
                 Console.Clear();

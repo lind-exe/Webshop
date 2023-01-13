@@ -75,6 +75,9 @@ namespace Webshop.Methods
                 while (goMain)
                 {
                     View.DisplayCustomer(c);
+                    Console.SetCursorPosition(0, 10);
+                    View.Show3HighlightedProducts();
+                    Console.SetCursorPosition(0, 2);
                     foreach (int i in Enum.GetValues(typeof(MainMenu)))
                     {
                         Console.WriteLine($"{i}. {Enum.GetName(typeof(MainMenu), i).Replace("_", " ")}");
@@ -122,6 +125,8 @@ namespace Webshop.Methods
                             break;
 
                     }
+
+                    
                 }
             }
             if (value == "LogIn")
@@ -300,20 +305,22 @@ namespace Webshop.Methods
                     int counter = 0;
                     bool checkUser = true;
                     var customerList = db.Customers.ToList();
-                    int padValue = 25;
-                    Console.WriteLine("Customer#".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
-                        "Last Name".PadRight(padValue) + "Email".PadRight(padValue) + "Street".PadRight(padValue) + "Postal Code".PadRight(padValue) +
-                        "City".PadRight(padValue) + "Phone".PadRight(padValue) + "Country".PadRight(padValue));
-                    Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    int padValue1 = 6;
+                    int padValue2 = 14;
+                    int padValue3 = 25;
+                    Console.WriteLine("Nr".PadRight(padValue1) + "Username".PadRight(padValue2) + "First Name".PadRight(padValue2) +
+                        "Last Name".PadRight(padValue2) + "Email".PadRight(padValue3) + "Street".PadRight(padValue3) + "Postal Code".PadRight(padValue2) +
+                        "City".PadRight(padValue2) + "Phone".PadRight(padValue2) + "Country".PadRight(padValue1));
+                    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------------------");
                     foreach (var customer in customerList)
                     {
                         counter++;
-                        Console.WriteLine(counter.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) +
-                            customer.FirstName.PadRight(padValue) + customer.LastName.PadRight(padValue) + customer.Email.PadRight(padValue) +
-                            customer.Street.PadRight(padValue) + customer.PostalCode.ToString().PadRight(padValue) + customer.City.PadRight(padValue) +
-                            customer.Phone.ToString().PadRight(padValue) + customer.Country.PadRight(padValue));
+                        Console.WriteLine(counter.ToString().PadRight(padValue1) + customer.UserName.PadRight(padValue2) +
+                            customer.FirstName.PadRight(padValue2) + customer.LastName.PadRight(padValue2) + customer.Email.PadRight(padValue3) +
+                            customer.Street.PadRight(padValue3) + customer.PostalCode.ToString().PadRight(padValue2) + customer.City.PadRight(padValue2) +
+                            customer.Phone.ToString().PadRight(padValue2) + customer.Country.PadRight(padValue1));
                     }
-                    Console.WriteLine();
+                    Console.WriteLine("\n\n\n");
                     Console.WriteLine("Enter the ID of the customer you wish you edit: ");
                     while (checkUser)
                     {

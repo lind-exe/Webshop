@@ -377,21 +377,22 @@ namespace Webshop.Methods
             {
                 var customerList = database.Customers.Where(x => x.Id == cId);
 
-                int padValue1 = 20;
-                int padValue2 = 25;
+                int padValue1 = 6;
+                int padValue2 = 14;
+                int padValue3 = 25;
 
-                int padValue = 20;
-                Console.WriteLine("Id".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
-                    "Last Name".PadRight(padValue) + "Email".PadRight(padValue) + "Street".PadRight(padValue) + "Postal Code".PadRight(padValue) +
-                    "City".PadRight(padValue) + "Phone".PadRight(padValue) + "Country".PadRight(padValue));
-                Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("Id".PadRight(padValue1) + "Username".PadRight(padValue2) + "First Name".PadRight(padValue2) +
+                    "Last Name".PadRight(padValue2) + "Email".PadRight(padValue3) + "Street".PadRight(padValue3) + "Postal Code".PadRight(padValue2) +
+                    "City".PadRight(padValue2) + "Phone".PadRight(padValue2) + "Country".PadRight(padValue1));
+                Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------------------------");
                 foreach (var customer in customerList)
                 {
-                    Console.WriteLine(customer.Id.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) +
-                        customer.FirstName.PadRight(padValue) + customer.LastName.PadRight(padValue) + customer.Email.PadRight(padValue) +
-                        customer.Street.PadRight(padValue) + customer.PostalCode.ToString().PadRight(padValue) + customer.City.PadRight(padValue) +
-                        customer.Phone.ToString().PadRight(padValue) + customer.Country.PadRight(padValue));
+                    Console.WriteLine(customer.Id.ToString().PadRight(padValue1) + customer.UserName.PadRight(padValue2) +
+                        customer.FirstName.PadRight(padValue2) + customer.LastName.PadRight(padValue2) + customer.Email.PadRight(padValue3) +
+                        customer.Street.PadRight(padValue3) + customer.PostalCode.ToString().PadRight(padValue2) + customer.City.PadRight(padValue2) +
+                        customer.Phone.ToString().PadRight(padValue2) + customer.Country.PadRight(padValue1));
                 }
+                Console.WriteLine("\n\n");
             }
         }
 
