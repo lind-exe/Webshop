@@ -2,6 +2,8 @@
 using Webshop.Methods;
 using Microsoft.EntityFrameworkCore;
 using Webshop.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace Webshop
 {

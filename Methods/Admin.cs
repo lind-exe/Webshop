@@ -14,6 +14,8 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Xml.Linq;
 using System.Numerics;
+using System.Net;
+using System.Net.Mail;
 
 namespace Webshop.Methods
 {
@@ -520,6 +522,43 @@ namespace Webshop.Methods
                     connection.Close();
                 }
             }
+        }
+        public static void SendEmail(string fromAddress, string password)
+        {
+            using SmtpClient email = new SmtpClient()
+            {
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                EnableSsl = true,
+                Host = "smtp.gmail.com",
+                Port = 587,
+                Credentials = new NetworkCredential(fromAddress, password),
+            };
+
+            string subject = "Password recovery";
+            string body = "The password for your account is : {passWord}";
+            try
+            {
+                Console.WriteLine("Sending email *************");
+                email.Send(fromAddress, ToAddress(), subject, body);
+                Console.WriteLine("Email sent *********");
+            }
+            catch
+            {
+
+            }
+        }
+        public static string GetUserName()
+        {
+            return "lindjonathan95@gmail.com";
+        }
+        public static string GetPassword()
+        {
+            return "password_";
+        }
+        public static string ToAddress()
+        {
+            return "jojje_lind@live.se";
         }
     }
 }
