@@ -45,7 +45,7 @@ namespace Webshop.Methods
         }
         enum AdminProducts
         {
-            Edit_Products = 1,           
+            Edit_Products = 1,
             Add_Product,
             Return = 0
         }
@@ -277,6 +277,27 @@ namespace Webshop.Methods
 
                     }
                 }
+            }
+            if (value == "AdminCustomers")
+            {
+                using (var db = new WebShopContext())
+                {
+                    var customerList = db.Customers.ToList();
+                    int i = 0;
+                    int padValue = 16;
+                    Console.WriteLine("Id".PadRight(padValue) + "Username".PadRight(padValue) + "First Name".PadRight(padValue) +
+                        "Last Name".PadRight(padValue) + "Email".PadRight(padValue) + "Street".PadRight(padValue) + "Postal Code".PadRight(padValue) +
+                        "City".PadRight(padValue) + "Phone".PadRight(padValue) + "Country".PadRight(padValue));
+                    Console.WriteLine("---------------------------------------------------------------------------------------------------------------------------------");
+                    foreach (var customer in customerList)
+                    {
+                        Console.WriteLine(customer.Id.ToString().PadRight(padValue) + customer.UserName.PadRight(padValue) + 
+                            customer.FirstName.PadRight(padValue) + customer.LastName.PadRight(padValue) + customer.Email.PadRight(padValue) + 
+                            customer.Street.PadRight(padValue) + customer.PostalCode.ToString().PadRight(padValue) + customer.City.PadRight(padValue) + 
+                            customer.Phone.ToString().PadRight(padValue) + customer.Country.PadRight(padValue));
+                    }
+                }
+                Console.ReadKey();
             }
             return c;
         }
