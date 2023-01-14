@@ -21,7 +21,7 @@ namespace Webshop.Methods
 {
     internal class Admin
     {
-        static string connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
+        static readonly string _connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
 
         internal static void RemoveProduct(int pId)  // lägga till product.Name
         {
@@ -30,7 +30,7 @@ namespace Webshop.Methods
             if (answer == "y")
             {
                 var sql = $"DELETE FROM Products WHERE Id={pId}";
-                using (var connection = new SqlConnection(connString))
+                using (var connection = new SqlConnection(_connString))
                 {
                     connection.Open();
                     connection.Execute(sql);
@@ -46,7 +46,7 @@ namespace Webshop.Methods
                 var categoryList = database.Categories.ToList();
                 var supplierList = database.Suppliers.ToList();
                 Console.WriteLine("Input name of the product");
-                string? productName = Console.ReadLine();
+                string? productName = Helpers.CheckStringInput();
                 Console.WriteLine("Enter the price of the product.");
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
@@ -54,15 +54,15 @@ namespace Webshop.Methods
                 int stock = 0;
                 stock = Helpers.TryNumber(stock, 999999999, 0);
                 Console.WriteLine("Enter a description of the product.");
-                string? description = Console.ReadLine();
+                string? description = Helpers.CheckStringInput();
                 View.ShowCategories();
                 Console.WriteLine("Enter the catergory the product belongs to.");
                 int category = 0;
-                category = Helpers.TryNumber(category, categoryList.Count(), 1);
+                category = Helpers.TryNumber(category, categoryList.Count, 1);
                 View.ShowSupplier();
                 Console.WriteLine("Enter the id of the supplier.");
                 int supplier = 0;
-                supplier = Helpers.TryNumber(supplier, supplierList.Count(), 1);
+                supplier = Helpers.TryNumber(supplier, supplierList.Count, 1);
                 Console.Clear();
                 var newProduct = new Product
                 {
@@ -81,7 +81,6 @@ namespace Webshop.Methods
             }
 
         }
-
         public static void AddGenreToProduct()
         {
             bool run = true;
@@ -105,10 +104,10 @@ namespace Webshop.Methods
                     View.ShowGenres();
                     Console.WriteLine("Add genre to the product.");
                     int genre = 0;
-                    genre = Helpers.TryNumber(genre, genrelist.Count(), 1);
+                    genre = Helpers.TryNumber(genre, genrelist.Count, 1);
 
                     var sql = $"INSERT INTO GenreProduct Values({genre},{idOfLastProd})";
-                    using (var connection = new SqlConnection(connString))
+                    using (var connection = new SqlConnection(_connString))
                     {
                         connection.Open();
                         connection.Execute(sql);
@@ -190,7 +189,7 @@ namespace Webshop.Methods
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
                 var sql = $"UPDATE dbo.Products\r\nSET Price={price}\r\nWHERE ID={id}";
-                using (var connection = new SqlConnection(connString))
+                using (var connection = new SqlConnection(_connString))
                 {
                     connection.Open();
                     connection.Execute(sql);
@@ -207,7 +206,7 @@ namespace Webshop.Methods
                 int inventorybalance = 0;
                 inventorybalance = Helpers.TryNumber(inventorybalance, 999999999, 1);
                 var sql = $"UPDATE dbo.Products\r\nSET UnitsInStock={inventorybalance}\r\nWHERE ID={id}";
-                using (var connection = new SqlConnection(connString))
+                using (var connection = new SqlConnection(_connString))
                 {
                     connection.Open();
                     connection.Execute(sql);
@@ -226,7 +225,7 @@ namespace Webshop.Methods
                 newSupplierId = Helpers.TryNumber(newSupplierId, supplierList.Count, 1);
 
                 var sql = $"UPDATE Products SET SupplierId = '{newSupplierId}' WHERE Id = '{pId}'";
-                using (var connection = new SqlConnection(connString))
+                using (var connection = new SqlConnection(_connString))
                 {
                     connection.Open();
                     connection.Execute(sql);
@@ -241,7 +240,7 @@ namespace Webshop.Methods
             string? newDescription = Helpers.CheckStringInput();
 
             var sql = $"UPDATE Products SET Description = '{newDescription}' WHERE Id = '{pId}'";
-            using (var connection = new SqlConnection(connString))
+            using (var connection = new SqlConnection(_connString))
             {
                 connection.Open();
                 connection.Execute(sql);
@@ -260,7 +259,7 @@ namespace Webshop.Methods
 
                 Console.WriteLine();
                 Console.WriteLine("Enter id of the category you wish to browse: ");
-                categoryId = Helpers.TryNumber(categoryId, catList.Count(), 1);
+                categoryId = Helpers.TryNumber(categoryId, catList.Count, 1);
                 Console.Clear();
                 int productId = View.ProductsInCategory(categoryId);
 
@@ -326,7 +325,7 @@ namespace Webshop.Methods
             }
             else
             {
-                Console.WriteLine("hej customer");
+                Helpers.PressAnyKey();
             }
 
 
@@ -338,7 +337,7 @@ namespace Webshop.Methods
             string? newName = Helpers.CheckStringInput();
 
             var sql = $"UPDATE Products SET Name = '{newName}' WHERE Id = '{pId}'";
-            using (var connection = new SqlConnection(connString))
+            using (var connection = new SqlConnection(_connString))
             {
                 connection.Open();
                 connection.Execute(sql);
@@ -487,7 +486,7 @@ namespace Webshop.Methods
             using (var database = new WebShopContext())
             {
                 var sql = $"UPDATE Customers\r\nSET {property}='{value}'\r\nWHERE ID={cId}";
-                using (var connection = new SqlConnection(connString))
+                using (var connection = new SqlConnection(_connString))
                 {
                     connection.Open();
                     connection.Execute(sql);
@@ -515,7 +514,7 @@ namespace Webshop.Methods
             using (var database = new WebShopContext())
             {
                 var sql = $"UPDATE Customers\r\nSET {property}={value}\r\nWHERE ID={cId}";
-                using (var connection = new SqlConnection(connString))
+                using (var connection = new SqlConnection(_connString))
                 {
                     connection.Open();
                     connection.Execute(sql);
@@ -559,6 +558,74 @@ namespace Webshop.Methods
         public static string ToAddress()
         {
             return "jojje_lind@live.se";
+        }
+
+        public static void SetHiglightedProducts(View v)
+        {
+            using (var db = new WebShopContext())
+            {
+                var prodList = db.Products.ToList();
+
+                bool continueChoosing = true;
+                int padValue = 12;
+                int padValue1 = 24;
+                int padValue2 = 16;
+                int i = 0;
+                var highestIdNrOfProduct = 99;
+                try { highestIdNrOfProduct = prodList.LastOrDefault().Id; }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+                while (continueChoosing)
+                {
+                    int pos = 0;
+                    int prodToHighlight = 0;
+
+                    Console.Clear();
+                    Console.SetCursorPosition(0, 17);
+                    var productName1 = prodList.SingleOrDefault(x => x.Id == v.Prod1Id);
+                    var productName2 = prodList.SingleOrDefault(x => x.Id == v.Prod2Id);
+                    var productName3 = prodList.SingleOrDefault(x => x.Id == v.Prod3Id);
+                    Console.WriteLine("Position 1: " + v.Prod1Id + "\t" + productName1.Name + "\nPosition 2: " + v.Prod2Id + "\t" + productName2.Name + 
+                        "\nPosition 3: " + v.Prod3Id + "\t" + productName3.Name);
+                    Console.SetCursorPosition(0, 2);
+                    Console.WriteLine("Nr".PadRight(padValue) + "Name".PadRight(padValue1) + "Price".PadRight(padValue) + "Units In Stock".PadRight(padValue));
+                    Console.WriteLine("--------------------------------------------------------------");
+                    for (i = 0; i < prodList.Count; i++)
+                    {
+                        Console.WriteLine((i + 1).ToString().PadRight(padValue) + prodList[i].Name.PadRight(padValue1) + prodList[i].Price.ToString().PadRight(padValue2) +
+                            prodList[i].UnitsInStock.ToString().PadRight(padValue2));
+                    }
+
+                    Console.Write("\n\n\nChoose product to higlight: ");
+                    prodToHighlight = Helpers.TryNumber(prodToHighlight, i, 1);
+                    prodToHighlight = prodList[prodToHighlight - 1].Id;
+                    Console.Write("Which position should it have: ");
+                    pos = Helpers.TryNumber(pos, 3, 1);
+                    switch (pos)
+                    {
+                        case 1:
+                            v.Prod1Id = prodToHighlight;
+                            break;
+                        case 2:
+                            v.Prod2Id = prodToHighlight;
+                            break;
+                        case 3:
+                            v.Prod3Id = prodToHighlight;
+                            break;
+                    }
+                    int quit = 0;
+                    Console.WriteLine("1. Continue choosing\n2. Quit");
+                    quit = Helpers.TryNumber(quit, 2, 1);
+                    switch (quit)
+                    {
+                        case 1:
+                            break;
+                        case 2:
+                            continueChoosing = false;
+                            break;
+                    }
+                }
+            }
         }
     }
 }

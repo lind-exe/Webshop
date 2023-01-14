@@ -70,13 +70,15 @@ namespace Webshop.Methods
             bool browseShop = true;
             bool adminMenu = true;
             bool adminProducts = true;
+            View v = new View(1, 2, 3);
+
             if (value == "Main")
             {
                 while (goMain)
                 {
                     View.DisplayCustomer(c);
                     Console.SetCursorPosition(0, 10);
-                    View.Show3HighlightedProducts();
+                    View.Show3HighlightedProducts(v);       
                     Console.SetCursorPosition(0, 2);
                     foreach (int i in Enum.GetValues(typeof(MainMenu)))
                     {
@@ -125,8 +127,6 @@ namespace Webshop.Methods
                             break;
 
                     }
-
-                    
                 }
             }
             if (value == "LogIn")
@@ -246,6 +246,7 @@ namespace Webshop.Methods
                             adminMenu = false;
                             break;
                         case Admin.Edit_Highlighted_Products:
+                            Show("AdminHighLightedProducts", c);
                             break;
                         case Admin.Return:
                             Show("Main", c);
@@ -347,7 +348,12 @@ namespace Webshop.Methods
 
 
             }
-            return c;
+            if (value == "AdminHighLightedProducts")
+            {
+                Methods.Admin.SetHiglightedProducts(v);
+                
+            }
+                return c;
         }
     }
 }

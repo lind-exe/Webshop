@@ -9,6 +9,19 @@ namespace Webshop.Methods
 {
     internal class View
     {
+        public int Prod1Id { get; set; }
+        public int Prod2Id { get; set; }
+        public int Prod3Id { get; set; }
+
+        public View(int prod1Id, int prod2Id, int prod3Id)
+        {
+            Prod1Id = prod1Id;
+            Prod2Id = prod2Id;
+            Prod3Id = prod3Id;
+        }
+
+
+
         public static void ShowGenres()
         {
             using (var database = new WebShopContext())
@@ -75,9 +88,9 @@ namespace Webshop.Methods
             {
                 Console.WriteLine(displayUserName);
             }
-            catch (Exception ex) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
+            catch (Exception) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
         }
-        internal static void Show3HighlightedProducts()
+        internal static void Show3HighlightedProducts(View v)
         {
             using (var db = new WebShopContext())
             {
@@ -86,39 +99,43 @@ namespace Webshop.Methods
                 var orderDetailsList = db.OrderDetails;
                 Random rnd = new Random();
                 int padRightNr = 24;
-                int randomNr1 = rnd.Next(1, productsList.Count + 1);
-                int randomNr2 = rnd.Next(1, productsList.Count + 1);
-                int randomNr3 = rnd.Next(1, productsList.Count + 1);
+                //int randomNr1 = rnd.Next(1, productsList.Count + 1); // -> if random: randomNr1 goes instead of prod1Id
+                //int randomNr2 = rnd.Next(1, productsList.Count + 1);
+                //int randomNr3 = rnd.Next(1, productsList.Count + 1);
 
                 if (productsList.Count > 0)
                 {
                     var discountPriceList = orderDetailsList.Where(x => x.Discount > 0).ToList();
-                    var randomProduct1 = productsList.Where(x => x.Id == randomNr1).SingleOrDefault();
-                    var randomProduct2 = productsList.Where(x => x.Id == randomNr2).SingleOrDefault();
-                    var randomProduct3 = productsList.Where(x => x.Id == randomNr3).SingleOrDefault();
-                    var discount1 = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct1.Id);
-                    var discount2 = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct2.Id);
-                    var discount3 = discountPriceList.SingleOrDefault(x => x.ProductId == randomProduct3.Id);
-                    if (randomProduct1 != null && randomProduct2 != null && randomProduct3 != null)
-                    {
 
+                    var highLightedProduct1 = productsList.Where(x => x.Id == v.Prod1Id).SingleOrDefault();
+                    var highLightedProduct2 = productsList.Where(x => x.Id == v.Prod2Id).SingleOrDefault();
+                    var highLightedProduct3 = productsList.Where(x => x.Id == v.Prod3Id).SingleOrDefault();
+
+                    if (highLightedProduct1 != null && highLightedProduct2 != null && highLightedProduct3 != null)
+                    {
+                        var discount1 = discountPriceList.SingleOrDefault(x => x.ProductId == highLightedProduct1.Id);
+                        var discount2 = discountPriceList.SingleOrDefault(x => x.ProductId == highLightedProduct2.Id);
+                        var discount3 = discountPriceList.SingleOrDefault(x => x.ProductId == highLightedProduct3.Id);
+                        var descriptionProd1 = highLightedProduct1.Description == null ? "" : highLightedProduct1.Description;
+                        var descriptionProd2 = highLightedProduct2.Description == null ? "" : highLightedProduct2.Description;
+                        var descriptionProd3 = highLightedProduct3.Description == null ? "" : highLightedProduct3.Description;
                         // Print Name
-                        Console.Write("  " + randomProduct1.Name.ToUpper().PadRight(padRightNr) + randomProduct2.Name.ToUpper().PadRight(padRightNr) + randomProduct3.Name.ToUpper() + "\n");
+                        Console.Write("  " + highLightedProduct1.Name.ToUpper().PadRight(padRightNr) + highLightedProduct2.Name.ToUpper().PadRight(padRightNr) + highLightedProduct3.Name.ToUpper() + "\n");
                         // print picture
                         Helpers.BuildPicture();
                         // Print Price
-                        Console.Write((discount1 != null ? "Sale Price: " + discount1.Discount + " SEK" : "Price: " + randomProduct1.Price) + " SEK\t\t");
-                        Console.Write((discount2 != null ? "Sale Price: " + discount2.Discount + " SEK" : "Price: " + randomProduct2.Price) + " SEK\t\t");
-                        Console.Write((discount3 != null ? "Sale Price: " + discount3.Discount + " SEK" : "Price: " + randomProduct3.Price) + " SEK");
+                        Console.Write((discount1 != null ? "Sale Price: " + discount1.Discount + " SEK" : "Price: " + highLightedProduct1.Price) + " SEK\t\t");
+                        Console.Write((discount2 != null ? "Sale Price: " + discount2.Discount + " SEK" : "Price: " + highLightedProduct2.Price) + " SEK\t\t");
+                        Console.Write((discount3 != null ? "Sale Price: " + discount3.Discount + " SEK" : "Price: " + highLightedProduct3.Price) + " SEK");
                         Console.WriteLine("\n---------------\t\t---------------\t\t---------------");
                         // Print Stock
-                        Console.Write("Avaiable: " + randomProduct1.UnitsInStock + "\t\tAvaiable: " + randomProduct2.UnitsInStock + "\t\tAvaiable: " + randomProduct3.UnitsInStock + "\n");
+                        Console.Write("Avaiable: " + highLightedProduct1.UnitsInStock + "\t\tAvaiable: " + highLightedProduct2.UnitsInStock + "\t\tAvaiable: " + highLightedProduct3.UnitsInStock + "\n");
                         // Print Description
-                        Console.Write(randomProduct1.Description.PadRight(padRightNr) + randomProduct2.Description.PadRight(padRightNr) + randomProduct3.Description);
+                        Console.Write(descriptionProd1.PadRight(padRightNr) + descriptionProd2.PadRight(padRightNr) + descriptionProd3.PadRight(padRightNr));
                     }
                     else
                     {
-                        Console.WriteLine("Fel");
+                        Helpers.WrongInput();
                     }
                 }
                 else
@@ -137,19 +154,22 @@ namespace Webshop.Methods
                 Console.Clear();
                 var productList = database.Products.Where(x => x.CategoryId == value).ToList();
                 var chosenCategory = database.Categories.Where(x => x.Id == value);
+                Console.ForegroundColor = ConsoleColor.Green;
                 foreach (var cat in chosenCategory)
                 {
+
                     Console.WriteLine("Listing all " + cat.Name + " products: \n");
                 }
+                Console.ResetColor();
                 Console.WriteLine("Id\tName");
                 Console.WriteLine("---------------");
                 for (i = 0; i < productList.Count; i++)
                 {
-                    Console.WriteLine((i+1) + "\t" + productList[i].Name);
+                    Console.WriteLine((i + 1) + "\t" + productList[i].Name);
                 }
                 Console.Write("\nChoose product to edit: ");
                 chosenP = Helpers.TryNumber(chosenP, i, 1);
-                chosenP = productList[chosenP-1].Id;
+                chosenP = productList[chosenP - 1].Id;
                 Console.Clear();
             }
             return chosenP;
