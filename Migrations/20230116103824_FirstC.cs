@@ -103,11 +103,11 @@ namespace Webshop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    Purchased = table.Column<bool>(type: "bit", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ShipChoiceId = table.Column<int>(type: "int", nullable: false),
-                    PaymentMethodId = table.Column<int>(type: "int", nullable: false)
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    Purchased = table.Column<bool>(type: "bit", nullable: true),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ShipChoiceId = table.Column<int>(type: "int", nullable: true),
+                    PaymentMethodId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,20 +116,17 @@ namespace Webshop.Migrations
                         name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_PaymentMethods_PaymentMethodId",
                         column: x => x.PaymentMethodId,
                         principalTable: "PaymentMethods",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_ShipChoices_ShipChoiceId",
                         column: x => x.ShipChoiceId,
                         principalTable: "ShipChoices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -196,7 +193,7 @@ namespace Webshop.Migrations
                     UnitPrice = table.Column<float>(type: "real", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<float>(type: "real", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -205,8 +202,7 @@ namespace Webshop.Migrations
                         name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_OrderDetails_Products_ProductId",
                         column: x => x.ProductId,
@@ -251,7 +247,8 @@ namespace Webshop.Migrations
                 name: "IX_Orders_PaymentMethodId",
                 table: "Orders",
                 column: "PaymentMethodId",
-                unique: true);
+                unique: true,
+                filter: "[PaymentMethodId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ShipChoiceId",

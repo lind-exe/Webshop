@@ -179,10 +179,10 @@ namespace Webshop.Methods
                 var maxCategory = database.Categories.ToList();
                 Console.Write("Enter id of the Category: ");
                 categoryInput = Helpers.TryNumber(categoryInput, maxCategory.Count, 1);
-                var result = (from games in database.Products
-                              join category in database.Categories on games.CategoryId equals category.Id
-                              where games.CategoryId == categoryInput
-                              select new { Products = games, CategoryId = category }
+                var result = (from product in database.Products
+                              join category in database.Categories on product.CategoryId equals category.Id
+                              where product.CategoryId == categoryInput
+                              select new { Products = product, CategoryId = category }
                               ).ToList();
                 int padright = 20;
                 int padrightshort = 15;

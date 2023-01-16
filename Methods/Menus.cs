@@ -24,10 +24,7 @@ namespace Webshop.Methods
         }
         enum BrowseShop
         {
-            Games = 1,
-            Consoles,
-            Accessories,
-            Merchandise,
+            Products = 1,
             Shoppingcart,
             Profile,
             Return = 0
@@ -87,7 +84,9 @@ namespace Webshop.Methods
                 {
                     View.DisplayCustomer(c);
                     Console.SetCursorPosition(0, 10);
+
                     View.Show3HighlightedProducts(_highlightedProdsId);       
+
                     Console.SetCursorPosition(0, 2);
                     foreach (int i in Enum.GetValues(typeof(MainMenu)))
                     {
@@ -197,21 +196,16 @@ namespace Webshop.Methods
                     }
                     switch (shop)
                     {
-                        case BrowseShop.Games:
-                            View.DisplayCustomer(c);
-                            View.ShowProducts();
+                        case BrowseShop.Products:
+                            View.ShowCategories();
+                            View.ShowProductInOneCategory(c);
                             //User.SelectProduct
                             Console.ReadKey();
                             browseShop = false;
                             break;
-                        case BrowseShop.Consoles:
-                            View.ShowCategories();
-                            View.ShowProductInOneCategory(c);
-                            Console.ReadKey();
-                            browseShop = false;
+                        case BrowseShop.Shoppingcart:
                             break;
-                        case BrowseShop.Accessories:
-                            View.ShowAccessories();
+                        case BrowseShop.Profile:
                             break;
                         case BrowseShop.Return:
                             Show("Main", c);
@@ -360,10 +354,12 @@ namespace Webshop.Methods
             }
             if (value == "AdminHighLightedProducts")
             {
+
                 _highlightedProdsId = Methods.Admin.SetHiglightedProducts(_highlightedProdsId);
                 
+
             }
-                return c;
+            return c;
         }
     }
 }
