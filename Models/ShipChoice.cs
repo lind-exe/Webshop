@@ -9,7 +9,7 @@ namespace Webshop.Models
     public class ShipChoice
     {
         public int Id { get; set; }
-        public string ShipVia { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public string? ShipVia { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
     }
 }

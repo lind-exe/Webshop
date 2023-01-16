@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Numerics;
+using System.Reflection.Emit;
+using System.Reflection.Metadata;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Webshop.Models;
@@ -326,6 +329,55 @@ namespace Webshop.Methods
             {
                 Menus.Show("Main", c);
             }
+        }
+
+        internal static void CheckOut(Customer c)
+        {
+            Console.Clear();
+            int shipper = 0;
+            int payment = 0;
+
+            using (var db = new WebShopContext())
+            {
+                var shipmentChoices = db.ShipChoices.ToList();
+                var paymentMethods = db.PaymentMethods.ToList();
+
+
+                View.ShowOrders(c);
+                View.ShippingMethods();
+                Console.Write("Select shipping method: ");
+                shipper = TryNumber(shipper, shipmentChoices.Count(), 1);
+                View.PaymentMethods();
+                Console.Write("Select payment method: ");
+                payment = TryNumber(payment, paymentMethods.Count(), 1);
+
+                var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
+
+                var shipChoices = new ShipChoice()
+                {
+                    Id = shipper
+                };
+                var paymentChoice = new PaymentMethod()
+                {
+                    Id = payment
+                };
+                orderUpdated.ShipChoice = shipmentChoices.Where(x => x.Id == shipper).FirstOrDefault();
+                orderUpdated.PaymentMethod = paymentMethods.Where(x => x.Id == payment).FirstOrDefault();
+                orderUpdated.OrderDate = DateTime.Now.Date;
+                orderUpdated.Purchased = true;
+
+                db.SaveChanges();
+            }
+        }
+
+        internal static void EditCartQuantity(Customer c)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void RemoveCartProducts(Customer c)
+        {
+            throw new NotImplementedException();
         }
     }
 }

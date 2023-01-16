@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Webshop.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Webshop.Methods
 {
@@ -186,8 +187,9 @@ namespace Webshop.Methods
                               ).ToList();
                 int padright = 20;
                 int padrightshort = 15;
-                int answear = 0;
+                int answer = 0;
                 int i = 0;
+                int selectedProduct = 0;
                 Console.WriteLine("\nID".PadRight(padrightshort) + "Product Name".PadRight(padright) + "Category".PadRight(padrightshort) + "Price");
                 Console.WriteLine("-------------------------------------------------------");
                 foreach (var d in result)
@@ -197,18 +199,88 @@ namespace Webshop.Methods
 
                 }
                 Console.Write("Enter the Id of the product: ");
-                answear = Helpers.TryNumber(answear, result.Count(), 1);
-                answear = result[answear - 1].Products.Id;
+                answer = Helpers.TryNumber(answer, result.Count(), 1);
+                selectedProduct = answer;
+                answer = result[answer - 1].Products.Id;
+
                 Console.Clear();
-                Admin.OneProduct(answear, categoryInput);
-                if (result[answear - 1].Products.UnitsInStock > 0)
+                Admin.OneProduct(answer, categoryInput);
+                if (result[selectedProduct - 1].Products.UnitsInStock > 0)
                 {
-                    Helpers.AddProductToCart(answear, c);
+                    Helpers.AddProductToCart(answer, c);
                 }
                 else
                 {
                     Console.WriteLine("No units in stock. Come back at a later time.");
                 }
+            }
+        }
+
+        internal static void ShoppingCart(Customer c)
+        {
+            ShowOrders(c);
+            Console.WriteLine("1.Proceed to checkout\n2. Edit quantity.\n3. Remove products\n0. Return");
+            int input = 0;
+            input = Helpers.TryNumber(input, 4, 1);
+
+            switch (input)
+            {
+                case 1:                
+                    Helpers.CheckOut(c);
+                    break;
+                case 2:
+                    Helpers.EditCartQuantity(c);
+                    break;
+                case 3:
+                    Helpers.RemoveCartProducts(c);
+                    break;
+                case 0:
+                    break;
+            }
+        }
+        internal static void ShowOrders(Customer c)
+        {
+            using (var db = new WebShopContext())
+            {
+
+                var result = (
+                    from orders in db.Orders
+                    join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
+                    join product in db.Products on orderDetails.ProductId equals product.Id
+
+                    where orders.CustomerId == c.Id
+                    select new { Orders = orders, OrderDetails = orderDetails, Products = product }
+                    );
+                Console.WriteLine("Product\tPrice\tQuantity\tOrder ID");
+                foreach (var p in result)
+                {
+                    Console.WriteLine(p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                }
+
+            }
+        }
+
+        internal static void ShippingMethods()
+        {
+            using (var db = new WebShopContext())
+            {
+                var shippers = db.ShipChoices;
+                foreach (var s in shippers)
+                {
+                    Console.WriteLine(s.Id + " " + s.ShipVia);
+                }
+            }
+        }
+        public static void PaymentMethods()
+        {
+            using (var database = new WebShopContext())
+            {
+                var paymentList = database.PaymentMethods;
+                foreach (var c in paymentList)
+                {
+                    Console.WriteLine(c.Id + " " + c.PayVia);
+                }
+
             }
         }
     }
