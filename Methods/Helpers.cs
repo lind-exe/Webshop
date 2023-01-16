@@ -287,6 +287,15 @@ namespace Webshop.Methods
             {
                 using (var db = new WebShopContext())
                 {
+                    var order = db.Orders.Where(x => x.CustomerId == c.Id).LastOrDefault();
+                    if (order == null || order.Purchased == true)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
                     var product = db.Products.Where(x => x.Id == pId).ToList();
                     Console.Write("How many do you want to buy?: ");
                     amount = TryNumber(amount, product[0].UnitsInStock, 1);

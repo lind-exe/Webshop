@@ -12,7 +12,7 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
-    [Migration("20230111130438_FirstC")]
+    [Migration("20230116103824_FirstC")]
     partial class FirstC
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,19 +141,19 @@ namespace Webshop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderDate")
+                    b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PaymentMethodId")
+                    b.Property<int?>("PaymentMethodId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Purchased")
+                    b.Property<bool?>("Purchased")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ShipChoiceId")
+                    b.Property<int?>("ShipChoiceId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -161,7 +161,8 @@ namespace Webshop.Migrations
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("PaymentMethodId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PaymentMethodId] IS NOT NULL");
 
                     b.HasIndex("ShipChoiceId");
 
@@ -179,7 +180,7 @@ namespace Webshop.Migrations
                     b.Property<float?>("Discount")
                         .HasColumnType("real");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -306,21 +307,15 @@ namespace Webshop.Migrations
                 {
                     b.HasOne("Webshop.Models.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("Webshop.Models.PaymentMethod", "PaymentMethod")
                         .WithOne("Order")
-                        .HasForeignKey("Webshop.Models.Order", "PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Webshop.Models.Order", "PaymentMethodId");
 
                     b.HasOne("Webshop.Models.ShipChoice", "ShipChoice")
                         .WithMany("Orders")
-                        .HasForeignKey("ShipChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShipChoiceId");
 
                     b.Navigation("Customer");
 
@@ -333,9 +328,7 @@ namespace Webshop.Migrations
                 {
                     b.HasOne("Webshop.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("Webshop.Models.Product", "Products")
                         .WithMany("OrderDetails")
