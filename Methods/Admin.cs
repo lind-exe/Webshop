@@ -560,17 +560,19 @@ namespace Webshop.Methods
             return "jojje_lind@live.se";
         }
 
-        public static void SetHiglightedProducts(View v)
+        public static int[] SetHiglightedProducts(int[] highlightedProdsId)
         {
             using (var db = new WebShopContext())
             {
                 var prodList = db.Products.ToList();
 
+
+
                 bool continueChoosing = true;
                 int padValue = 12;
                 int padValue1 = 24;
                 int padValue2 = 16;
-                int i = 0;
+                int j = 0;
                 var highestIdNrOfProduct = 99;
                 try { highestIdNrOfProduct = prodList.LastOrDefault().Id; }
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
@@ -581,36 +583,38 @@ namespace Webshop.Methods
                     int prodToHighlight = 0;
 
                     Console.Clear();
-                    Console.SetCursorPosition(0, 17);
-                    var productName1 = prodList.SingleOrDefault(x => x.Id == v.Prod1Id);
-                    var productName2 = prodList.SingleOrDefault(x => x.Id == v.Prod2Id);
-                    var productName3 = prodList.SingleOrDefault(x => x.Id == v.Prod3Id);
-                    Console.WriteLine("Position 1: " + v.Prod1Id + "\t" + productName1.Name + "\nPosition 2: " + v.Prod2Id + "\t" + productName2.Name + 
-                        "\nPosition 3: " + v.Prod3Id + "\t" + productName3.Name);
+                    Console.SetCursorPosition(0, 22);
+                    var productName1 = prodList.SingleOrDefault(x => x.Id == highlightedProdsId[0]);
+                    var productName2 = prodList.SingleOrDefault(x => x.Id == highlightedProdsId[1]);
+                    var productName3 = prodList.SingleOrDefault(x => x.Id == highlightedProdsId[2]);
+
+                    Console.WriteLine("Position 1: " + productName1.Id + "\t" + productName1.Name + "\nPosition 2: " + productName2.Id +
+                        "\t" + productName2.Name + "\nPosition 3: " + productName3.Id + "\t" + productName3.Name);
+
                     Console.SetCursorPosition(0, 2);
                     Console.WriteLine("Nr".PadRight(padValue) + "Name".PadRight(padValue1) + "Price".PadRight(padValue) + "Units In Stock".PadRight(padValue));
                     Console.WriteLine("--------------------------------------------------------------");
-                    for (i = 0; i < prodList.Count; i++)
+                    for (j = 0; j < prodList.Count; j++)
                     {
-                        Console.WriteLine((i + 1).ToString().PadRight(padValue) + prodList[i].Name.PadRight(padValue1) + prodList[i].Price.ToString().PadRight(padValue2) +
-                            prodList[i].UnitsInStock.ToString().PadRight(padValue2));
+                        Console.WriteLine((j + 1).ToString().PadRight(padValue) + prodList[j].Name.PadRight(padValue1) + prodList[j].Price.ToString().PadRight(padValue2) +
+                            prodList[j].UnitsInStock.ToString().PadRight(padValue2));
                     }
 
                     Console.Write("\n\n\nChoose product to higlight: ");
-                    prodToHighlight = Helpers.TryNumber(prodToHighlight, i, 1);
+                    prodToHighlight = Helpers.TryNumber(prodToHighlight, j, 1);
                     prodToHighlight = prodList[prodToHighlight - 1].Id;
                     Console.Write("Which position should it have: ");
                     pos = Helpers.TryNumber(pos, 3, 1);
                     switch (pos)
                     {
                         case 1:
-                            v.Prod1Id = prodToHighlight;
+                            highlightedProdsId[0] = prodToHighlight;
                             break;
                         case 2:
-                            v.Prod2Id = prodToHighlight;
+                            highlightedProdsId[1] = prodToHighlight;
                             break;
                         case 3:
-                            v.Prod3Id = prodToHighlight;
+                            highlightedProdsId[2] = prodToHighlight;
                             break;
                     }
                     int quit = 0;
@@ -625,6 +629,7 @@ namespace Webshop.Methods
                             break;
                     }
                 }
+                return highlightedProdsId;
             }
         }
     }

@@ -9,18 +9,6 @@ namespace Webshop.Methods
 {
     internal class View
     {
-        public int Prod1Id { get; set; }
-        public int Prod2Id { get; set; }
-        public int Prod3Id { get; set; }
-
-        public View(int prod1Id, int prod2Id, int prod3Id)
-        {
-            Prod1Id = prod1Id;
-            Prod2Id = prod2Id;
-            Prod3Id = prod3Id;
-        }
-
-
 
         public static void ShowGenres()
         {
@@ -93,7 +81,7 @@ namespace Webshop.Methods
             }
             catch (Exception) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
         }
-        internal static void Show3HighlightedProducts(View v)
+        internal static void Show3HighlightedProducts(int[] highlightedProdsId)
         {
             using (var db = new WebShopContext())
             {
@@ -102,6 +90,10 @@ namespace Webshop.Methods
                 var orderDetailsList = db.OrderDetails;
                 Random rnd = new Random();
                 int padRightNr = 24;
+                int prodId1 = highlightedProdsId[0];
+                int prodId2 = highlightedProdsId[1];
+                int prodId3 = highlightedProdsId[2];
+
                 //int randomNr1 = rnd.Next(1, productsList.Count + 1); // -> if random: randomNr1 goes instead of prod1Id
                 //int randomNr2 = rnd.Next(1, productsList.Count + 1);
                 //int randomNr3 = rnd.Next(1, productsList.Count + 1);
@@ -110,9 +102,9 @@ namespace Webshop.Methods
                 {
                     var discountPriceList = orderDetailsList.Where(x => x.Discount > 0).ToList();
 
-                    var highLightedProduct1 = productsList.Where(x => x.Id == v.Prod1Id).SingleOrDefault();
-                    var highLightedProduct2 = productsList.Where(x => x.Id == v.Prod2Id).SingleOrDefault();
-                    var highLightedProduct3 = productsList.Where(x => x.Id == v.Prod3Id).SingleOrDefault();
+                    var highLightedProduct1 = productsList.Where(x => x.Id == prodId1).SingleOrDefault();
+                    var highLightedProduct2 = productsList.Where(x => x.Id == prodId2).SingleOrDefault();
+                    var highLightedProduct3 = productsList.Where(x => x.Id == prodId3).SingleOrDefault();
 
                     if (highLightedProduct1 != null && highLightedProduct2 != null && highLightedProduct3 != null)
                     {
@@ -145,7 +137,6 @@ namespace Webshop.Methods
                 {
                     Console.WriteLine("For now we have no products to show you. Be back soon for the latest updates");
                 }
-
             }
         }
         public static int ProductsInCategory(int value)
@@ -212,7 +203,7 @@ namespace Webshop.Methods
                 Admin.OneProduct(answear, categoryInput);
                 if (result[answear - 1].Products.UnitsInStock > 0)
                 {
-                    Helpers.AddProductToCart(answear,c);
+                    Helpers.AddProductToCart(answear, c);
                 }
                 else
                 {

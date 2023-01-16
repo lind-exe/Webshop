@@ -10,6 +10,9 @@ namespace Webshop.Methods
 {
     internal class Menus
     {
+        private static int _count = 0;
+
+        private static int[] _highlightedProdsId = new int[3];
         enum MainMenu
         {
             Browse_Shop = 1,
@@ -70,15 +73,21 @@ namespace Webshop.Methods
             bool browseShop = true;
             bool adminMenu = true;
             bool adminProducts = true;
-            View v = new View(1, 2, 3);
-
+            
+            if (_count < 1)
+            {
+                _highlightedProdsId[0] = 1;
+                _highlightedProdsId[1] = 2;
+                _highlightedProdsId[2] = 3;
+                _count++;
+            }
             if (value == "Main")
             {
                 while (goMain)
                 {
                     View.DisplayCustomer(c);
                     Console.SetCursorPosition(0, 10);
-                    View.Show3HighlightedProducts(v);       
+                    View.Show3HighlightedProducts(_highlightedProdsId);       
                     Console.SetCursorPosition(0, 2);
                     foreach (int i in Enum.GetValues(typeof(MainMenu)))
                     {
@@ -351,7 +360,7 @@ namespace Webshop.Methods
             }
             if (value == "AdminHighLightedProducts")
             {
-                Methods.Admin.SetHiglightedProducts(v);
+                _highlightedProdsId = Methods.Admin.SetHiglightedProducts(_highlightedProdsId);
                 
             }
                 return c;
