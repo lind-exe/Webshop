@@ -363,7 +363,7 @@ namespace Webshop.Methods
                 };
                 orderUpdated.ShipChoice = shipmentChoices.Where(x => x.Id == shipper).FirstOrDefault();
                 orderUpdated.PaymentMethod = paymentMethods.Where(x => x.Id == payment).FirstOrDefault();
-                orderUpdated.OrderDate = DateTime.Now.Date;
+                orderUpdated.OrderDate = DateTime.Now;
                 orderUpdated.Purchased = true;
 
                 db.SaveChanges();
