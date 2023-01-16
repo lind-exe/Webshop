@@ -210,6 +210,14 @@ namespace Webshop.Methods
                 answear = result[answear - 1].Products.Id;
                 Console.Clear();
                 Admin.OneProduct(answear, categoryInput);
+                if (result[answear - 1].Products.UnitsInStock > 0)
+                {
+                    Helpers.AddProductToCart(answear,c);
+                }
+                else
+                {
+                    Console.WriteLine("No units in stock. Come back at a later time.");
+                }
             }
         }
     }

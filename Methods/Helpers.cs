@@ -276,5 +276,27 @@ namespace Webshop.Methods
             Console.Clear();
             Menus.Show("LogIn", c);
         }
+        public static void AddProductToCart(int pId,Customer c)
+        {
+            int answear = 0;
+            Console.Write("Add to cart: 1\nReturn to main menu: 2");
+            answear = TryNumber(answear, 2, 1);
+            int amount = 0;
+            
+            if (answear == 1)
+            {
+                using (var db = new WebShopContext())
+                {
+                    var product = db.Products.Where(x => x.Id == pId).ToList();
+                    Console.Write("How many do you want to buy?: ");
+                    amount = TryNumber(amount, product[0].UnitsInStock, 1);
+                    
+                }
+            }
+            else
+            {
+                Menus.Show("Main",c);
+            }
+        }
     }
 }
