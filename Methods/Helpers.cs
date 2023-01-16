@@ -209,12 +209,12 @@ namespace Webshop.Methods
             Console.WriteLine("└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘" + "\t\t└" + "".PadRight(13, '─') + "┘");
         }
         internal static void WrongInputWithoutClear()
-        {            
+        {
             Console.SetCursorPosition(2, 2);
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine("WRONGINPUT");            
-            Console.ResetColor();            
+            Console.WriteLine("WRONGINPUT");
+            Console.ResetColor();
         }
         internal static void WrongInput()
         {
@@ -276,35 +276,55 @@ namespace Webshop.Methods
             Console.Clear();
             Menus.Show("LogIn", c);
         }
-        public static void AddProductToCart(int pId,Customer c)
+        public static void AddProductToCart(int pId, Customer c)
         {
             int answear = 0;
             Console.Write("Add to cart: 1\nReturn to main menu: 2");
             answear = TryNumber(answear, 2, 1);
             int amount = 0;
-            
+
             if (answear == 1)
             {
                 using (var db = new WebShopContext())
                 {
-                    var order = db.Orders.Where(x => x.CustomerId == c.Id).LastOrDefault();
+                    var order = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
                     if (order == null || order.Purchased == true)
                     {
+                        var newOrder = new Order
+                        {
+                            CustomerId = c.Id
+                        };
 
+                        db.Add(newOrder);
+                        db.SaveChanges();
                     }
-                    else
-                    {
 
-                    }
+                    var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
                     var product = db.Products.Where(x => x.Id == pId).ToList();
                     Console.Write("How many do you want to buy?: ");
                     amount = TryNumber(amount, product[0].UnitsInStock, 1);
-                    
+
+                    var orderDetails = db.OrderDetails.ToList();
+                    var newOrderDetails = new OrderDetail()
+                    {
+                        OrderId = orderUpdated.Id,
+                        Quantity = amount,
+                        ProductId = pId,
+                        UnitPrice = product[0].Price
+                        //discount?
+
+
+                    };
+                    db.Add(newOrderDetails);
+                    db.SaveChanges();
+                    Console.WriteLine("Added " + product[0].Name + " to cart.");
+                    Thread.Sleep(1000);
+                    Menus.Show("Main", c);
                 }
             }
             else
             {
-                Menus.Show("Main",c);
+                Menus.Show("Main", c);
             }
         }
     }
