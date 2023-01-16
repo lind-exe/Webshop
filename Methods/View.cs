@@ -36,12 +36,15 @@ namespace Webshop.Methods
         }
         public static void ShowCategories()
         {
+
             using (var database = new WebShopContext())
             {
                 var categorylist = database.Categories;
-                foreach (var c in categorylist)
+                var maxCategory = database.Categories.ToList();
+
+                foreach (var d in categorylist)
                 {
-                    Console.WriteLine(c.Id + "\t" + c.Name);
+                    Console.WriteLine(d.Id + "\t" + d.Name);
                 }
 
             }
@@ -173,6 +176,41 @@ namespace Webshop.Methods
                 Console.Clear();
             }
             return chosenP;
+        }
+        public static void ShowProductInOneCategory(Customer c)
+        {
+
+            int categoryInput = 0;
+
+            using (var database = new WebShopContext())
+            {
+                var categorylist = database.Categories;
+                var maxCategory = database.Categories.ToList();
+                Console.Write("Enter id of the Category: ");
+                categoryInput = Helpers.TryNumber(categoryInput, maxCategory.Count, 1);
+                var result = (from games in database.Products
+                              join category in database.Categories on games.CategoryId equals category.Id
+                              where games.CategoryId == categoryInput
+                              select new { Products = games, CategoryId = category }
+                              ).ToList();
+                int padright = 20;
+                int padrightshort = 15;
+                int answear = 0;
+                int i = 0;
+                Console.WriteLine("\nID".PadRight(padrightshort) + "Product Name".PadRight(padright) + "Category".PadRight(padrightshort) + "Price");
+                Console.WriteLine("-------------------------------------------------------");
+                foreach (var d in result)
+                {
+                    i++;
+                    Console.WriteLine(i + "".PadRight(13) + d.Products.Name.PadRight(padright) + d.CategoryId.Name.PadRight(padrightshort) + d.Products.Price);
+
+                }
+                Console.Write("Enter the Id of the product: ");
+                answear = Helpers.TryNumber(answear, result.Count(), 1);
+                answear = result[answear - 1].Products.Id;
+                Console.Clear();
+                Admin.OneProduct(answear, categoryInput);
+            }
         }
     }
 }

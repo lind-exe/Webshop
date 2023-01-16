@@ -197,6 +197,7 @@ namespace Webshop.Methods
                             break;
                         case BrowseShop.Consoles:
                             View.ShowCategories();
+                            View.ShowProductInOneCategory(c);
                             Console.ReadKey();
                             browseShop = false;
                             break;
