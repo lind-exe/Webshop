@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Webshop.Methods
+namespace Webshop.Dapper
 {
-    public class DapperQueries
+    internal class RevenueForTheBoys
     {
-
-
+        public int TotalMoneySpent { get; set; }
     }
 }

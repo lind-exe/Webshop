@@ -347,11 +347,16 @@ namespace Webshop.Methods
 
                 View.ShowOrders(c);
                 View.ShippingMethods();
-                Console.Write("Select shipping method: ");
+                Console.Write("\nSelect shipping method: ");
                 shipper = TryNumber(shipper, shipmentChoices.Count(), 1);
+                Console.Clear();
+                View.ShowOrders(c);
                 View.PaymentMethods();
-                Console.Write("Select payment method: ");
+                Console.Write("\nSelect payment method: ");
                 payment = TryNumber(payment, paymentMethods.Count(), 1);
+
+                
+
 
                 var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
                 var orderDetails = db.OrderDetails.Where(x => x.OrderId == orderUpdated.Id).ToList();
@@ -377,8 +382,51 @@ namespace Webshop.Methods
                 };
                 db.Add(newOrder);
                 db.SaveChanges();
-
+                Console.Clear();
+                Console.WriteLine("You bought something, good job!");
+                for (int i = 0; i < 5; i++)
+                {
+                    Helpers.Victory();
+                }
+                Helpers.PressAnyKey();
             }
+        }
+
+        private static void Victory()
+        {
+            string text = "You bought something, good job!";
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(text);
+            Thread.Sleep(100);
         }
 
         internal static void EditCartQuantity(Customer c)

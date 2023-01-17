@@ -221,7 +221,7 @@ namespace Webshop.Methods
         internal static void ShoppingCart(Customer c)
         {
             ShowOrders(c);
-            Console.WriteLine("1.Proceed to checkout\n2. Edit quantity.\n3. Remove products\n0. Return");
+            Console.WriteLine("\n\n1. Proceed to checkout\n2. Edit quantity.\n3. Remove products\n0. Return");
             int input = 0;
             input = Helpers.TryNumber(input, 4, 0);
 

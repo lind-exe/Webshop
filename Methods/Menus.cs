@@ -40,6 +40,7 @@ namespace Webshop.Methods
             Edit_Customers = 1,
             Edit_Products,
             Edit_Highlighted_Products,
+            Queries,
             Return = 0
 
         }
@@ -121,7 +122,7 @@ namespace Webshop.Methods
                             goMain = false;
                             break;
                         case MainMenu.Search_Products:
-                            Show("SearchProduct", c);
+                            Queries.Search(c);
                             goMain = false;
                             break;
                         case MainMenu.Exit_Shop:
@@ -209,7 +210,6 @@ namespace Webshop.Methods
                         case BrowseShop.Products:
                             View.ShowCategories();
                             View.ShowProductInOneCategory(c);
-                            //User.SelectProduct
                             Console.ReadKey();
                             browseShop = false;
                             break;
@@ -264,6 +264,10 @@ namespace Webshop.Methods
                             break;
                         case Admin.Edit_Highlighted_Products:
                             Show("AdminHighLightedProducts", c);
+                            break;
+                        case Admin.Queries:
+                            Queries.AllQueries(c);
+                            adminMenu = false;
                             break;
                         case Admin.Return:
                             Show("Main", c);
