@@ -354,14 +354,16 @@ namespace Webshop.Methods
                 var pIdExist = database.Products.Where(x => x.Id == pId) != null;
                 if (pIdExist)
                 {
+                    
                     var productList = database.Products.Where(x => x.Id == pId && x.CategoryId == categoryId).ToList();
 
-                    Console.WriteLine("Id".PadRight(padValue1) + "Name".PadRight(30) + "Price".PadRight(padValue1) +
+                    Console.WriteLine("Name".PadRight(30) + "Price".PadRight(padValue1) +
                         "Units in stock".PadRight(padValue2) + "Description".PadRight(padValue2) + "Supplier Id".PadRight(padValue1));
                     Console.WriteLine("----------------------------------------------------------------------------------------------------------------");
                     foreach (var p in productList)
                     {
-                        Console.WriteLine(p.Id.ToString().PadRight(padValue1) + p.Name.PadRight(30) + p.Price.ToString().PadRight(padValue1) +
+                       
+                        Console.WriteLine(p.Name.PadRight(30) + p.Price.ToString().PadRight(padValue1) +
                             p.UnitsInStock.ToString().PadRight(padValue2) + p.Description.PadRight(padValue2) + p.SupplierId.ToString().PadRight(padValue1));
                     }
                 }

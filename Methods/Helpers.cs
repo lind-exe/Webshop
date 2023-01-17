@@ -282,7 +282,7 @@ namespace Webshop.Methods
         public static void AddProductToCart(int pId, Customer c)
         {
             int answear = 0;
-            Console.Write("Add to cart: 1\nReturn to main menu: 2");
+            Console.WriteLine("\n\n\n1. Add to cart \n2. Return to main menu ");
             answear = TryNumber(answear, 2, 1);
             int amount = 0;
 
@@ -353,26 +353,53 @@ namespace Webshop.Methods
 
                 var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
 
-                var shipChoices = new ShipChoice()
-                {
-                    Id = shipper
-                };
-                var paymentChoice = new PaymentMethod()
-                {
-                    Id = payment
-                };
+                
                 orderUpdated.ShipChoice = shipmentChoices.Where(x => x.Id == shipper).FirstOrDefault();
                 orderUpdated.PaymentMethod = paymentMethods.Where(x => x.Id == payment).FirstOrDefault();
                 orderUpdated.OrderDate = DateTime.Now;
                 orderUpdated.Purchased = true;
 
                 db.SaveChanges();
+
+                var newOrder = new Order()
+                {
+                    CustomerId = c.Id
+                };
+                db.Add(newOrder);
+                db.SaveChanges();
             }
         }
 
         internal static void EditCartQuantity(Customer c)
         {
-            throw new NotImplementedException();
+            using (var db = new WebShopContext())
+            {
+                int i = 0;
+                var input = 0;
+                var newQuantity = 0;
+                var result = (
+               from orders in db.Orders
+               join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
+               join product in db.Products on orderDetails.ProductId equals product.Id
+
+               where orders.CustomerId == c.Id && orders.Purchased == null
+               select new { Orders = orders, OrderDetails = orderDetails, Products = product }
+               );
+                var resultList=result.ToList();
+                Console.WriteLine("ID\tProduct\tPrice\tQuantity\tOrder ID");
+                Console.WriteLine("------------------------------------------------------------------------------");
+                foreach (var p in result)
+                {
+                    i++;
+                    Console.WriteLine(i+"\t"+p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                }
+                Console.Write("\nEnter the id of the product you want to change: ");
+                input = TryNumber(input, result.Count(), 1);
+                Console.Write("\nEnter the new quantity: ");
+                newQuantity = TryNumber(newQuantity, resultList[input-1].Products.UnitsInStock,1);
+                resultList[input - 1].OrderDetails.Quantity = newQuantity;
+                db.SaveChanges();
+            }
         }
 
         internal static void RemoveCartProducts(Customer c)

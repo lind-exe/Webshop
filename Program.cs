@@ -12,7 +12,7 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
-
+            //Methods.HardCodedValues.AllInserts();
             bool runProgram = true;
             Customer? c = null;
             while (runProgram)

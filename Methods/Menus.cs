@@ -75,13 +75,16 @@ namespace Webshop.Methods
             {
                 using (var db = new WebShopContext())
                 {
-                    var product1 = db.Products.FirstOrDefault(x => x.Id > 0);
-                    var product2 = db.Products.FirstOrDefault(x => x.Id > 0 && x.Id != product1.Id);
-                    var product3 = db.Products.FirstOrDefault(x => x.Id > 0 && x.Id != product2.Id);
-                    _highlightedProdsId[0] = product1.Id;
-                    _highlightedProdsId[1] = product2.Id;
-                    _highlightedProdsId[2] = product3.Id;
+                    if (db.Products.ToList().Count > 0)
+                    {
+                        var product1 = db.Products.FirstOrDefault(x => x.Id > 0);
+                        var product2 = db.Products.FirstOrDefault(x => x.Id > 0 && x.Id != product1.Id);
+                        var product3 = db.Products.FirstOrDefault(x => x.Id > 0 && x.Id != product2.Id);
+                        _highlightedProdsId[0] = product1.Id;
+                        _highlightedProdsId[1] = product2.Id;
+                        _highlightedProdsId[2] = product3.Id;
 
+                    }
                 }
                 _count++;
             }

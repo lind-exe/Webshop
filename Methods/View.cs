@@ -221,7 +221,7 @@ namespace Webshop.Methods
             ShowOrders(c);
             Console.WriteLine("1.Proceed to checkout\n2. Edit quantity.\n3. Remove products\n0. Return");
             int input = 0;
-            input = Helpers.TryNumber(input, 4, 1);
+            input = Helpers.TryNumber(input, 4, 0);
 
             switch (input)
             {
@@ -235,6 +235,7 @@ namespace Webshop.Methods
                     Helpers.RemoveCartProducts(c);
                     break;
                 case 0:
+                    Menus.Show("Main",c);
                     break;
             }
         }
@@ -248,13 +249,25 @@ namespace Webshop.Methods
                     join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
                     join product in db.Products on orderDetails.ProductId equals product.Id
 
-                    where orders.CustomerId == c.Id
+                    where orders.CustomerId == c.Id && orders.Purchased == null
                     select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                     );
-                Console.WriteLine("Product\tPrice\tQuantity\tOrder ID");
-                foreach (var p in result)
+                
+                if (result.ToList().Count < 1)
                 {
-                    Console.WriteLine(p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                    Console.WriteLine("Shopping cart is empty, go buy stuff");
+                    Thread.Sleep(1000);
+                    Menus.Show("Main", c);
+                }
+                else if (result != null)
+                {
+                    Console.WriteLine("Product\tPrice\tQuantity\tOrder ID");
+                    Console.WriteLine("------------------------------------------------------------------------------");
+                    foreach (var p in result)
+                    {
+                        Console.WriteLine(p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                    }
+                    Console.WriteLine();
                 }
 
             }
