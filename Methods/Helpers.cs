@@ -362,12 +362,12 @@ namespace Webshop.Methods
                 orderUpdated.Purchased = true;
 
                 db.SaveChanges();
-                int i = 0;
-                foreach(var product in orderDetails)
+                
+                for(int i = 0; i < orderDetails.Count(); i++)
                 {
+
                     var choosenProduct = db.Products.Where(x => x.Id == orderDetails[i].ProductId).ToList();
-                    choosenProduct[i].UnitsInStock = choosenProduct[i].UnitsInStock - product.Quantity;
-                    i++;
+                    choosenProduct[0].UnitsInStock = choosenProduct[0].UnitsInStock - orderDetails[0].Quantity;
                     db.SaveChanges();
                 }
 

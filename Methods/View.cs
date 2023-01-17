@@ -307,47 +307,25 @@ namespace Webshop.Methods
         {
             using (var db = new WebShopContext())
             {
-                var sql = $"SELECT o.id from Orders o\r\njoin orderDetails od on od.OrderId = o.Id\r\njoin Products p on p.Id = od.ProductId\r\nwhere o.CustomerId = {c.Id} AND o.Purchased = 1\r\ngroup by o.Id ";
-                
-                using (var connection = new SqlConnection(Admin._connString))
+
+                var result = (
+                    from orders in db.Orders
+                    join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
+                    join product in db.Products on orderDetails.ProductId equals product.Id
+
+                    where orders.CustomerId == c.Id && orders.Purchased == true
+                    select new { Orders = orders, OrderDetails = orderDetails, Products = product }
+                    );
+
+                Console.WriteLine("Order ID\tProduct Name\tPrice\tOrder Date\t\tQuantity");
+                Console.WriteLine("------------------------------------------------------------------------------");
+                foreach (var p in result)
                 {
-                    connection.Open();
-                    var result = connection.Query(sql);
-                    connection.Close();
-
-
-
-                    
-                    Console.WriteLine("Product\tPrice\tQuantity\tOrder ID");
-                    Console.WriteLine("-----------------------------------------------------");
-                    foreach (var order in result)
-                    {
-                        Console.WriteLine("Order Id: " + order);
-                        Console.WriteLine("--------------");
-                        foreach (var p in order)
-                        {
-                            Console.WriteLine("\t" + p.Products.Name + "\t" + p.Products.Price + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.OrderDate);
-
-                        }
-                    }
-                    Console.WriteLine();
-
-                    Console.ReadKey();
-
+                    Console.WriteLine(p.Orders.Id + "\t\t" + p.Products.Name + "\t" + p.Products.Price + "\t" + p.Orders.OrderDate + "\t" + p.OrderDetails.Quantity );
                 }
+                Console.WriteLine();
 
-                
-                    //var result = (
-                    //    from orders in db.Orders
-                    //    join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
-                    //    join product in db.Products on orderDetails.ProductId equals product.Id
-
-                    //    where orders.CustomerId == c.Id && orders.Purchased == true
-                    //    select new { Orders = orders, OrderDetails = orderDetails, Products = product } into x
-                    //    group x by new { x.Orders }
-                    //    );
-
-                   
+                Console.ReadKey();
             }
         }
     }
