@@ -21,7 +21,7 @@ namespace Webshop.Methods
 {
     internal class Admin
     {
-        static readonly string _connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
+        public static readonly string _connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
 
         internal static void RemoveProduct(int pId)  // lägga till product.Name
         {

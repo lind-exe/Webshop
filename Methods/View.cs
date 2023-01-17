@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -225,7 +227,7 @@ namespace Webshop.Methods
 
             switch (input)
             {
-                case 1:                
+                case 1:
                     Helpers.CheckOut(c);
                     break;
                 case 2:
@@ -239,7 +241,7 @@ namespace Webshop.Methods
                     Menus.Show("Main", c);
                     break;
                 case 0:
-                    Menus.Show("Main",c);
+                    Menus.Show("Main", c);
                     break;
             }
         }
@@ -256,7 +258,7 @@ namespace Webshop.Methods
                     where orders.CustomerId == c.Id && orders.Purchased == null
                     select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                     );
-                
+
                 if (result.ToList().Count < 1)
                 {
                     Console.WriteLine("Shopping cart is empty, go buy stuff");
@@ -298,6 +300,54 @@ namespace Webshop.Methods
                     Console.WriteLine(c.Id + " " + c.PayVia);
                 }
 
+            }
+        }
+
+        internal static void CustomerProfile(Customer c)
+        {
+            using (var db = new WebShopContext())
+            {
+                var sql = $"SELECT o.id from Orders o\r\njoin orderDetails od on od.OrderId = o.Id\r\njoin Products p on p.Id = od.ProductId\r\nwhere o.CustomerId = {c.Id} AND o.Purchased = 1\r\ngroup by o.Id ";
+                
+                using (var connection = new SqlConnection(Admin._connString))
+                {
+                    connection.Open();
+                    var result = connection.Query(sql);
+                    connection.Close();
+
+
+
+                    
+                    Console.WriteLine("Product\tPrice\tQuantity\tOrder ID");
+                    Console.WriteLine("-----------------------------------------------------");
+                    foreach (var order in result)
+                    {
+                        Console.WriteLine("Order Id: " + order);
+                        Console.WriteLine("--------------");
+                        foreach (var p in order)
+                        {
+                            Console.WriteLine("\t" + p.Products.Name + "\t" + p.Products.Price + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.OrderDate);
+
+                        }
+                    }
+                    Console.WriteLine();
+
+                    Console.ReadKey();
+
+                }
+
+                
+                    //var result = (
+                    //    from orders in db.Orders
+                    //    join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
+                    //    join product in db.Products on orderDetails.ProductId equals product.Id
+
+                    //    where orders.CustomerId == c.Id && orders.Purchased == true
+                    //    select new { Orders = orders, OrderDetails = orderDetails, Products = product } into x
+                    //    group x by new { x.Orders }
+                    //    );
+
+                   
             }
         }
     }

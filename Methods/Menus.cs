@@ -194,7 +194,7 @@ namespace Webshop.Methods
 
                     int nr;
                     BrowseShop shop = (BrowseShop)99; //Default
-                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(AdminProducts)).Length - 1)
+                    if (!int.TryParse(Console.ReadKey(true).KeyChar.ToString(), out nr) || nr > Enum.GetNames(typeof(BrowseShop)).Length - 1)
                     {
                         Helpers.WrongInput();
                     }
@@ -218,6 +218,7 @@ namespace Webshop.Methods
                             browseShop = false;
                             break;
                         case BrowseShop.Profile:
+                            View.CustomerProfile(c);
                             break;
                         case BrowseShop.Return:
                             Show("Main", c);
