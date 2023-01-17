@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Numerics;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -341,6 +342,7 @@ namespace Webshop.Methods
             {
                 var shipmentChoices = db.ShipChoices.ToList();
                 var paymentMethods = db.PaymentMethods.ToList();
+                var productList = db.Products.ToList();
 
 
                 View.ShowOrders(c);
@@ -352,7 +354,7 @@ namespace Webshop.Methods
                 payment = TryNumber(payment, paymentMethods.Count(), 1);
 
                 var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
-
+                var orderDetails = db.OrderDetails.Where(x => x.OrderId == orderUpdated.Id).ToList();
                 
                 orderUpdated.ShipChoice = shipmentChoices.Where(x => x.Id == shipper).FirstOrDefault();
                 orderUpdated.PaymentMethod = paymentMethods.Where(x => x.Id == payment).FirstOrDefault();
@@ -360,6 +362,14 @@ namespace Webshop.Methods
                 orderUpdated.Purchased = true;
 
                 db.SaveChanges();
+                int i = 0;
+                foreach(var product in orderDetails)
+                {
+                    var choosenProduct = db.Products.Where(x => x.Id == orderDetails[i].ProductId).ToList();
+                    choosenProduct[i].UnitsInStock = choosenProduct[i].UnitsInStock - product.Quantity;
+                    i++;
+                    db.SaveChanges();
+                }
 
                 var newOrder = new Order()
                 {
@@ -367,6 +377,7 @@ namespace Webshop.Methods
                 };
                 db.Add(newOrder);
                 db.SaveChanges();
+
             }
         }
 
@@ -404,7 +415,36 @@ namespace Webshop.Methods
 
         internal static void RemoveCartProducts(Customer c)
         {
-            throw new NotImplementedException();
+            using (var db = new WebShopContext())
+            {
+                int i = 0;
+                var input = 0;
+                var newQuantity = 0;
+                
+                var result = (
+               from orders in db.Orders
+               join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
+               join product in db.Products on orderDetails.ProductId equals product.Id
+
+               where orders.CustomerId == c.Id && orders.Purchased == null
+               select new { Orders = orders, OrderDetails = orderDetails, Products = product }
+               );
+                var resultList = result.ToList();
+                Console.WriteLine("ID\tProduct\tPrice\tQuantity\tOrder ID");
+                Console.WriteLine("------------------------------------------------------------------------------");
+                foreach (var p in result)
+                {
+                    i++;
+                    Console.WriteLine(i + "\t" + p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                }
+                Console.Write("\nEnter the id of the product you want to remove: ");
+                input = TryNumber(input, result.Count(), 1);
+                var idToRemove = (from od in db.OrderDetails where od.Id == resultList[input-1].OrderDetails.Id select od).FirstOrDefault();
+                db.OrderDetails.Remove((OrderDetail)idToRemove);
+                db.SaveChanges();              
+
+
+            }
         }
     }
 }

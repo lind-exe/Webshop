@@ -230,9 +230,13 @@ namespace Webshop.Methods
                     break;
                 case 2:
                     Helpers.EditCartQuantity(c);
+                    Helpers.PressAnyKey();
+                    Menus.Show("Main", c);
                     break;
                 case 3:
                     Helpers.RemoveCartProducts(c);
+                    Helpers.PressAnyKey();
+                    Menus.Show("Main", c);
                     break;
                 case 0:
                     Menus.Show("Main",c);
