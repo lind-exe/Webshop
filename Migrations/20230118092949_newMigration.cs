@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Webshop.Migrations
 {
-    public partial class FirstC : Migration
+    public partial class newMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -77,7 +77,9 @@ namespace Webshop.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShipVia = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ShipVia = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShipPrice = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,9 +248,7 @@ namespace Webshop.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_PaymentMethodId",
                 table: "Orders",
-                column: "PaymentMethodId",
-                unique: true,
-                filter: "[PaymentMethodId] IS NOT NULL");
+                column: "PaymentMethodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ShipChoiceId",

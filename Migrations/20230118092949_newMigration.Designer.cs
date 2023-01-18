@@ -12,8 +12,8 @@ using Webshop.Models;
 namespace Webshop.Migrations
 {
     [DbContext(typeof(WebShopContext))]
-    [Migration("20230117085045_hej")]
-    partial class hej
+    [Migration("20230118092949_newMigration")]
+    partial class newMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -259,6 +259,13 @@ namespace Webshop.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DeliveryTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShipPrice")
+                        .HasColumnType("int");
 
                     b.Property<string>("ShipVia")
                         .HasColumnType("nvarchar(max)");

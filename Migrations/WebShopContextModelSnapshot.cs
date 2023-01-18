@@ -258,6 +258,13 @@ namespace Webshop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("DeliveryTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShipPrice")
+                        .HasColumnType("int");
+
                     b.Property<string>("ShipVia")
                         .HasColumnType("nvarchar(max)");
 

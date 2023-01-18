@@ -16,6 +16,7 @@ namespace Webshop.Methods
             InsertShipChoices();
             InsertCategories();
             InsertPaymentMethods();
+            InsertCustomers();
         }
         private static void InsertGenres()
         {
@@ -79,13 +80,60 @@ namespace Webshop.Methods
         {
             using (var db = new WebShopContext())
             {
-                string[] values = "Postmord, DHL, Budbee, MickeFreightSolutions".Split(", ");
+                string[] values = "PostMord, DHL, Budbee, MickeFreightSolutions".Split(", ");
+                int[] prices = { 79, 59, 199, 99 };
+                string[] deliveryTimes = "1-3 days, 5-7 days, 1 day, IDD™ (Instant Drone Delivery)".Split(", ");
                 var resultList = new List<ShipChoice>();
 
 
                 for (int i = 0; i < values.Length; i++)
                 {
-                    resultList.Add(new ShipChoice() { ShipVia = values[i] });
+                    resultList.Add(new ShipChoice() 
+                    { 
+                        ShipVia = values[i],
+                        ShipPrice = prices[i],
+                        DeliveryTime = deliveryTimes[i]
+                    });
+                }
+                db.AddRange(resultList);
+                db.SaveChanges();
+            }
+        }
+        private static void InsertCustomers()
+        {
+            using (var db = new WebShopContext())
+            {
+                string[] userNames = "admin, Gradde, JLind, Chrillo, Andreas".Split(", ");
+                string[] passwords = "admin, gradde, jlind, chrillo, anden".Split(", ");
+                string[] firstNames = "admin, Mattias, Jonathan, Christoffer, Andreas".Split(", ");
+                string[] lastNames = "admin, Gradin, Lind, Gustafsson, Tollmar".Split(", ");
+                int[] ages = { 30, 36, 27, 28, 31 };
+                string[] countries = "Sweden, Sweden, Sweden, Sweden, Sweden".Split(", ");
+                string[] cities = "Nyköping, Nyköping, Nyköping, Nyköping, Nyköping".Split(", ");
+                string[] streets = "Campus Nyköping 1, Oppeby Gård 181, Mejerivägen 11A, Regeringsvägen 8c".Split(", ");
+                int[] postalCodes = { 61140, 61155, 61156, 61156, 61130 };;
+                int[] phones = { 0701234567, 0731234567, 0761234567, 0707654321, 0737654321 };;
+                string[] emails = "admin@mail.se, gradde@mail.se, jlind@mail.se, chrillo@mail.se, andreas@mail.se".Split(", ");
+
+
+                var resultList = new List<Customer>();
+
+
+                for (int i = 0; i < userNames.Length; i++)
+                {
+                    resultList.Add(new Customer()
+                    {
+                        UserName = userNames[i],
+                        FirstName = firstNames[i],
+                        LastName = lastNames[i],
+                        Age = ages[i],
+                        Country = countries[i],
+                        City = cities[i],
+                        Street = streets[i],
+                        PostalCode = postalCodes[i],
+                        Phone = phones[i],
+                        Email = emails[i],
+                    });
                 }
                 db.AddRange(resultList);
                 db.SaveChanges();
