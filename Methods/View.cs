@@ -319,13 +319,13 @@ namespace Webshop.Methods
                     );
 
                 Console.WriteLine("Order ID".PadRight(padValue1) + "Product Name".PadRight(padValue2) + "Price".PadRight(padValue1) + 
-                    "Order Date".PadRight(padValue1) + "Quantity".PadRight(padValue1));
-                Console.WriteLine("------------------------------------------------------------------------------");
+                     "Quantity".PadRight(padValue1) +"Order Date".PadRight(padValue1));
+                Console.WriteLine("------------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
                     Console.WriteLine(p.Orders.Id.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) + 
-                        p.Products.Price.ToString().PadRight(padValue1) + p.Orders.OrderDate.ToString().PadRight(padValue1) + 
-                        p.OrderDetails.Quantity.ToString().PadRight(padValue1));
+                        p.Products.Price.ToString().PadRight(padValue1) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) + 
+                        p.Orders.OrderDate.ToString().PadRight(padValue1));
                 }
                 Console.WriteLine("\n");
 

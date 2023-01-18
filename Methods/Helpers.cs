@@ -395,13 +395,13 @@ namespace Webshop.Methods
                 };
                 db.Add(newOrder);
                 db.SaveChanges();
-                Console.Clear();                
-                for (int i = 0; i < 5; i++)
-                {
-                    Helpers.Victory();
-                }                
-                Helpers.PressAnyKey();
+                Console.Clear();                            
             }
+            for (int i = 0; i < 5; i++)
+            {
+                Helpers.Victory();
+            }
+            Helpers.PressAnyKey();
         }
 
         private static void Victory()
