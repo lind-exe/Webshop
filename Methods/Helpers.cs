@@ -379,12 +379,12 @@ namespace Webshop.Methods
                 Console.Clear();
                 Console.WriteLine("\n\nYour order containing " + orderDetails.Count() + " items with ordernumber " + orderUpdated.Id + " has been received: \n");
                 float cost = 0;
-                foreach(var p in orderDetails)
+                foreach (var p in orderDetails)
                 {
                     Console.WriteLine(p.Products.Name + " " + p.UnitPrice + " SEK, Quantity: " + p.Quantity);
                     cost = cost + (p.UnitPrice * p.Quantity);
                 }
-                Console.WriteLine("---------------------------------------------");                
+                Console.WriteLine("---------------------------------------------");
                 Console.WriteLine("Total cost = " + Math.Round(cost, 2) + " SEK");
                 Console.WriteLine("VAT: " + Math.Round((cost * 0.2), 2) + " SEK");
                 Console.WriteLine("\n\n\nThe order will be sent to:\n\n" + c.FirstName + " " + c.LastName + "\n" + c.Street + "\n" + c.PostalCode + "\n" + c.City);
@@ -395,13 +395,13 @@ namespace Webshop.Methods
                 };
                 db.Add(newOrder);
                 db.SaveChanges();
-                Console.Clear();                            
+                Console.Clear();
+                for (int i = 0; i < 5; i++)
+                {
+                    Helpers.Victory();
+                }
+                Helpers.PressAnyKey();
             }
-            for (int i = 0; i < 5; i++)
-            {
-                Helpers.Victory();
-            }
-            Helpers.PressAnyKey();
         }
 
         private static void Victory()
@@ -460,14 +460,14 @@ namespace Webshop.Methods
                select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                );
                 var resultList = result.ToList();
-                Console.WriteLine("ID".PadRight(padValue1) + "Product".PadRight(padValue2) + "Price".PadRight(padValue1) + 
+                Console.WriteLine("ID".PadRight(padValue1) + "Product".PadRight(padValue2) + "Price".PadRight(padValue1) +
                     "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
                 Console.WriteLine("-------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
                     i++;
-                    Console.WriteLine(i.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) + 
-                        p.Products.Price.ToString().PadRight(padValue1) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) + 
+                    Console.WriteLine(i.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) +
+                        p.Products.Price.ToString().PadRight(padValue1) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) +
                         p.Orders.Id.ToString().PadRight(padValue1));
                 }
                 Console.Write("\n\n\nEnter the id of the product you want to change: ");
