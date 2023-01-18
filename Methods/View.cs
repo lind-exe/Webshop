@@ -282,7 +282,7 @@ namespace Webshop.Methods
                 int padValue1 = 12;
                 int padValue2 = 32;
                 Console.WriteLine("Nr: " + "Shipping Company:".PadRight(padValue2) + "Delivery time:".PadRight(padValue2) + "Price:".PadRight(padValue1));
-                Console.WriteLine("----------------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------");
                 foreach (var s in shippers)
                 {
                     Console.WriteLine(s.Id + ": " + s.ShipVia.PadRight(padValue2) + s.DeliveryTime.PadRight(padValue2) + s.ShipPrice + " SEK".ToString().PadRight(padValue1));
