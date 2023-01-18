@@ -379,14 +379,26 @@ namespace Webshop.Methods
                 Console.Clear();
                 Console.WriteLine("\n\nYour order containing " + orderDetails.Count() + " items with ordernumber " + orderUpdated.Id + " has been received: \n");
                 float cost = 0;
+                string currency = "";
+                if (orderUpdated.PaymentMethod.Id == 4)
+                {
+                    currency = " Bananas";
+                }
+                else
+                {
+                    currency = " SEK";
+                }
                 foreach (var p in orderDetails)
                 {
-                    Console.WriteLine(p.Products.Name + " " + p.UnitPrice + " SEK, Quantity: " + p.Quantity);
+                    Console.WriteLine(p.Products.Name + " " + p.UnitPrice + currency +", Quantity: " + p.Quantity);
                     cost = cost + (p.UnitPrice * p.Quantity);
                 }
+                float shipCost = orderUpdated.ShipChoice.ShipPrice;
+                
+                Console.WriteLine("Shipping: " + orderUpdated.ShipChoice.ShipVia + " " + shipCost + currency);
                 Console.WriteLine("---------------------------------------------");
-                Console.WriteLine("Total cost = " + Math.Round(cost, 2) + " SEK");
-                Console.WriteLine("VAT: " + Math.Round((cost * 0.2), 2) + " SEK");
+                Console.WriteLine("Total cost = " + (Math.Round(cost, 2) + shipCost) + currency);
+                Console.WriteLine("VAT: " + Math.Round((cost * 0.2), 2) + currency);
                 Console.WriteLine("\n\n\nThe order will be sent to:\n\n" + c.FirstName + " " + c.LastName + "\n" + c.Street + "\n" + c.PostalCode + "\n" + c.City);
                 Console.ReadKey();
                 var newOrder = new Order()

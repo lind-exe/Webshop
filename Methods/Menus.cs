@@ -128,6 +128,7 @@ namespace Webshop.Methods
                             break;
                         case MainMenu.Exit_Shop:
                             Console.WriteLine("Thank you come again");
+                            Environment.Exit(0);
                             goMain = false;
                             break;
                         case MainMenu.Admin_Menu:
