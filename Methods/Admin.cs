@@ -15,7 +15,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System.Xml.Linq;
 using System.Numerics;
 using System.Net;
-using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MailKit;
+using MimeKit;
 
 namespace Webshop.Methods
 {
@@ -535,43 +537,58 @@ namespace Webshop.Methods
                 }
             }
         }
-        public static void SendEmail(string fromAddress, string password)
+        public static void SendEmail(Customer c)
         {
-            using SmtpClient email = new SmtpClient()
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Admin", $"{c.Email}"));
+            message.To.Add(new MailboxAddress($"{c.UserName}", $"{c.Email}"));
+            message.Subject = "Password reset?";
+
+            message.Body = new TextPart("plain")
             {
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                EnableSsl = true,
-                Host = "smtp.gmail.com",
-                Port = 587,
-                Credentials = new NetworkCredential(fromAddress, password),
+                Text = $"Your password is: " + c.Password
             };
 
-            string subject = "Password recovery";
-            string body = "The password for your account is : {passWord}";
-            try
+            using (var client = new SmtpClient())
             {
-                Console.WriteLine("Sending email *************");
-                email.Send(fromAddress, ToAddress(), subject, body);
-                Console.WriteLine("Email sent *********");
+                client.Connect("smtp.gmail.com", 587, false);
+
+                // Note: only needed if the SMTP server requires authentication
+                client.Authenticate("lindjonathan95@gmail.com", "gfpogfbgbglhmfte");
+
+                client.Send(message);
+                client.Disconnect(true);
             }
-            catch
+        }
+        public static Customer ForgotPassword(Customer c)
+        {
+            using (var db = new WebShopContext())
             {
 
+                var customerList = db.Customers;
+                Console.Write("Write your username to reset your password:");
+                string user = Console.ReadLine();
+                var correctUsername = customerList.SingleOrDefault(x => x.UserName == user);
+
+
+
+                if (correctUsername != null)
+                {
+                    c = correctUsername;
+                    Methods.Admin.SendEmail(c);
+                    Console.WriteLine("Email with your current password succesfully sent to " + c.Email);
+                    Helpers.PressAnyKey();
+                }
+                else
+                {
+                    Console.WriteLine("Username does not exist, try registering.");
+                    Console.ReadKey();
+                }
             }
+            return c;
         }
-        public static string GetUserName()
-        {
-            return "lindjonathan95@gmail.com";
-        }
-        public static string GetPassword()
-        {
-            return "password_";
-        }
-        public static string ToAddress()
-        {
-            return "jojje_lind@live.se";
-        }
+
+
 
         public static int[] SetHiglightedProducts(int[] highlightedProdsId)
         {

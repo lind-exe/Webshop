@@ -34,6 +34,7 @@ namespace Webshop.Methods
         {
             Sign_In = 1,
             Create_New_User,
+            Forgot_Password
         }
         enum Admin
         {
@@ -177,6 +178,9 @@ namespace Webshop.Methods
                         case LogIn.Create_New_User:
                             c = Helpers.CreateUser(c);
                             logIn = false;
+                            break;
+                        case LogIn.Forgot_Password:
+                            c = Methods.Admin.ForgotPassword(c);
                             break;
 
                     }
