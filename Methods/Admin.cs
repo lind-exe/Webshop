@@ -578,11 +578,13 @@ namespace Webshop.Methods
                     Methods.Admin.SendEmail(c);
                     Console.WriteLine("Email with your current password succesfully sent to " + c.Email);
                     Helpers.PressAnyKey();
+                    Console.Clear();
                 }
                 else
                 {
                     Console.WriteLine("Username does not exist, try registering.");
-                    Console.ReadKey();
+                    Helpers.PressAnyKey();
+                    Console.Clear();
                 }
             }
             return c;
