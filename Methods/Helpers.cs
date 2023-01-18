@@ -286,12 +286,12 @@ namespace Webshop.Methods
         }
         public static void AddProductToCart(int pId, Customer c)
         {
-            int answear = 0;
+            int answer = 0;
             Console.WriteLine("\n\n\n1. Add to cart \n2. Return to Browse Shop ");
-            answear = TryNumber(answear, 2, 1);
+            answer = TryNumber(answer, 2, 1);
             int amount = 0;
 
-            if (answear == 1)
+            if (answer == 1)
             {
                 using (var db = new WebShopContext())
                 {
