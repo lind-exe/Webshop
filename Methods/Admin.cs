@@ -566,7 +566,7 @@ namespace Webshop.Methods
             {
 
                 var customerList = db.Customers;
-                Console.Write("Write your username to reset your password:");
+                Console.Write("Write your username to reset your password: ");
                 string user = Console.ReadLine();
                 var correctUsername = customerList.SingleOrDefault(x => x.UserName == user);
 
