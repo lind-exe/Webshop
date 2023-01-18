@@ -228,6 +228,7 @@ namespace Webshop.Methods
                 Console.Write("Search: ");
                 var search = new List<Search>();
                 string value = Helpers.CheckStringInput();
+                Console.Clear();
                 var sql = $"SELECT p.Name as ProductName, c.Name as CategoryName, p.CategoryId As CategoryId, p.Id As ProductId FROM Products p\r\njoin Categories c on c.Id = p.CategoryId\r\nWHERE p.Name Like '%{value}%'";
                 int i = 0;
                 int answer = 0;
@@ -240,7 +241,7 @@ namespace Webshop.Methods
                 }                
                 if(search.Count > 0)
                 {
-                    Console.WriteLine("I found these results:");
+                    Console.WriteLine("I found these results:\n");
                     foreach (var p in search)
                     {
                         i++;
@@ -249,13 +250,13 @@ namespace Webshop.Methods
                         Console.ResetColor();
 
                         Console.WriteLine("______________________________________________________________________");
-                        Console.WriteLine("1. Visit product page.\n2. Go back");
+                        Console.WriteLine("\n1. Visit product page.\n2. Go back");
                         answer = Helpers.TryNumber(answer, 2, 1);
                         int selectedProduct = 0;
 
                         if (answer == 1)
                         {
-                            Console.Write("Enter id of the product you want to go to:");
+                            Console.Write("\nEnter id of the product you want to go to:");
                             selectedProduct = Helpers.TryNumber(selectedProduct, search.Count(), 1);
                             Console.Clear();
                             Admin.OneProduct(search[selectedProduct - 1].ProductId, search[selectedProduct - 1].CategoryId);

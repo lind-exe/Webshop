@@ -38,7 +38,7 @@ namespace Webshop.Methods
                 }
             }
         }
-        public static void AddProduct()
+        public static void AddProduct(Customer c)
         {
             using (var database = new WebShopContext())
             {
@@ -63,21 +63,32 @@ namespace Webshop.Methods
                 Console.WriteLine("Enter the id of the supplier.");
                 int supplier = 0;
                 supplier = Helpers.TryNumber(supplier, supplierList.Count, 1);
+                int answer = 0;
+                Console.WriteLine("\n\n1. Add product\n2. Go back");
+                answer = Helpers.TryNumber(answer, 2, 1);
                 Console.Clear();
-                var newProduct = new Product
+                if (answer == 1)
                 {
-                    Name = productName,
-                    Price = price,
-                    UnitsInStock = stock,
-                    Description = description,
-                    CategoryId = category,
-                    SupplierId = supplier
-                };
 
-                database.Add(newProduct);
-                database.SaveChanges();
+                    var newProduct = new Product
+                    {
+                        Name = productName,
+                        Price = price,
+                        UnitsInStock = stock,
+                        Description = description,
+                        CategoryId = category,
+                        SupplierId = supplier
+                    };
 
-                AddGenreToProduct();
+                    database.Add(newProduct);
+                    database.SaveChanges();
+
+                    AddGenreToProduct();
+                }
+                else if (answer == 2) 
+                {
+                    Menus.Show("AdminProducts", c);
+                }
             }
 
         }
@@ -102,7 +113,7 @@ namespace Webshop.Methods
                 while (run)
                 {
                     View.ShowGenres();
-                    Console.WriteLine("Add genre to the product.");
+                    Console.WriteLine("\nAdd genre to the product.");
                     int genre = 0;
                     genre = Helpers.TryNumber(genre, genrelist.Count, 1);
 
@@ -113,7 +124,7 @@ namespace Webshop.Methods
                         connection.Execute(sql);
                         connection.Close();
                     }
-                    Console.WriteLine("Would you like to enter another genre?\n1. Yes\n2. No");
+                    Console.WriteLine("\nWould you like to enter another genre?\n1. Yes\n2. No");
                     int answer = 0;
                     answer = Helpers.TryNumber(answer, 2, 1);
                     if (answer == 1)
@@ -258,7 +269,7 @@ namespace Webshop.Methods
                 int categoryId = 0;
 
                 Console.WriteLine();
-                Console.WriteLine("Enter id of the category you wish to browse: ");
+                Console.WriteLine("\nEnter id of the category you wish to browse: ");
                 categoryId = Helpers.TryNumber(categoryId, catList.Count, 1);
                 Console.Clear();
                 int productId = View.ProductsInCategory(categoryId);
@@ -354,7 +365,7 @@ namespace Webshop.Methods
                 var pIdExist = database.Products.Where(x => x.Id == pId) != null;
                 if (pIdExist)
                 {
-                    
+
                     var productList = database.Products.Where(x => x.Id == pId && x.CategoryId == categoryId).ToList();
 
                     Console.WriteLine("Name".PadRight(30) + "Price".PadRight(padValue1) +
@@ -362,7 +373,7 @@ namespace Webshop.Methods
                     Console.WriteLine("----------------------------------------------------------------------------------------------------------------");
                     foreach (var p in productList)
                     {
-                       
+
                         Console.WriteLine(p.Name.PadRight(30) + p.Price.ToString().PadRight(padValue1) +
                             p.UnitsInStock.ToString().PadRight(padValue2) + p.Description.PadRight(padValue2) + p.SupplierId.ToString().PadRight(padValue1));
                     }

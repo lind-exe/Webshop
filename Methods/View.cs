@@ -180,6 +180,7 @@ namespace Webshop.Methods
                               where product.CategoryId == categoryInput
                               select new { Products = product, CategoryId = category }
                               ).ToList();
+                Console.Clear();
                 int padright = 20;
                 int padrightshort = 15;
                 int answer = 0;
@@ -197,7 +198,6 @@ namespace Webshop.Methods
                 answer = Helpers.TryNumber(answer, result.Count(), 1);
                 selectedProduct = answer;
                 answer = result[answer - 1].Products.Id;
-
                 Console.Clear();
                 Admin.OneProduct(answer, categoryInput);
                 if (result[selectedProduct - 1].Products.UnitsInStock > 0)
@@ -321,7 +321,7 @@ namespace Webshop.Methods
                         p.Products.Price.ToString().PadRight(padValue1) + p.Orders.OrderDate.ToString().PadRight(padValue1) + 
                         p.OrderDetails.Quantity.ToString().PadRight(padValue1));
                 }
-                Console.WriteLine();
+                Console.WriteLine("\n");
 
                 Console.ReadKey();
             }

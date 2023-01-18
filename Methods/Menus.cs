@@ -308,7 +308,7 @@ namespace Webshop.Methods
                             adminProducts = false;
                             break;
                         case AdminProducts.Add_Product:
-                            Methods.Admin.AddProduct();
+                            Methods.Admin.AddProduct(c);
                             adminProducts = false;
                             break;
                         case AdminProducts.Return:
