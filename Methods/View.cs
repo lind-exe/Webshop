@@ -37,7 +37,7 @@ namespace Webshop.Methods
                 {
                     Console.WriteLine(d.Id + "\t" + d.Name);
                 }
-
+                Console.WriteLine("-----------------------------\n");
             }
         }
         public static void ShowSupplier()
@@ -193,7 +193,7 @@ namespace Webshop.Methods
                     Console.WriteLine(i + "".PadRight(13) + d.Products.Name.PadRight(padright) + d.CategoryId.Name.PadRight(padrightshort) + d.Products.Price);
 
                 }
-                Console.Write("Enter the Id of the product: ");
+                Console.Write("\n\nEnter the Id of the product: ");
                 answer = Helpers.TryNumber(answer, result.Count(), 1);
                 selectedProduct = answer;
                 answer = result[answer - 1].Products.Id;
@@ -277,9 +277,10 @@ namespace Webshop.Methods
             using (var db = new WebShopContext())
             {
                 var shippers = db.ShipChoices;
+                
                 foreach (var s in shippers)
                 {
-                    Console.WriteLine(s.Id + " " + s.ShipVia);
+                    Console.WriteLine("Id: " + s.Id + " | Send by: " + s.ShipVia + " | Delivery time:" + s.DeliveryTime + " | Shipping price: " + s.ShipPrice);
                 }
             }
         }
@@ -300,7 +301,8 @@ namespace Webshop.Methods
         {
             using (var db = new WebShopContext())
             {
-
+                int padValue1 = 15;
+                int padValue2 = 20;
                 var result = (
                     from orders in db.Orders
                     join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
@@ -310,11 +312,14 @@ namespace Webshop.Methods
                     select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                     );
 
-                Console.WriteLine("Order ID\tProduct Name\tPrice\tOrder Date\t\tQuantity");
+                Console.WriteLine("Order ID".PadRight(padValue1) + "Product Name".PadRight(padValue2) + "Price".PadRight(padValue1) + 
+                    "Order Date".PadRight(padValue1) + "Quantity".PadRight(padValue1));
                 Console.WriteLine("------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
-                    Console.WriteLine(p.Orders.Id + "\t\t" + p.Products.Name + "\t" + p.Products.Price + "\t" + p.Orders.OrderDate + "\t" + p.OrderDetails.Quantity );
+                    Console.WriteLine(p.Orders.Id.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) + 
+                        p.Products.Price.ToString().PadRight(padValue1) + p.Orders.OrderDate.ToString().PadRight(padValue1) + 
+                        p.OrderDetails.Quantity.ToString().PadRight(padValue1));
                 }
                 Console.WriteLine();
 

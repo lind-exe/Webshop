@@ -214,7 +214,7 @@ namespace Webshop.Methods
                             browseShop = false;
                             break;
                         case BrowseShop.Shoppingcart:
-                            View.ShoppingCart(c);                       //Checkout klar, måste cleara och skit + frakt osv
+                            View.ShoppingCart(c);                       
                             browseShop = false;
                             break;
                         case BrowseShop.Profile:
