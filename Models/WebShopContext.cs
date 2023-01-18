@@ -21,7 +21,7 @@ namespace Webshop.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=MyWebShop;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer("Server=tcp:gameshopstopdb.database.windows.net,1433;Initial Catalog=gamestopshopdb;Persist Security Info=False;User ID=andreastollmar;Password=Hejsanmicke91;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
     }
 
