@@ -69,10 +69,7 @@ namespace Webshop.Methods
 
             }
         }
-        internal static void ShowAccessories()
-        {
-
-        }
+       
         internal static void DisplayCustomer(Customer c)
         {
             Console.Clear();
@@ -96,10 +93,6 @@ namespace Webshop.Methods
                 int prodId1 = highlightedProdsId[0];
                 int prodId2 = highlightedProdsId[1];
                 int prodId3 = highlightedProdsId[2];
-
-                //int randomNr1 = rnd.Next(1, productsList.Count + 1); // -> if random: randomNr1 goes instead of prod1Id
-                //int randomNr2 = rnd.Next(1, productsList.Count + 1);
-                //int randomNr3 = rnd.Next(1, productsList.Count + 1);
 
                 if (productsList.Count > 0)
                 {

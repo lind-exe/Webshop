@@ -237,30 +237,44 @@ namespace Webshop.Methods
                     search = connection.Query<Search>(sql).ToList();
                     connection.Close();
 
-                }
-                Console.WriteLine("I found these results:");
-                foreach (var p in search)
+                }                
+                if(search.Count > 0)
                 {
-                    i++;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("ID " + i + ". Product name: " + p.ProductName + " is listed under " + p.CategoryName);
-                    Console.ResetColor();
+                    Console.WriteLine("I found these results:");
+                    foreach (var p in search)
+                    {
+                        i++;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("ID " + i + ". Product name: " + p.ProductName + " is listed under " + p.CategoryName);
+                        Console.ResetColor();
 
+                        Console.WriteLine("______________________________________________________________________");
+                        Console.WriteLine("1. Visit product page.\n2. Go back");
+                        answer = Helpers.TryNumber(answer, 2, 1);
+                        int selectedProduct = 0;
+
+                        if (answer == 1)
+                        {
+                            Console.Write("Enter id of the product you want to go to:");
+                            selectedProduct = Helpers.TryNumber(selectedProduct, search.Count(), 1);
+                            Console.Clear();
+                            Admin.OneProduct(search[selectedProduct - 1].ProductId, search[selectedProduct - 1].CategoryId);
+
+                            Helpers.AddProductToCart(search[selectedProduct - 1].ProductId, c);
+                        }
+                        else if (answer == 2)
+                        {
+                            Menus.Show("Main", c);
+                        }
+                    }
                 }
-                Console.WriteLine("______________________________________________________________________");
-                Console.WriteLine("1. Visit product page.\n2. Go back");
-                answer = Helpers.TryNumber(answer, 2, 1);
-                int selectedProduct = 0;
-
-                if (answer == 1)
+                else
                 {
-                    Console.Write("Enter id of the product you want to go to:");
-                    selectedProduct = Helpers.TryNumber(selectedProduct, search.Count(), 1);
-                    Console.Clear();
-                    Admin.OneProduct(search[selectedProduct - 1].ProductId, search[selectedProduct - 1].CategoryId);
-                    
-                    Helpers.AddProductToCart(search[selectedProduct - 1].ProductId, c);
+                    Console.WriteLine("No result found");
+                    Thread.Sleep(1000);
+                    Menus.Show("Main", c);
                 }
+                
 
                 Console.WriteLine("\n\n\n");
                 Console.ReadKey();

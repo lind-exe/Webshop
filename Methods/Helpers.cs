@@ -110,7 +110,6 @@ namespace Webshop.Methods
                 if (!int.TryParse(Console.ReadLine(), out number) || number > maxValue || number < minValue)
                 {
                     Console.Write("Wrong input, try again: ");
-                    //ClearLine();
                 }
                 else
                 {
@@ -122,6 +121,7 @@ namespace Webshop.Methods
         // Trycatch >>>> unika email
         public static Customer CreateUser(Customer c)
         {
+
 
             Console.WriteLine("Input username: ");
             string userName = CheckStringInput();
@@ -153,9 +153,14 @@ namespace Webshop.Methods
             {
                 var customerList = database.Customers;
                 var userNameExists = customerList.SingleOrDefault(x => x.UserName == userName) != null;
+                var emailExists = customerList.SingleOrDefault(x => x.Email == email) != null;
                 if (userNameExists)
                 {
-                    Choose_Red_Message_Return_To_Login("User does already exist, try again or register new user!", c);
+                    Choose_Red_Message_Return_To_Login("A user with username '" + userName + "' already exists, try again", c);
+                }
+                else if (emailExists)
+                {
+                    Choose_Red_Message_Return_To_Login("A user with email '" + email + "' already exists, try again", c);
                 }
                 else
                 {
@@ -177,9 +182,8 @@ namespace Webshop.Methods
                     database.SaveChanges();
                     c = newCustomer;
                 }
-                return c;
             }
-
+            return c;
         }
         internal static void BuildPicture()
         {
@@ -315,9 +319,6 @@ namespace Webshop.Methods
                         Quantity = amount,
                         ProductId = pId,
                         UnitPrice = product[0].Price
-                        //discount?
-
-
                     };
                     db.Add(newOrderDetails);
                     db.SaveChanges();
@@ -355,39 +356,49 @@ namespace Webshop.Methods
                 Console.Write("\nSelect payment method: ");
                 payment = TryNumber(payment, paymentMethods.Count(), 1);
 
-                
+
 
 
                 var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
                 var orderDetails = db.OrderDetails.Where(x => x.OrderId == orderUpdated.Id).ToList();
-                
+
                 orderUpdated.ShipChoice = shipmentChoices.Where(x => x.Id == shipper).FirstOrDefault();
                 orderUpdated.PaymentMethod = paymentMethods.Where(x => x.Id == payment).FirstOrDefault();
                 orderUpdated.OrderDate = DateTime.Now;
                 orderUpdated.Purchased = true;
 
                 db.SaveChanges();
-                
-                for(int i = 0; i < orderDetails.Count(); i++)
+
+                for (int i = 0; i < orderDetails.Count(); i++)
                 {
 
                     var choosenProduct = db.Products.Where(x => x.Id == orderDetails[i].ProductId).ToList();
                     choosenProduct[0].UnitsInStock = choosenProduct[0].UnitsInStock - orderDetails[0].Quantity;
                     db.SaveChanges();
                 }
-
+                Console.Clear();
+                Console.WriteLine("\n\nYour order containing " + orderDetails.Count() + " items with ordernumber " + orderUpdated.Id + " has been received: \n");
+                float cost = 0;
+                foreach(var p in orderDetails)
+                {
+                    Console.WriteLine(p.Products.Name + " " + p.UnitPrice + "SEK, Quantity: " + p.Quantity);
+                    cost = cost + (p.UnitPrice * p.Quantity);
+                }
+                Console.WriteLine("---------------------------------------------");                
+                Console.WriteLine("Total cost = " + cost );
+                Console.WriteLine("\n\n\nThe order will be sent to:\n" + c.FirstName + " " + c.LastName + "\n" + c.Street + "\n" + c.PostalCode + "\n" + c.City);
+                Console.ReadKey();
                 var newOrder = new Order()
                 {
                     CustomerId = c.Id
                 };
                 db.Add(newOrder);
                 db.SaveChanges();
-                Console.Clear();
-                Console.WriteLine("You bought something, good job!");
+                Console.Clear();                
                 for (int i = 0; i < 5; i++)
                 {
                     Helpers.Victory();
-                }
+                }                
                 Helpers.PressAnyKey();
             }
         }
@@ -444,18 +455,18 @@ namespace Webshop.Methods
                where orders.CustomerId == c.Id && orders.Purchased == null
                select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                );
-                var resultList=result.ToList();
+                var resultList = result.ToList();
                 Console.WriteLine("ID\tProduct\tPrice\tQuantity\tOrder ID");
                 Console.WriteLine("------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
                     i++;
-                    Console.WriteLine(i+"\t"+p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                    Console.WriteLine(i + "\t" + p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
                 }
                 Console.Write("\nEnter the id of the product you want to change: ");
                 input = TryNumber(input, result.Count(), 1);
                 Console.Write("\nEnter the new quantity: ");
-                newQuantity = TryNumber(newQuantity, resultList[input-1].Products.UnitsInStock,1);
+                newQuantity = TryNumber(newQuantity, resultList[input - 1].Products.UnitsInStock, 1);
                 resultList[input - 1].OrderDetails.Quantity = newQuantity;
                 db.SaveChanges();
             }
@@ -468,7 +479,7 @@ namespace Webshop.Methods
                 int i = 0;
                 var input = 0;
                 var newQuantity = 0;
-                
+
                 var result = (
                from orders in db.Orders
                join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
@@ -487,11 +498,9 @@ namespace Webshop.Methods
                 }
                 Console.Write("\nEnter the id of the product you want to remove: ");
                 input = TryNumber(input, result.Count(), 1);
-                var idToRemove = (from od in db.OrderDetails where od.Id == resultList[input-1].OrderDetails.Id select od).FirstOrDefault();
+                var idToRemove = (from od in db.OrderDetails where od.Id == resultList[input - 1].OrderDetails.Id select od).FirstOrDefault();
                 db.OrderDetails.Remove((OrderDetail)idToRemove);
-                db.SaveChanges();              
-
-
+                db.SaveChanges();
             }
         }
     }
