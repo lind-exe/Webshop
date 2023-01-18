@@ -21,7 +21,7 @@ namespace Webshop.Methods
 {
     internal class Admin
     {
-        public static readonly string _connString = "data source=.\\SQLEXPRESS; initial catalog = MyWebShop; persist security info = True; Integrated Security = True;";
+        public static readonly string _connString = "Server=tcp:gameshopstopdb.database.windows.net,1433;Initial Catalog=gamestopshopdb;Persist Security Info=False;User ID=andreastollmar;Password=Hejsanmicke91;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         internal static void RemoveProduct(int pId)  // lägga till product.Name
         {

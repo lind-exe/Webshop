@@ -15,8 +15,8 @@ namespace Webshop.Models
         public int UnitsInStock { get; set; }
         public string? Description { get; set; }
         public int SupplierId { get; set; }
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual Category Category { get; set; }
+        public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
+        public virtual Category? Category { get; set; }
         public virtual ICollection<Genre>? Genres { get; set; }
     }
 }

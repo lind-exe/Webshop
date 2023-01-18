@@ -17,6 +17,7 @@ namespace Webshop.Methods
             InsertCategories();
             InsertPaymentMethods();
             InsertCustomers();
+            //InsertProducts();
         }
         private static void InsertGenres()
         {
@@ -110,7 +111,7 @@ namespace Webshop.Methods
                 int[] ages = { 30, 36, 27, 28, 31 };
                 string[] countries = "Sweden, Sweden, Sweden, Sweden, Sweden".Split(", ");
                 string[] cities = "Nyköping, Nyköping, Nyköping, Nyköping, Nyköping".Split(", ");
-                string[] streets = "Campus Nyköping 1, Oppeby Gård 181, Mejerivägen 11A, Regeringsvägen 8c".Split(", ");
+                string[] streets = "Campus Nyköping 1, Oppeby Gård 181, Mejerivägen 11A, Regeringsvägen 8c, Borgaregatan 13A".Split(", ");
                 int[] postalCodes = { 61140, 61155, 61156, 61156, 61130 };;
                 int[] phones = { 0701234567, 0731234567, 0761234567, 0707654321, 0737654321 };;
                 string[] emails = "admin@mail.se, gradde@mail.se, jlind@mail.se, chrillo@mail.se, andreas@mail.se".Split(", ");
@@ -171,5 +172,35 @@ namespace Webshop.Methods
                 db.SaveChanges();
             }
         }
+        //private static void InsertProducts()
+        //{
+        //    using (var db = new WebShopContext())
+        //    {
+        //        string[] names = "World of WarCraft, Fifa 23, Horde T-shirt".Split(", ");
+        //        int[] categoryIds = { 5, 1, 7 };
+        //        int[] prices = { 999, 799, 2499 };
+        //        int[] unitsInStock = { 500, 500, 100 };
+        //        string[] descriptions = "Addictive, Play with friends, For the Horde".Split(", ");
+        //        int[] suppliersId = { 1, 7, 1 };
+
+        //        var resultList = new List<Product>();
+
+
+        //        for (int i = 0; i < names.Length; i++)
+        //        {
+        //            resultList.Add(new Product()
+        //            {
+        //                Name = names[i],
+        //                CategoryId = categoryIds[i],
+        //                Price = prices[i],
+        //                UnitsInStock = unitsInStock[i],
+        //                Description = descriptions[i],
+        //                SupplierId = suppliersId[i]
+        //            });
+        //        }
+        //        db.AddRange(resultList);
+        //        db.SaveChanges();
+        //    }
+        //}
     }
 }
