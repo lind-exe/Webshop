@@ -287,7 +287,7 @@ namespace Webshop.Methods
         public static void AddProductToCart(int pId, Customer c)
         {
             int answear = 0;
-            Console.WriteLine("\n\n\n1. Add to cart \n2. Return to main menu ");
+            Console.WriteLine("\n\n\n1. Add to cart \n2. Return to Browse Shop ");
             answear = TryNumber(answear, 2, 1);
             int amount = 0;
 
@@ -309,7 +309,7 @@ namespace Webshop.Methods
 
                     var orderUpdated = db.Orders.Where(x => x.CustomerId == c.Id).OrderBy(x => x.Id).LastOrDefault();
                     var product = db.Products.Where(x => x.Id == pId).ToList();
-                    Console.Write("How many do you want to buy?: ");
+                    Console.Write("\nEnter number of items you want to buy: ");
                     amount = TryNumber(amount, product[0].UnitsInStock, 1);
 
                     var orderDetails = db.OrderDetails.ToList();
@@ -329,7 +329,7 @@ namespace Webshop.Methods
             }
             else
             {
-                Menus.Show("Main", c);
+                Menus.Show("BrowseShop", c);
             }
         }
 
@@ -348,12 +348,12 @@ namespace Webshop.Methods
 
                 View.ShowOrders(c);
                 View.ShippingMethods();
-                Console.Write("\nSelect shipping method: ");
+                Console.Write("\n\nSelect shipping method: ");
                 shipper = TryNumber(shipper, shipmentChoices.Count(), 1);
                 Console.Clear();
                 View.ShowOrders(c);
                 View.PaymentMethods();
-                Console.Write("\nSelect payment method: ");
+                Console.Write("\n\nSelect payment method: ");
                 payment = TryNumber(payment, paymentMethods.Count(), 1);
 
 
@@ -381,12 +381,13 @@ namespace Webshop.Methods
                 float cost = 0;
                 foreach(var p in orderDetails)
                 {
-                    Console.WriteLine(p.Products.Name + " " + p.UnitPrice + "SEK, Quantity: " + p.Quantity);
+                    Console.WriteLine(p.Products.Name + " " + p.UnitPrice + " SEK, Quantity: " + p.Quantity);
                     cost = cost + (p.UnitPrice * p.Quantity);
                 }
                 Console.WriteLine("---------------------------------------------");                
-                Console.WriteLine("Total cost = " + cost );
-                Console.WriteLine("\n\n\nThe order will be sent to:\n" + c.FirstName + " " + c.LastName + "\n" + c.Street + "\n" + c.PostalCode + "\n" + c.City);
+                Console.WriteLine("Total cost = " + Math.Round(cost, 2) + " SEK");
+                Console.WriteLine("VAT: " + Math.Round((cost * 0.2), 2) + " SEK");
+                Console.WriteLine("\n\n\nThe order will be sent to:\n\n" + c.FirstName + " " + c.LastName + "\n" + c.Street + "\n" + c.PostalCode + "\n" + c.City);
                 Console.ReadKey();
                 var newOrder = new Order()
                 {

@@ -173,7 +173,7 @@ namespace Webshop.Methods
             {
                 var categorylist = database.Categories;
                 var maxCategory = database.Categories.ToList();
-                Console.Write("Enter id of the Category: ");
+                Console.Write("\nEnter id of the Category: ");
                 categoryInput = Helpers.TryNumber(categoryInput, maxCategory.Count, 1);
                 var result = (from product in database.Products
                               join category in database.Categories on product.CategoryId equals category.Id
@@ -214,7 +214,7 @@ namespace Webshop.Methods
         internal static void ShoppingCart(Customer c)
         {
             ShowOrders(c);
-            Console.WriteLine("\n\n1. Proceed to checkout\n2. Edit quantity.\n3. Remove products\n0. Return");
+            Console.WriteLine("\n\n1. Proceed to checkout\n2. Edit quantity\n3. Remove products\n0. Return");
             int input = 0;
             input = Helpers.TryNumber(input, 4, 0);
 
@@ -226,7 +226,7 @@ namespace Webshop.Methods
                 case 2:
                     Helpers.EditCartQuantity(c);
                     Helpers.PressAnyKey();
-                    Menus.Show("Main", c);
+                    Menus.Show("BrowseShop", c);
                     break;
                 case 3:
                     Helpers.RemoveCartProducts(c);
@@ -262,13 +262,13 @@ namespace Webshop.Methods
                 else if (result != null)
                 {
                     Console.WriteLine("Product".PadRight(padValue2) + "Price".PadRight(padValue1) + "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
-                    Console.WriteLine("-------------------------------------------------------------");
+                    Console.WriteLine("----------------------------------------------------------------");
                     foreach (var p in result)
                     {
                         Console.WriteLine(p.Products.Name.PadRight(padValue2) + p.Products.Price.ToString().PadRight(padValue1) + 
                             p.OrderDetails.Quantity.ToString().PadRight(padValue1) + p.Orders.Id.ToString().PadRight(padValue1));
                     }
-                    Console.WriteLine("\n");
+                    Console.WriteLine("\n\n\n");
                 }
 
             }
@@ -281,7 +281,7 @@ namespace Webshop.Methods
                 var shippers = db.ShipChoices;
                 int padValue1 = 12;
                 int padValue2 = 32;
-                Console.WriteLine("Nr: " + "Shipping Company:".PadRight(padValue2) + "Delivery time:".PadRight(padValue2) + "Price:".PadRight(padValue1));
+                Console.WriteLine("\n\n\nNr: " + "Shipping Company:".PadRight(padValue2) + "Delivery time:".PadRight(padValue2) + "Price:".PadRight(padValue1));
                 Console.WriteLine("--------------------------------------------------------------------------");
                 foreach (var s in shippers)
                 {

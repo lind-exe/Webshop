@@ -14,11 +14,11 @@ namespace Webshop
         {
             bool runProgram = true;
             Customer? c = null;
+            Helpers.Welcome();
             while (runProgram)
             {
                 Console.Clear();
                 Console.ResetColor();
-                Helpers.Welcome();
                 if (c == null)
                 {
                     c = Menus.Show("LogIn", c);
