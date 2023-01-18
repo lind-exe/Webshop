@@ -554,7 +554,7 @@ namespace Webshop.Methods
                 client.Connect("smtp.gmail.com", 587, false);
 
                 // Note: only needed if the SMTP server requires authentication
-                client.Authenticate("lindjonathan95@gmail.com", "gfpogfbgbglhmfte");
+                client.Authenticate("gameshop.supp@gmail.com", "uxpmbumqmcyfieve");
 
                 client.Send(message);
                 client.Disconnect(true);
