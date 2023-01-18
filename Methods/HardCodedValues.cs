@@ -125,6 +125,7 @@ namespace Webshop.Methods
                     resultList.Add(new Customer()
                     {
                         UserName = userNames[i],
+                        Password = passwords[i],
                         FirstName = firstNames[i],
                         LastName = lastNames[i],
                         Age = ages[i],
