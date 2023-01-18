@@ -308,7 +308,7 @@ namespace Webshop.Methods
             using (var db = new WebShopContext())
             {
                 int padValue1 = 15;
-                int padValue2 = 20;
+                int padValue2 = 30;
                 var result = (
                     from orders in db.Orders
                     join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
@@ -320,7 +320,7 @@ namespace Webshop.Methods
 
                 Console.WriteLine("Order ID".PadRight(padValue1) + "Product Name".PadRight(padValue2) + "Price".PadRight(padValue1) + 
                      "Quantity".PadRight(padValue1) +"Order Date".PadRight(padValue1));
-                Console.WriteLine("------------------------------------------------------------------------------------");
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
                     Console.WriteLine(p.Orders.Id.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) + 
@@ -328,7 +328,7 @@ namespace Webshop.Methods
                         p.Orders.OrderDate.ToString().PadRight(padValue1));
                 }
                 Console.WriteLine("\n");
-
+                Helpers.PressAnyKey();
                 Console.ReadKey();
             }
         }
