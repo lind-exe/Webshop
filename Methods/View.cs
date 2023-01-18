@@ -231,10 +231,10 @@ namespace Webshop.Methods
                 case 3:
                     Helpers.RemoveCartProducts(c);
                     Helpers.PressAnyKey();
-                    Menus.Show("Main", c);
+                    Menus.Show("BrowseShop", c);
                     break;
                 case 0:
-                    Menus.Show("Main", c);
+                    Menus.Show("BrowseShop", c);
                     break;
             }
         }
@@ -251,22 +251,24 @@ namespace Webshop.Methods
                     where orders.CustomerId == c.Id && orders.Purchased == null
                     select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                     );
-
+                int padValue1 = 15;
+                int padValue2 = 20;
                 if (result.ToList().Count < 1)
                 {
                     Console.WriteLine("Shopping cart is empty, go buy stuff");
                     Thread.Sleep(1000);
-                    Menus.Show("Main", c);
+                    Menus.Show("BrowseShop", c);
                 }
                 else if (result != null)
                 {
-                    Console.WriteLine("Product\tPrice\tQuantity\tOrder ID");
-                    Console.WriteLine("------------------------------------------------------------------------------");
+                    Console.WriteLine("Product".PadRight(padValue2) + "Price".PadRight(padValue1) + "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
+                    Console.WriteLine("-------------------------------------------------------------");
                     foreach (var p in result)
                     {
-                        Console.WriteLine(p.Products.Name + "\t" + p.Products.Price + "\t" + "\t" + p.OrderDetails.Quantity + "\t" + p.Orders.Id);
+                        Console.WriteLine(p.Products.Name.PadRight(padValue2) + p.Products.Price.ToString().PadRight(padValue1) + 
+                            p.OrderDetails.Quantity.ToString().PadRight(padValue1) + p.Orders.Id.ToString().PadRight(padValue1));
                     }
-                    Console.WriteLine();
+                    Console.WriteLine("\n");
                 }
 
             }
@@ -277,10 +279,13 @@ namespace Webshop.Methods
             using (var db = new WebShopContext())
             {
                 var shippers = db.ShipChoices;
-                
+                int padValue1 = 12;
+                int padValue2 = 32;
+                Console.WriteLine("Nr: " + "Shipping Company:".PadRight(padValue2) + "Delivery time:".PadRight(padValue2) + "Price:".PadRight(padValue1));
+                Console.WriteLine("----------------------------------------------------------------------");
                 foreach (var s in shippers)
                 {
-                    Console.WriteLine("Id: " + s.Id + " | Send by: " + s.ShipVia + " | Delivery time:" + s.DeliveryTime + " | Shipping price: " + s.ShipPrice);
+                    Console.WriteLine(s.Id + ": " + s.ShipVia.PadRight(padValue2) + s.DeliveryTime.PadRight(padValue2) + s.ShipPrice + " SEK".ToString().PadRight(padValue1));
                 }
             }
         }

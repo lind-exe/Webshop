@@ -126,7 +126,7 @@ namespace Webshop.Methods
                             goMain = false;
                             break;
                         case MainMenu.Exit_Shop:
-                            Console.WriteLine("Thank you come again"); ;
+                            Console.WriteLine("Thank you come again");
                             goMain = false;
                             break;
                         case MainMenu.Admin_Menu:
