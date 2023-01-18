@@ -542,11 +542,11 @@ namespace Webshop.Methods
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Admin", $"{c.Email}"));
             message.To.Add(new MailboxAddress($"{c.UserName}", $"{c.Email}"));
-            message.Subject = "Password reset?";
+            message.Subject = "Your forgotten password";
 
             message.Body = new TextPart("plain")
             {
-                Text = $"Your password is: " + c.Password
+                Text = $"Forgetting your password is not recommended, try to remember it this time. This is your current password: " + c.Password
             };
 
             using (var client = new SmtpClient())
