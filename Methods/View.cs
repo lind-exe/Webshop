@@ -181,8 +181,8 @@ namespace Webshop.Methods
                               select new { Products = product, CategoryId = category }
                               ).ToList();
                 Console.Clear();
-                int padright = 20;
-                int padrightshort = 15;
+                int padright = 30;
+                int padrightshort = 20;
                 int answer = 0;
                 int i = 0;
                 int selectedProduct = 0;
@@ -251,8 +251,8 @@ namespace Webshop.Methods
                     where orders.CustomerId == c.Id && orders.Purchased == null
                     select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                     );
-                int padValue1 = 15;
-                int padValue2 = 20;
+                int padValue1 = 18;
+                int padValue2 = 30;
                 if (result.ToList().Count < 1)
                 {
                     Console.WriteLine("Shopping cart is empty, go buy stuff");

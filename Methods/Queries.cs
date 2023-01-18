@@ -230,6 +230,17 @@ namespace Webshop.Methods
                 string value = Helpers.CheckStringInput();
                 Console.Clear();
                 var sql = $"SELECT p.Name as ProductName, c.Name as CategoryName, p.CategoryId As CategoryId, p.Id As ProductId FROM Products p\r\njoin Categories c on c.Id = p.CategoryId\r\nWHERE p.Name Like '%{value}%'";
+
+
+                // Split() = dela upp till strängar.
+                string[] strings = value.Split(' ');
+                var selectedStrings = from str in strings
+                                      where str != "INSERT" && str != "DELETE" && str != "REMOVE" && str != "DROP"
+                                      select str;
+
+                value = String.Join(" ", selectedStrings);
+
+
                 int i = 0;
                 int answer = 0;
                 using (var connection = new SqlConnection(Admin._connString))
