@@ -445,11 +445,12 @@ namespace Webshop.Methods
         {
             using (var db = new WebShopContext())
             {
+                Console.Clear();
                 int i = 0;
                 var input = 0;
                 var newQuantity = 0;
-                var padValue1 = 15;
-                var padValue2 = 20;
+                var padValue1 = 12;
+                var padValue2 = 30;
                 var result = (
                from orders in db.Orders
                join orderDetails in db.OrderDetails on orders.Id equals orderDetails.OrderId
@@ -461,15 +462,15 @@ namespace Webshop.Methods
                 var resultList = result.ToList();
                 Console.WriteLine("ID".PadRight(padValue1) + "Product".PadRight(padValue2) + "Price".PadRight(padValue1) + 
                     "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
-                Console.WriteLine("------------------------------------------------------------------------------");
+                Console.WriteLine("-------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
                     i++;
-                    Console.WriteLine(i.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue1) + 
-                        p.Products.Price.ToString().PadRight(padValue2) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) + 
+                    Console.WriteLine(i.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) + 
+                        p.Products.Price.ToString().PadRight(padValue1) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) + 
                         p.Orders.Id.ToString().PadRight(padValue1));
                 }
-                Console.Write("\nEnter the id of the product you want to change: ");
+                Console.Write("\n\n\nEnter the id of the product you want to change: ");
                 input = TryNumber(input, result.Count(), 1);
                 Console.Write("\nEnter the new quantity: ");
                 newQuantity = TryNumber(newQuantity, resultList[input - 1].Products.UnitsInStock, 1);

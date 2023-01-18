@@ -183,15 +183,16 @@ namespace Webshop.Methods
                 Console.Clear();
                 int padright = 30;
                 int padrightshort = 20;
+                int padrightshorter = 15;
                 int answer = 0;
                 int i = 0;
                 int selectedProduct = 0;
-                Console.WriteLine("\nID".PadRight(padrightshort) + "Product Name".PadRight(padright) + "Category".PadRight(padrightshort) + "Price");
-                Console.WriteLine("-------------------------------------------------------");
+                Console.WriteLine("\nID".PadRight(padrightshort) + "Product Name".PadRight(padright) + "Category".PadRight(padrightshorter) + "Price".PadRight(padrightshort));
+                Console.WriteLine("----------------------------------------------------------------------------");
                 foreach (var d in result)
                 {
                     i++;
-                    Console.WriteLine(i + "".PadRight(13) + d.Products.Name.PadRight(padright) + d.CategoryId.Name.PadRight(padrightshort) + d.Products.Price);
+                    Console.WriteLine(i + "".PadRight(13) + d.Products.Name.PadRight(padright) + d.CategoryId.Name.PadRight(padrightshort) + d.Products.Price.ToString().PadRight(padrightshort));
 
                 }
                 Console.Write("\n\nEnter the Id of the product: ");
@@ -262,7 +263,7 @@ namespace Webshop.Methods
                 else if (result != null)
                 {
                     Console.WriteLine("Product".PadRight(padValue2) + "Price".PadRight(padValue1) + "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
-                    Console.WriteLine("----------------------------------------------------------------");
+                    Console.WriteLine("-----------------------------------------------------------------------");
                     foreach (var p in result)
                     {
                         Console.WriteLine(p.Products.Name.PadRight(padValue2) + p.Products.Price.ToString().PadRight(padValue1) + 
