@@ -79,9 +79,9 @@ namespace Webshop.Methods
                 {
                     if (db.Products.ToList().Count > 0)
                     {
-                        var product1 = db.Products.FirstOrDefault(x => x.Id > 0);
-                        var product2 = db.Products.FirstOrDefault(x => x.Id > 0 && x.Id != product1.Id);
-                        var product3 = db.Products.FirstOrDefault(x => x.Id > 0 && x.Id != product2.Id);
+                        var product1 = db.Products.Where(x => x.Id > 0).FirstOrDefault();
+                        var product2 = db.Products.Where(x => x.Id > 0 && x.Id > product1.Id).FirstOrDefault();
+                        var product3 = db.Products.Where(x => x.Id > 0 && x.Id > product2.Id).FirstOrDefault();
                         _highlightedProdsId[0] = product1.Id;
                         _highlightedProdsId[1] = product2.Id;
                         _highlightedProdsId[2] = product3.Id;
