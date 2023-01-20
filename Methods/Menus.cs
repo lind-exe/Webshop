@@ -361,7 +361,7 @@ namespace Webshop.Methods
                         }
                         else
                         {
-                            Console.WriteLine("User does not exist, try again");
+                            Console.WriteLine("\n\nUser does not exist, try again");
                         }
 
 

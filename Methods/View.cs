@@ -60,7 +60,7 @@ namespace Webshop.Methods
                 int padValue2 = 30;
                 int padValue3 = 20;
                 var productlist = database.Products;
-                Console.WriteLine("ID".PadRight(padValue1) + "Name".PadRight(padValue2) + "Price, SEK".PadRight(padValue3) + "Unitsinstock");
+                Console.WriteLine("\nID".PadRight(padValue1) + "Name".PadRight(padValue2) + "Price, SEK".PadRight(padValue3) + "Unitsinstock");
                 Console.WriteLine("--------------------------------------------------------------------------");
                 foreach (var c in productlist)
                 {
@@ -69,17 +69,22 @@ namespace Webshop.Methods
 
             }
         }
-       
+
         internal static void DisplayCustomer(Customer c)
         {
             Console.Clear();
-            Console.SetCursorPosition(40, 0);
-            string? displayUserName = ("User: " + ((c.FirstName != "" ? c.FirstName : (c.UserName == "" ? "Unknown" : c.UserName)) + "\n"));
-            try
+            string? showUserName = "";
+            //string? displayUserName = ("User: " + ((c.FirstName != "" ? c.FirstName : (c.UserName == "" ? "Unknown" : c.UserName)) + "\n")); //Kraschar
+            if (c.FirstName != null)
             {
-                Console.WriteLine(displayUserName);
+                showUserName = "User: " + c.FirstName;
             }
-            catch (Exception) { Helpers.Choose_Red_Message_Return_To_Login("Could not find a username", c); }
+            else
+            {
+                showUserName = "User: Unknown";
+            }
+            Console.SetCursorPosition(40, 0);
+            Console.Write(showUserName);
         }
         internal static void Show3HighlightedProducts(int[] highlightedProdsId)
         {
@@ -207,7 +212,7 @@ namespace Webshop.Methods
                 }
                 else
                 {
-                    Console.WriteLine("No units in stock. Come back at a later time.");
+                    Console.WriteLine("\n\nNo units in stock. Come back at a later time.");
                 }
             }
         }
@@ -256,17 +261,17 @@ namespace Webshop.Methods
                 int padValue2 = 30;
                 if (result.ToList().Count < 1)
                 {
-                    Console.WriteLine("Shopping cart is empty, go buy stuff");
+                    Console.WriteLine("\nShopping cart is empty, go buy stuff");
                     Thread.Sleep(1000);
                     Menus.Show("BrowseShop", c);
                 }
                 else if (result != null)
                 {
-                    Console.WriteLine("Product".PadRight(padValue2) + "Price".PadRight(padValue1) + "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
+                    Console.WriteLine("\nProduct".PadRight(padValue2) + "Price".PadRight(padValue1) + "Quantity".PadRight(padValue1) + "Order ID".PadRight(padValue1));
                     Console.WriteLine("-----------------------------------------------------------------------");
                     foreach (var p in result)
                     {
-                        Console.WriteLine(p.Products.Name.PadRight(padValue2) + p.Products.Price.ToString().PadRight(padValue1) + 
+                        Console.WriteLine(p.Products.Name.PadRight(padValue2) + p.Products.Price.ToString().PadRight(padValue1) +
                             p.OrderDetails.Quantity.ToString().PadRight(padValue1) + p.Orders.Id.ToString().PadRight(padValue1));
                     }
                     Console.WriteLine("\n\n\n");
@@ -318,13 +323,13 @@ namespace Webshop.Methods
                     select new { Orders = orders, OrderDetails = orderDetails, Products = product }
                     );
 
-                Console.WriteLine("Order ID".PadRight(padValue1) + "Product Name".PadRight(padValue2) + "Price".PadRight(padValue1) + 
-                     "Quantity".PadRight(padValue1) +"Order Date".PadRight(padValue1));
+                Console.WriteLine("\nOrder ID".PadRight(padValue1) + "Product Name".PadRight(padValue2) + "Price".PadRight(padValue1) +
+                     "Quantity".PadRight(padValue1) + "Order Date".PadRight(padValue1));
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
                 foreach (var p in result)
                 {
-                    Console.WriteLine(p.Orders.Id.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) + 
-                        p.Products.Price.ToString().PadRight(padValue1) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) + 
+                    Console.WriteLine(p.Orders.Id.ToString().PadRight(padValue1) + p.Products.Name.PadRight(padValue2) +
+                        p.Products.Price.ToString().PadRight(padValue1) + p.OrderDetails.Quantity.ToString().PadRight(padValue1) +
                         p.Orders.OrderDate.ToString().PadRight(padValue1));
                 }
                 Console.WriteLine("\n");

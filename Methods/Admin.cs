@@ -27,7 +27,7 @@ namespace Webshop.Methods
 
         internal static void RemoveProduct(int pId)  // lägga till product.Name
         {
-            Console.WriteLine("Are you sure you want to delete? y/ n");
+            Console.WriteLine("\nAre you sure you want to delete? y/ n");
             string? answer = Console.ReadLine();
             if (answer == "y")
             {
@@ -144,7 +144,7 @@ namespace Webshop.Methods
         }
         public static void InsertGenre()
         {
-            Console.Write("Enter name of new genre: ");
+            Console.Write("\nEnter name of new genre: ");
             using (var database = new WebShopContext())
             {
                 var newGenre = new Genre()
@@ -157,7 +157,7 @@ namespace Webshop.Methods
         }
         public static void InsertCategory()
         {
-            Console.Write("Enter name of new category: ");
+            Console.Write("\nEnter name of new category: ");
             using (var database = new WebShopContext())
             {
                 var newCategory = new Category()
@@ -170,7 +170,7 @@ namespace Webshop.Methods
         }
         public static void InsertPaymentMethod()
         {
-            Console.Write("Enter name of new Payment Method: ");
+            Console.Write("\nEnter name of new Payment Method: ");
             using (var database = new WebShopContext())
             {
                 var newPayment = new PaymentMethod()
@@ -183,7 +183,7 @@ namespace Webshop.Methods
         }
         public static void InsertNewShipper()
         {
-            Console.Write("Enter name of new shipper: ");
+            Console.Write("\nEnter name of new shipper: ");
             using (var database = new WebShopContext())
             {
                 var newShipper = new ShipChoice()
@@ -198,7 +198,7 @@ namespace Webshop.Methods
         {
             using (var database = new WebShopContext())
             {
-                Console.Write("Enter the new price of the product:");
+                Console.Write("\nEnter the new price of the product:");
                 int price = 0;
                 price = Helpers.TryNumber(price, 999999999, 1);
                 var sql = $"UPDATE dbo.Products\r\nSET Price={price}\r\nWHERE ID={id}";
@@ -215,7 +215,7 @@ namespace Webshop.Methods
             using (var database = new WebShopContext())
             {
 
-                Console.Write("Enter the new inventory balance of the product:");
+                Console.Write("\nEnter the new inventory balance of the product:");
                 int inventorybalance = 0;
                 inventorybalance = Helpers.TryNumber(inventorybalance, 999999999, 1);
                 var sql = $"UPDATE dbo.Products\r\nSET UnitsInStock={inventorybalance}\r\nWHERE ID={id}";
@@ -233,7 +233,7 @@ namespace Webshop.Methods
             {
                 var supplierList = database.Suppliers.ToList();
                 View.ShowSupplier();
-                Console.Write("Enter Id of new supplier?");
+                Console.Write("\nEnter Id of new supplier?");
                 int newSupplierId = 0;
                 newSupplierId = Helpers.TryNumber(newSupplierId, supplierList.Count, 1);
 
