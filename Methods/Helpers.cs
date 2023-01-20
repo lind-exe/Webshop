@@ -416,9 +416,9 @@ namespace Webshop.Methods
             }
         }
 
-        private static void Victory()
+        public static void Victory()
         {
-            string text = "You bought something, good job!";
+            string text = "------------------------------------------------------------\n|\t\t    ORDER CONFIRMED!                       |\n|\t\t      Thank you !                          |\n------------------------------------------------------------";
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(text);
