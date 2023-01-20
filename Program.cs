@@ -12,6 +12,7 @@ namespace Webshop
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
             bool runProgram = true;
             Customer? c = null;
             Helpers.Welcome();
