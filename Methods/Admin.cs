@@ -289,7 +289,7 @@ namespace Webshop.Methods
                 Console.WriteLine("\n\n\nWhich property would you like to edit?");
                 Console.WriteLine("1. Name\n2. Price\n3. Units in stock\n4. Description\n5. Supplier\n6. Remove\n7. Return");
                 number = Helpers.TryNumber(number, 7, 1);
-                Console.Clear();
+                Console.WriteLine("\n\n\n");
                 switch (number)
                 {
                     case 1:

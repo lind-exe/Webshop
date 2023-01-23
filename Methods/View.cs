@@ -85,6 +85,7 @@ namespace Webshop.Methods
             }
             Console.SetCursorPosition(40, 0);
             Console.Write(showUserName);
+            Console.WriteLine("\n");
         }
         internal static void Show3HighlightedProducts(int[] highlightedProdsId)
         {

@@ -97,7 +97,7 @@ namespace Webshop.Methods
                     View.DisplayCustomer(c);
                     Console.SetCursorPosition(0, 10);
 
-                    View.Show3HighlightedProducts(_highlightedProdsId);       
+                    View.Show3HighlightedProducts(_highlightedProdsId);
 
                     Console.SetCursorPosition(0, 2);
                     foreach (int i in Enum.GetValues(typeof(MainMenu)))
@@ -219,7 +219,7 @@ namespace Webshop.Methods
                             browseShop = false;
                             break;
                         case BrowseShop.Shoppingcart:
-                            View.ShoppingCart(c);                       
+                            View.ShoppingCart(c);
                             browseShop = false;
                             break;
                         case BrowseShop.Profile:
@@ -378,7 +378,7 @@ namespace Webshop.Methods
             {
 
                 _highlightedProdsId = Methods.Admin.SetHiglightedProducts(_highlightedProdsId);
-                
+
 
             }
             return c;
